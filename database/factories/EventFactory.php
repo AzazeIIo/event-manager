@@ -17,8 +17,8 @@ class EventFactory extends Factory
      */
     public function definition(): array
     {
-        $name = fake()->words(3, true);
-        $dateStart = fake()->dateTimeBetween('+1 hour', '+1 year');
+        $name = fake()->unique()->words(3, true);
+        $dateStart = fake()->unique()->dateTimeBetween('+1 hour', '+1 year');
         $dateEnd = fake()->dateTimeBetween((clone $dateStart)->modify('+1 hour'), (clone $dateStart)->modify('+1 week'));
         $users =  User::pluck('id');
         $user = fake()->randomElement($users);

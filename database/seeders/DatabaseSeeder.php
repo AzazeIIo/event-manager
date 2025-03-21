@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Models\Event;
 use App\Models\Invitation;
+use App\Models\Attendee;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -20,5 +21,7 @@ class DatabaseSeeder extends Seeder
         Event::factory(100)->create();
 
         Invitation::factory(100)->create();
+
+        Attendee::factory(100)->create();
     }
 }
