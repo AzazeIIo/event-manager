@@ -27,6 +27,21 @@ return new class extends Migration
             $table->foreign('owner_id')->references('id')->on('users')->onDelete('cascade');
             $table->unique(['name', 'date_start']);
         });
+
+        DB::statement('ALTER TABLE events ADD CONSTRAINT chk_date_times CHECK (date_start < date_end);');
+        //DB::statement('ALTER TABLE events ADD CONSTRAINT chk_start_date CHECK (NOW() < date_start);');
+
+        DB::unprepared("CREATE TRIGGER chk_start_date
+            BEFORE INSERT
+            ON events
+            FOR EACH ROW
+            BEGIN
+                IF (NOW() > NEW.date_start)
+                    THEN
+                        SIGNAL SQLSTATE '45000'
+                        SET MESSAGE_TEXT = 'Start date must be in the future.';
+                END IF;
+            END;");
     }
 
     /**
