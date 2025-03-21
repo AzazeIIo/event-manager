@@ -20,6 +20,18 @@ return new class extends Migration
             $table->unique(['user_id', 'event_id']);
             $table->timestamps();
         });
+
+        DB::unprepared("CREATE TRIGGER public_events_dont_need_invitations
+            BEFORE INSERT
+            ON invitations
+            FOR EACH ROW
+            BEGIN
+                IF (SELECT is_public FROM events WHERE id = NEW.event_id)
+                    THEN
+                        SIGNAL SQLSTATE '45000'
+                        SET MESSAGE_TEXT = 'Public events are visible to everyone.';
+                END IF;
+            END;");
     }
 
     /**
