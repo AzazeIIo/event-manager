@@ -13,7 +13,7 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    <form method="POST" class="mb-3">
+                    <form method="POST" class="mb-3" action="{{ url('events') }}">
                         @csrf
 
                         <div class="row mb-3">
@@ -31,12 +31,12 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="dateStart" class="col-md-4 col-form-label text-md-end">{{ __('Starting Date *') }}</label>
+                            <label for="date_start" class="col-md-4 col-form-label text-md-end">{{ __('Starting Date *') }}</label>
 
                             <div class="col-md-6">
-                                <input id="dateStart" type="datetime-local" class="form-control @error('dateStart') is-invalid @enderror" name="dateStart" required autocomplete="current-dateStart">
+                                <input id="date_start" type="datetime-local" class="form-control @error('date_start') is-invalid @enderror" name="date_start" required autocomplete="current-date_start">
 
-                                @error('dateStart')
+                                @error('date_start')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -45,12 +45,12 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="dateEnd" class="col-md-4 col-form-label text-md-end">{{ __('Ending Date') }}</label>
+                            <label for="date_end" class="col-md-4 col-form-label text-md-end">{{ __('Ending Date') }}</label>
 
                             <div class="col-md-6">
-                                <input id="dateEnd" type="datetime-local" class="form-control @error('dateEnd') is-invalid @enderror" name="dateEnd" autocomplete="current-dateEnd">
+                                <input id="date_end" type="datetime-local" class="form-control @error('date_end') is-invalid @enderror" name="date_end" autocomplete="current-date_end">
 
-                                @error('dateEnd')
+                                @error('date_end')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -91,55 +91,55 @@
 
                             <div class="col-md-6">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="1">
+                                    <input class="form-check-input" type="checkbox" name="type[]" value="1" id="1">
                                     <label class="form-check-label" for="1">
                                         Art and culture
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="2">
+                                    <input class="form-check-input" type="checkbox" name="type[]" value="2" id="2">
                                     <label class="form-check-label" for="2">
                                         Charity
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="3">
+                                    <input class="form-check-input" type="checkbox" name="type[]" value="3" id="3">
                                     <label class="form-check-label" for="3">
                                         Conference
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="4">
+                                    <input class="form-check-input" type="checkbox" name="type[]" value="4" id="4">
                                     <label class="form-check-label" for="4">
                                         Educational
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="5">
+                                    <input class="form-check-input" type="checkbox" name="type[]" value="5" id="5">
                                     <label class="form-check-label" for="5">
                                         Festival
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="6">
+                                    <input class="form-check-input" type="checkbox" name="type[]" value="6" id="6">
                                     <label class="form-check-label" for="6">
                                         Social
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="7">
+                                    <input class="form-check-input" type="checkbox" name="type[]" value="7" id="7">
                                     <label class="form-check-label" for="7">
                                         Sport
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="8">
+                                    <input class="form-check-input" type="checkbox" name="type[]" value="8" id="8">
                                     <label class="form-check-label" for="8">
                                         Virtual
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="9">
+                                    <input class="form-check-input" type="checkbox" name="type[]" value="9" id="9">
                                     <label class="form-check-label" for="9">
                                         Workshop
                                     </label>
@@ -165,7 +165,7 @@
                             <label for="image" class="col-md-4 col-form-label text-md-end">{{ __('Image') }}</label>
 
                             <div class="col-md-6">
-                                <input class="form-control" type="file" id="image">
+                                <input class="form-control" type="file" id="image" name="image">
 
                                 @error('image')
                                     <span class="invalid-feedback" role="alert">
@@ -176,11 +176,11 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="is-public" class="col-md-4 col-form-label text-md-end">{{ __('Visibility') }}</label>
+                            <label for="is_public" class="col-md-4 col-form-label text-md-end">{{ __('Visibility') }}</label>
 
                             <div class="col-md-6">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="is-public" id="public" required checked>
+                                    <input class="form-check-input" type="radio" name="is_public" id="public" value="1" required checked>
 
                                     <label class="form-check-label" for="public">
                                         {{ __('Public') }}<br>
@@ -193,7 +193,7 @@
                         <div class="row mb-3">
                             <div class="col-md-6 offset-md-4">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="is-public" id="private" required>
+                                    <input class="form-check-input" type="radio" name="is_public" id="private" value="0" required>
 
                                     <label class="form-check-label" for="private">
                                         {{ __('Private') }}<br>
@@ -202,6 +202,8 @@
                                 </div>
                             </div>
                         </div>
+
+                        <input type="hidden" name="owner_id" id="owner_id" value="{{ Auth::user()->id }}">
 
                         <div class="row mb-0">
                             <div class="col-md-8 offset-md-4">

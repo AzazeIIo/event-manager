@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreEventRequest;
 use View;
 
 class EventController extends Controller
@@ -31,9 +32,10 @@ class EventController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreEventRequest $request)
     {
-        //
+        $fields = $request->validated();
+        dd($request);
     }
 
     /**
