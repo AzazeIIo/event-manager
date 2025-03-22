@@ -22,4 +22,9 @@ class Event extends Model
         'owner_id',
         'is_public',
     ];
+
+    protected $casts = [
+        'date_start' => 'datetime',
+        'date_end' => 'datetime'
+    ];
 }
