@@ -6,6 +6,7 @@ use App\Models\Event;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreEventRequest;
 use View;
+use Auth;
 
 class EventController extends Controller
 {
@@ -48,10 +49,13 @@ class EventController extends Controller
             }
             $fields['type'] = json_encode($stripped);
         } else {
-            $fields['type'] = "[]";
+            $fields['type'] = '[]';
         }
         $fields['description'] = strip_tags($fields['description']);
-        $fields['image'] = strip_tags($fields['image']);
+        if($request->hasFile('image')) {
+            $path = $request->file('image')->store('userImages', 'public');
+            $fields['image'] = $path;
+        }
         $fields['is_public'] = strip_tags($fields['is_public']);
         $fields['owner_id'] = strip_tags($fields['owner_id']);
         $event = Event::create($fields);

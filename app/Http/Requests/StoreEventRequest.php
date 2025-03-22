@@ -59,7 +59,7 @@ class StoreEventRequest extends FormRequest
             'image' => [
                 'nullable',
                 'image',
-                'max:255',
+                'max:1024',
             ],
             'is_public' => [
                 'required',
