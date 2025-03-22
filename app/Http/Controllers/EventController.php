@@ -19,6 +19,7 @@ class EventController extends Controller
         
         return View::make('events')->with([
             'events' => $events,
+            'includeform' => false
         ]);
     }
 

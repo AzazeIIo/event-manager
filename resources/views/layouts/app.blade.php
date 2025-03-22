@@ -55,11 +55,11 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('home') }}">
+                                    <a class="dropdown-item" href="{{ route('myevents') }}">
                                         {{ __('My events') }}
                                     </a>
 
-                                    <a class="dropdown-item" href="{{ route('home') }}">
+                                    <a class="dropdown-item" href="{{ route('joinedevents') }}">
                                         {{ __('Joined events') }}
                                     </a>
 
