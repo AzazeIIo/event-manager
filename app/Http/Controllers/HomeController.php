@@ -26,7 +26,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $events = Event::where('owner_id', '=', Auth::user()->id)->get();
+        $events = Event::where('owner_id', '=', Auth::user()->id)->paginate(10);
 
         return View::make('home')->with([
             'events' => $events,
