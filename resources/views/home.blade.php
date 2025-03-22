@@ -87,7 +87,7 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="type" class="col-md-4 col-form-label text-md-end">{{ __('Type') }}</label>
+                            <p class="col-md-4 col-form-label text-md-end">{{ __('Type') }}</p>
 
                             <div class="col-md-6">
                                 <div class="form-check">
@@ -176,7 +176,7 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="is_public" class="col-md-4 col-form-label text-md-end">{{ __('Visibility') }}</label>
+                            <p class="col-md-4 col-form-label text-md-end">{{ __('Visibility') }}</p>
 
                             <div class="col-md-6">
                                 <div class="form-check">

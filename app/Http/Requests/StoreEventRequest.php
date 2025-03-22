@@ -50,8 +50,7 @@ class StoreEventRequest extends FormRequest
             'type' => [
                 'nullable',
                 'array',
-                'size:3',
-                'max:255',
+                'max:3',
             ],
             'description' => [
                 'nullable',
@@ -65,6 +64,10 @@ class StoreEventRequest extends FormRequest
             'is_public' => [
                 'required',
                 'boolean'
+            ],
+            'owner_id' => [
+                'required',
+                'integer',
             ]
         ];
     }

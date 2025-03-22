@@ -35,7 +35,27 @@ class EventController extends Controller
     public function store(StoreEventRequest $request)
     {
         $fields = $request->validated();
-        dd($request);
+        $fields['name'] = strip_tags($fields['name']);
+        $fields['date_start'] = strip_tags($fields['date_start']);
+        $fields['date_end'] = strip_tags($fields['date_end']);
+        $fields['city'] = strip_tags($fields['city']);
+        $fields['location'] = strip_tags($fields['location']);
+        if(isset($fields['type'])) {
+            $stripped = [];
+            foreach($fields['type'] as $type) {
+                $type = strip_tags($type);
+                array_push($stripped, $type);
+            }
+            $fields['type'] = json_encode($stripped);
+        } else {
+            $fields['type'] = "[]";
+        }
+        $fields['description'] = strip_tags($fields['description']);
+        $fields['image'] = strip_tags($fields['image']);
+        $fields['is_public'] = strip_tags($fields['is_public']);
+        $fields['owner_id'] = strip_tags($fields['owner_id']);
+        $event = Event::create($fields);
+        return response()->json([$event]);
     }
 
     /**
