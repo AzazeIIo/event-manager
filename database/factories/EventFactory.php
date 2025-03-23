@@ -22,15 +22,17 @@ class EventFactory extends Factory
         $dateEnd = fake()->dateTimeBetween((clone $dateStart)->modify('+1 hour'), (clone $dateStart)->modify('+1 week'));
         $users =  User::pluck('id');
         $user = fake()->randomElement($users);
+        $images = ['userImages/testimage.jpg', 'userImages/testimage2.jpg'];
 
         return [
             'name' => $name,
             'date_start' => $dateStart,
             'date_end' => $dateEnd,
-            'description' => fake()->sentence(),
+            'description' => implode(fake()->paragraphs()),
             'type' => fake()->word(),
             'city' => fake()->city(),
             'location' => fake()->streetAddress(),
+            'image' => fake()->randomElement($images),
             'owner_id' => $user,
             'is_public' => fake()->boolean()
         ];

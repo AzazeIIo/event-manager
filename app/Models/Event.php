@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use App\Models\User;
 use App\Models\Invitation;
 use App\Models\Attendee;
@@ -30,6 +31,11 @@ class Event extends Model
         'date_start' => 'datetime',
         'date_end' => 'datetime'
     ];
+
+    public function getShortDescriptionAttribute()
+    {
+        return Str::words($this->description, 50, '...');
+    }
 
     public function users() {
         return $this->belongsTo(User::class);
