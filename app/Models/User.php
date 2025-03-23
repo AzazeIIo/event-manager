@@ -6,6 +6,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Event;
+use App\Models\Invitation;
+use App\Models\Attendee;
 
 class User extends Authenticatable
 {
@@ -44,5 +47,17 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function events() {
+        return $this->hasMany(Event::class);
+    }
+
+    public function invitations() {
+        return $this->hasMany(Invitation::class);
+    }
+
+    public function attendees() {
+        return $this->hasMany(Attendee::class);
     }
 }
