@@ -54,7 +54,7 @@ class StoreEventRequest extends FormRequest
             ],
             'description' => [
                 'nullable',
-                'max:255',
+                'max:5000',
             ],
             'image' => [
                 'nullable',
