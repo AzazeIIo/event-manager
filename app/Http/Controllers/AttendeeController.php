@@ -28,7 +28,8 @@ class AttendeeController extends Controller
      */
     public function store(StoreAttendeeRequest $request)
     {
-        //
+        $fields = $request->validated();
+        dd($fields);
     }
 
     /**
