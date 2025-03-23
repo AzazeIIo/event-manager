@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Attendee;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreAttendeeRequest;
 
 class AttendeeController extends Controller
 {
@@ -29,7 +30,10 @@ class AttendeeController extends Controller
     public function store(StoreAttendeeRequest $request)
     {
         $fields = $request->validated();
-        dd($fields);
+        $fields['user_id'] = strip_tags($fields['user_id']);
+        $fields['event_id'] = strip_tags($fields['event_id']);
+        $attendee = Attendee::create($fields);
+        return response()->json([$attendee]);
     }
 
     /**
