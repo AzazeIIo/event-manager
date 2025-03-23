@@ -43,6 +43,27 @@
                                 </div>
                             </div>
                         </div>
+                        @if (Auth::check() && $includeform)
+                            <div class="dropdown-center center options">
+                                <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="options.png" alt="Options">
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Visibility</a></li>
+                                    <li><a class="dropdown-item" href="#">Edit</a></li>
+                                    <li>
+                                        <form method="POST" class="center" action="{{ url('events/' . $event['id']) }}">
+                                            @csrf
+                                            @method('DELETE')
+                                            <input type="hidden" name="event_id" value="{{ $event['id'] }}">
+                                            <button type="submit" class="btn btn-primary dropdown-item">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                        @endif
                     </div>
                     @endforeach
                     <div class="center">{{ $events->links() }}</div>

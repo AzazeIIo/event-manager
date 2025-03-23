@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreEventRequest;
+use App\Http\Requests\DestroyEventRequest;
 use View;
 use Auth;
 
@@ -92,8 +93,10 @@ class EventController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Event $event)
+    public function destroy(DestroyEventRequest $request)
     {
-        //
+        $request->validated();
+        $event = Event::find($request['event_id']);
+        $event->delete($event);
     }
 }
