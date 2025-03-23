@@ -37,6 +37,41 @@ class Event extends Model
         return Str::words($this->description, 50, '...');
     }
 
+    public function getType($value)
+    {
+        switch($value) {
+            case 1:
+                return 'Art and culture';
+                break;
+            case 2:
+                return 'Charity';
+                break;
+            case 3:
+                return 'Conference';
+                break;
+            case 4:
+                return 'Educational';
+                break;
+            case 5:
+                return 'Festival';
+                break;
+            case 6:
+                return 'Social';
+                break;
+            case 7:
+                return 'Sport';
+                break;
+            case 8:
+                return 'Virtual';
+                break;
+            case 9:
+                return 'Workshop';
+                break;
+            default:
+                return 'error';    
+        }
+    }
+
     public function users() {
         return $this->belongsTo(User::class);
     }
