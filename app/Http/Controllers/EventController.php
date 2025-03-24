@@ -14,10 +14,17 @@ class EventController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $events = Event::where('is_public', '=', true)->orderBy('date_start', 'asc')->paginate(10);
-        
+
+        if($request->ajax()) {
+            return View::make('event_page')->with([
+                'events' => $events,
+                'includeform' => false
+            ]);
+        }
+
         return View::make('events')->with([
             'events' => $events,
             'includeform' => false
@@ -69,7 +76,7 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {        
-        return View::make('event')->with([
+        return View::make('event_details')->with([
             'event' => $event
         ]);
     }

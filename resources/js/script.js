@@ -10,6 +10,26 @@ $(".deleteEventBtn").each(function(index, obj) {
     }
 });
 
+$(document).on('click', ".pagination li a", function(e) {
+    e.preventDefault();
+
+    $('li').removeClass('active');
+    $(this).parent('li').addClass('active');
+
+    $.ajax({
+        url : $(this).attr('href'),
+        type: 'GET',
+        dataType: 'html',
+        error:function(err) {
+            console.log(err);
+        },
+        success:function(result) {
+            $('#results').html(result);
+            $(window).scrollTop(0);
+        }
+    });
+});
+
 function addEvent() {
     let checkboxValue = [];
     $('.type-checkbox:checked').each(function(i, e) {
