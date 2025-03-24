@@ -55,8 +55,8 @@
                                         <form method="POST" class="center" action="{{ url('events/' . $event['id']) }}">
                                             @csrf
                                             @method('DELETE')
-                                            <input type="hidden" name="event_id" value="{{ $event['id'] }}">
-                                            <button type="submit" class="btn btn-primary dropdown-item">
+                                            <input type="hidden" name="_route" id="delroute{{ $event['id'] }}" value="{{ route('events.destroy', [$event['id']]) }}">
+                                            <button type="submit" id="del{{ $event['id'] }}" class="btn btn-primary dropdown-item deleteEventBtn">
                                                 Delete
                                             </button>
                                         </form>

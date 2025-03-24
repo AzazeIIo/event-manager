@@ -3,6 +3,13 @@ $('#newEventBtn').on('click', function(e) {
     addEvent();
 });
 
+$(".deleteEventBtn").each(function(index, obj) {
+    obj.onclick = function(e) {
+        e.preventDefault();
+        removeEvent(obj);
+    }
+});
+
 function addEvent() {
     let checkboxValue = [];
     $('.type-checkbox:checked').each(function(i, e) {
@@ -42,3 +49,25 @@ function addEvent() {
     });
 }
 
+function removeEvent(obj) {
+    console.log($("#delroute" + obj.id.substring(3)).val());
+    
+    $.ajaxSetup({
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+    });
+    $.ajax({
+        type: 'DELETE',
+        url: $("#delroute" + obj.id.substring(3)).val(),
+        data: {
+            'event_id': obj.id.substring(3)
+        },
+        error:function(err) {
+            console.log(err);
+            
+        },
+        success:function(msg) {
+            console.log(msg);
+            
+        }  
+    });
+}
