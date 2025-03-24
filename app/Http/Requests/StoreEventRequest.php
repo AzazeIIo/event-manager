@@ -71,4 +71,11 @@ class StoreEventRequest extends FormRequest
             ]
         ];
     }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'type' => json_decode($this->type),
+        ]);
+    }
 }

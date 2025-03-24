@@ -76,55 +76,55 @@
 
         <div class="col-md-6">
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="type[]" value="1" id="1">
+                <input class="form-check-input type-checkbox" type="checkbox" name="type[]" value="1" id="1">
                 <label class="form-check-label" for="1">
                     Art and culture
                 </label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="type[]" value="2" id="2">
+                <input class="form-check-input type-checkbox" type="checkbox" name="type[]" value="2" id="2">
                 <label class="form-check-label" for="2">
                     Charity
                 </label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="type[]" value="3" id="3">
+                <input class="form-check-input type-checkbox" type="checkbox" name="type[]" value="3" id="3">
                 <label class="form-check-label" for="3">
                     Conference
                 </label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="type[]" value="4" id="4">
+                <input class="form-check-input type-checkbox" type="checkbox" name="type[]" value="4" id="4">
                 <label class="form-check-label" for="4">
                     Educational
                 </label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="type[]" value="5" id="5">
+                <input class="form-check-input type-checkbox" type="checkbox" name="type[]" value="5" id="5">
                 <label class="form-check-label" for="5">
                     Festival
                 </label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="type[]" value="6" id="6">
+                <input class="form-check-input type-checkbox" type="checkbox" name="type[]" value="6" id="6">
                 <label class="form-check-label" for="6">
                     Social
                 </label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="type[]" value="7" id="7">
+                <input class="form-check-input type-checkbox" type="checkbox" name="type[]" value="7" id="7">
                 <label class="form-check-label" for="7">
                     Sport
                 </label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="type[]" value="8" id="8">
+                <input class="form-check-input type-checkbox" type="checkbox" name="type[]" value="8" id="8">
                 <label class="form-check-label" for="8">
                     Virtual
                 </label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="type[]" value="9" id="9">
+                <input class="form-check-input type-checkbox" type="checkbox" name="type[]" value="9" id="9">
                 <label class="form-check-label" for="9">
                     Workshop
                 </label>
@@ -192,7 +192,7 @@
 
     <div class="row mb-0">
         <div class="col-md-8 offset-md-4">
-            <button type="submit" class="btn btn-primary">
+            <button id="newEventBtn" type="submit" class="btn btn-primary">
                 {{ __('Create') }}
             </button>
         </div>
