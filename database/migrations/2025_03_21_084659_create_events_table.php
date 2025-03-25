@@ -18,7 +18,6 @@ return new class extends Migration
             $table->dateTime('date_start');
             $table->dateTime('date_end')->nullable();
             $table->text('description')->nullable();
-            $table->string('type')->nullable();
             $table->string('city');
             $table->string('location');
             $table->foreignId('owner_id');

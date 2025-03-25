@@ -65,60 +65,14 @@
         <p class="col-md-4 col-form-label text-md-end">{{ __('Type') }}<br><small class="text-muted">Select up to 3</small></p>
 
         <div class="col-md-6">
-            <div class="form-check">
-                <input class="form-check-input type-checkbox" type="checkbox" name="type[]" value="1" id="1">
-                <label class="form-check-label" for="1">
-                    Art and culture
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input type-checkbox" type="checkbox" name="type[]" value="2" id="2">
-                <label class="form-check-label" for="2">
-                    Charity
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input type-checkbox" type="checkbox" name="type[]" value="3" id="3">
-                <label class="form-check-label" for="3">
-                    Conference
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input type-checkbox" type="checkbox" name="type[]" value="4" id="4">
-                <label class="form-check-label" for="4">
-                    Educational
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input type-checkbox" type="checkbox" name="type[]" value="5" id="5">
-                <label class="form-check-label" for="5">
-                    Festival
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input type-checkbox" type="checkbox" name="type[]" value="6" id="6">
-                <label class="form-check-label" for="6">
-                    Social
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input type-checkbox" type="checkbox" name="type[]" value="7" id="7">
-                <label class="form-check-label" for="7">
-                    Sport
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input type-checkbox" type="checkbox" name="type[]" value="8" id="8">
-                <label class="form-check-label" for="8">
-                    Virtual
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input type-checkbox" type="checkbox" name="type[]" value="9" id="9">
-                <label class="form-check-label" for="9">
-                    Workshop
-                </label>
-            </div>
+            @foreach ($types as $type)
+                <div class="form-check">
+                    <input class="form-check-input type-checkbox" type="checkbox" name="type[]" value="{{ $type['id'] }}" id="{{ $type['id'] }}">
+                    <label class="form-check-label" for="{{ $type['id'] }}">
+                        {{ $type['type_name'] }}
+                    </label>
+                </div>
+            @endforeach
             <span id="invalid-type" class="invalid-feedback" role="alert">
                 <strong></strong>
             </span>

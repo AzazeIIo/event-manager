@@ -19,8 +19,8 @@
                     <div class="row">
                         <div class="col-sm-8 col-12 order-sm-1 order-1">
                             <h5 class="card-title">{{ $event['name'] }}</h5>
-                            @foreach (json_decode($event['type'], true) as $type)
-                                <span class="badge text-bg-primary">{{$event->getType($type)}}</span>
+                            @foreach ($event->types() as $type)
+                                <span class="badge text-bg-primary">{{$type['type_name']}}</span>
                             @endforeach
                             <p class="card-text"><strong>{{ $event['date_start']->format("D, d M Y H:i") }} – {{ $event['date_end']->format("D, d M Y H:i") }}</strong></p>
                             <p class="card-text"><strong>{{ $event['location'] }}, {{ $event['city'] }}</strong></p>

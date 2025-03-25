@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Models\Type;
+use App\Models\EventType;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\DestroyEventRequest;
@@ -18,16 +20,19 @@ class EventController extends Controller
     public function index(Request $request)
     {
         $events = Event::where('is_public', '=', true)->orderBy('date_start', 'asc')->paginate(10);
+        $types = Type::all();
 
         if($request->ajax()) {
             return View::make('event_page')->with([
                 'events' => $events,
+                'types' => $types,
                 'includeform' => false
             ]);
         }
 
         return View::make('events')->with([
             'events' => $events,
+            'types' => $types,
             'includeform' => false
         ]);
     }
@@ -46,29 +51,33 @@ class EventController extends Controller
     public function store(StoreEventRequest $request)
     {
         $fields = $request->validated();
-        $fields['name'] = strip_tags($fields['name']);
-        $fields['date_start'] = strip_tags($fields['date_start']);
-        $fields['date_end'] = strip_tags($fields['date_end']);
-        $fields['city'] = strip_tags($fields['city']);
-        $fields['location'] = strip_tags($fields['location']);
-        if(isset($fields['type'])) {
-            $stripped = [];
-            foreach($fields['type'] as $type) {
-                $type = strip_tags($type);
-                array_push($stripped, $type);
-            }
-            $fields['type'] = json_encode($stripped);
-        } else {
-            $fields['type'] = '[]';
-        }
-        $fields['description'] = strip_tags($fields['description']);
+        $event_fields = [];
+        $event_fields['name'] = strip_tags($fields['name']);
+        $event_fields['date_start'] = strip_tags($fields['date_start']);
+        $event_fields['date_end'] = strip_tags($fields['date_end']);
+        $event_fields['city'] = strip_tags($fields['city']);
+        $event_fields['location'] = strip_tags($fields['location']);
+        $event_fields['description'] = strip_tags($fields['description']);
         if($request->hasFile('image')) {
             $path = $request->file('image')->store('userImages', 'public');
-            $fields['image'] = $path;
+            $event_fields['image'] = $path;
         }
-        $fields['is_public'] = strip_tags($fields['is_public']);
-        $fields['owner_id'] = strip_tags($fields['owner_id']);
-        $event = Event::create($fields);
+        $event_fields['is_public'] = strip_tags($fields['is_public']);
+        $event_fields['owner_id'] = strip_tags($fields['owner_id']);
+        $event = Event::create($event_fields);
+
+        if(isset($fields['type'])) {
+            $types = [];
+            foreach($fields['type'] as $type) {
+                $type_fields['type_id'] = strip_tags($type);
+                $type_fields['event_id'] = $event['id'];
+                $event_type = EventType::create($type_fields);
+                array_push($types, $event_type);
+            }
+            return response()->json([$event, $types]);
+            //$types = json_encode($stripped);
+        }
+
         return response()->json([$event]);
     }
 
@@ -76,7 +85,7 @@ class EventController extends Controller
      * Display the specified resource.
      */
     public function show(Event $event)
-    {        
+    {
         return View::make('event_details')->with([
             'event' => $event
         ]);

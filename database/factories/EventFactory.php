@@ -29,7 +29,6 @@ class EventFactory extends Factory
             'date_start' => $dateStart,
             'date_end' => $dateEnd,
             'description' => implode(fake()->paragraphs()),
-            'type' => json_encode([fake()->randomDigitNot(0), fake()->randomDigitNot(0)]),
             'city' => fake()->city(),
             'location' => fake()->streetAddress(),
             'image' => fake()->randomElement($images),
