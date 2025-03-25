@@ -24,9 +24,6 @@ $(document).on('click', ".pagination li a", function(e) {
         url : $(this).attr('href'),
         type: 'GET',
         dataType: 'html',
-        error:function(err) {
-            console.log(err);
-        },
         success:function(result) {
             $('#results').html(result);
             $(window).scrollTop(0);
@@ -65,6 +62,13 @@ function addEvent() {
         processData : false,
         url: '/events',
         error:function(err) {
+            $('.invalid-feedback').each(function(i, obj) {
+                $(obj).css('display', 'none');
+            });
+            for (let key in err.responseJSON.errors) {
+                $('#invalid-'+key).css('display', 'block');
+                $('#invalid-'+key).html(err.responseJSON.errors[key]);
+            }
             console.log(err);
         },
         success:function(result) {
