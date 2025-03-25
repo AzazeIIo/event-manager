@@ -5,10 +5,11 @@
     <div class="row justify-content-center">
         <div class="col-lg-9">
             <div class="card">
+                @if ($event['image'])
                 <div class="card-header p-0">
                     <img src="{{ '/storage/' . $event['image'] }}" class="userimage img-fluid rounded-top" alt="...">
                 </div>
-
+                @endif
                 <div class="card-body">
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
@@ -35,7 +36,11 @@
                                 </button>
                             </form>
                         </div>
-                        <p class="card-text order-sm-3 order-2 mt-3">{{ $event['description'] }}</p>
+                        <p class="card-text order-sm-3 order-2 mt-3">
+                            @foreach(explode(PHP_EOL, $event['description']) as $line )
+                                {{ $line }} <br>
+                            @endforeach
+                        </p>
                     </div>
                 </div>
             </div>

@@ -1,10 +1,20 @@
 @foreach ($events as $event)
     <div class="card mb-3">
         <div class="row g-0">
-            <div class="col-lg-5 center">
-                <img src="{{ '/storage/' . $event['image'] }}" class="userimage img-fluid rounded" alt="...">
-            </div>
-            <div class="col-lg-7">
+            @if($event['image'])
+                <div class="col-lg-5 center">
+                    <img src="{{ '/storage/' . $event['image'] }}" class="userimage img-fluid rounded" alt="...">
+                </div>
+                @if($includeform)
+                    <div class="col-lg-6">
+                @else
+                    <div class="col-lg-7">
+                @endif
+            @elseif($includeform)
+                <div class="col-lg-11">
+            @else
+                <div class="col-lg-12">
+            @endif
                 <div class="card-body">
                     <h5 class="card-title">{{ $event['name'] }}</h5>
                     @foreach (json_decode($event['type'], true) as $type)
