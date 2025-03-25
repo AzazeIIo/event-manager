@@ -6,6 +6,7 @@ use App\Models\Event;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\DestroyEventRequest;
+use Illuminate\Support\Facades\Storage;
 use View;
 use Auth;
 
@@ -104,6 +105,9 @@ class EventController extends Controller
     {
         $request->validated();
         $event = Event::find($request['event_id']);
+        if($event['image']) {
+            Storage::disk('public')->delete($event['image']);
+        }
         $event->delete($event);
     }
 }
