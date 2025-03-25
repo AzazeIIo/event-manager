@@ -1,13 +1,17 @@
+let eventToBeDeleted = null;
+
 $('#newEventBtn').on('click', function(e) {
     e.preventDefault();
     addEvent();
 });
 
-$(".deleteEventBtn").each(function(index, obj) {
-    obj.onclick = function(e) {
-        e.preventDefault();
-        removeEvent(obj);
-    }
+$('.deleteEventBtn').on('click', function(e) {
+    e.preventDefault();
+    eventToBeDeleted = e.target.id.substring(3);
+});
+
+$("#confirmDeletion").on('click', function(e) {
+    removeEvent(eventToBeDeleted);
 });
 
 $(document).on('click', ".pagination li a", function(e) {
@@ -69,17 +73,15 @@ function addEvent() {
     });
 }
 
-function removeEvent(obj) {
-    console.log($("#delroute" + obj.id.substring(3)).val());
-    
+function removeEvent(id) {
     $.ajaxSetup({
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
     });
     $.ajax({
         type: 'DELETE',
-        url: $("#delroute" + obj.id.substring(3)).val(),
+        url: $("#delroute" + id).val(),
         data: {
-            'event_id': obj.id.substring(3)
+            'event_id': id
         },
         error:function(err) {
             console.log(err);

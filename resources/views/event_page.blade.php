@@ -34,11 +34,10 @@
                     <li><a class="dropdown-item" href="#">Visibility</a></li>
                     <li><a class="dropdown-item" href="#">Edit</a></li>
                     <li>
-                        <form method="POST" class="center" action="{{ url('events/' . $event['id']) }}">
+                        <form class="center">
                             @csrf
-                            @method('DELETE')
                             <input type="hidden" name="_route" id="delroute{{ $event['id'] }}" value="{{ route('events.destroy', [$event['id']]) }}">
-                            <button type="submit" id="del{{ $event['id'] }}" class="btn btn-primary dropdown-item deleteEventBtn">
+                            <button type="submit" id="del{{ $event['id'] }}" data-bs-toggle="modal" data-bs-target="#removeModal" class="btn btn-primary dropdown-item deleteEventBtn">
                                 Delete
                             </button>
                         </form>

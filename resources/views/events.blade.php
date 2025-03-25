@@ -15,6 +15,23 @@
                     @endif
                     @if (Auth::check() && $includeform)
                         @include('neweventform')
+                        <div class="modal fade" id="removeModal" tabindex="-1" aria-labelledby="removeEventModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="removeEventModalLabel">Delete event</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Are you sure you want to delete this event?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Don't delete</button>
+                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="confirmDeletion">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     @endif
                     <div id="results">@include('event_page')</div>
                 </div>
