@@ -5,13 +5,28 @@ $('#newEventBtn').on('click', function(e) {
     addEvent();
 });
 
-$('.deleteEventBtn').on('click', function(e) {
+$(document).on('click', ".deleteEventBtn", function(e) {
     e.preventDefault();
     eventToBeDeleted = e.target.id.substring(3);
 });
 
 $("#confirmDeletion").on('click', function(e) {
     removeEvent(eventToBeDeleted);
+});
+
+$(document).on('click', ".editEventBtn", function(e) {
+    editEvent(e.target.id.substring(4));
+});
+
+$(document).on('click', ".confirmEditEventBtn", function(e) {
+    e.preventDefault();
+    console.log("editing");
+    
+});
+
+$(document).on('click', ".resetEditEventBtn", function(e) {
+    e.preventDefault();
+    console.log("resetting");
 });
 
 $(document).on('click', ".pagination li a", function(e) {
@@ -69,7 +84,6 @@ function addEvent() {
                 $('#invalid-'+key).css('display', 'block');
                 $('#invalid-'+key).html(err.responseJSON.errors[key]);
             }
-            console.log(err);
         },
         success:function(result) {
             console.log(result);
@@ -96,4 +110,9 @@ function removeEvent(id) {
             
         }  
     });
+}
+
+function editEvent(id) {
+    $('#'+id).css('display', 'none');
+    $('#'+id).siblings().css('display', 'block');
 }

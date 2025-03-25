@@ -55,6 +55,15 @@ class Event extends Model
         return $types;
     }
 
+    public function typeids() {
+        $types = $this->types();
+        $typeids = [];
+        foreach ($types as $type) {
+            array_push($typeids, $type['id']);
+        }
+        return $typeids;
+    }
+
     public function invitations() {
         return $this->hasMany(Invitation::class);
     }

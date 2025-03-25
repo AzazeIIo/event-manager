@@ -15,8 +15,8 @@ Route::resource('events.attendees', AttendeeController::class);
 Route::redirect('/', 'events');
 Route::redirect('/joinedevents', 'myevents')->name('joinedevents');
 Route::get('/myevents', function () {
-    if(Auth::check()){
-        return View::make('events')->with([
+    if(Auth::check()) {
+        return View::make(request()->ajax() ? 'event_page' : 'events')->with([
             'events' => Event::where('owner_id', '=', Auth::user()->id)->paginate(10),
             'types' => Type::all(),
             'includeform' => true

@@ -1,6 +1,6 @@
 @foreach ($events as $event)
     <div class="card mb-3">
-        <div class="row g-0">
+        <div id="{{$event['id']}}" class="row g-0">
             @if($event['image'])
                 <div class="col-lg-5 center">
                     <img src="{{ '/storage/' . $event['image'] }}" class="userimage img-fluid rounded" alt="...">
@@ -36,13 +36,16 @@
             </div>
         </div>
         @if (Auth::check() && $includeform)
+            @include('editeventform')
             <div class="dropdown-center center options">
                 <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="options.png" alt="Options">
                 </button>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="#">Visibility</a></li>
-                    <li><a class="dropdown-item" href="#">Edit</a></li>
+                    <li>
+                        <button class="btn btn-primary dropdown-item editEventBtn" id="edit{{ $event['id'] }}">Edit</button>
+                    </li>
                     <li>
                         <form class="center">
                             @csrf
