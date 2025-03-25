@@ -78,4 +78,11 @@ class StoreEventRequest extends FormRequest
             'type' => json_decode($this->type),
         ]);
     }
+    
+    public function messages()
+    {
+        return [
+            'name.unique' => 'An event with the same name and the same starting date has already been created.'
+        ];
+    }
 }
