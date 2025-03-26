@@ -21,13 +21,14 @@
                 @endforeach
                 <p class="card-text"><strong>{{ $event['date_start']->format("D, d M Y H:i") }} – {{ $event['date_end']->format("D, d M Y H:i") }}</strong></p>
                 <p class="card-text"><strong>{{ $event['location'] }}, {{ $event['city'] }}</strong></p>
-                <p class="card-text text-muted">{{ count($event->attendees) }} going</p>
+                <p id="attendeeAmount{{ $event['id'] }}" class="card-text text-muted">{{ count($event->attendees) }} going</p>
                 <p class="card-text">{{ $event->short_description }} <a href="events/{{ $event['id'] }}"> See more</a></p>
                 <form method="POST" class="center" action="{{ url('events/' . $event['id'] . '/attendees') }}">
                     @csrf
-                    <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-                    <input type="hidden" name="event_id" value="{{ $event['id'] }}">
-                    <button type="submit" class="btn btn-primary">
+                    <input type="hidden" id="user_id{{ $event['id'] }}" name="user_id" value="{{ Auth::user()->id }}">
+                    <input type="hidden" id="event_id{{ $event['id'] }}" name="event_id" value="{{ $event['id'] }}">
+                    <input type="hidden" id="joinroute{{ $event['id'] }}" name="joinroute" value="{{ url('events/' . $event['id'] . '/attendees') }}">
+                    <button id="join{{ $event['id'] }}" type="submit" class="btn btn-primary joinEventBtn">
                         I'll be there
                     </button>
                 </form>

@@ -35,6 +35,11 @@ $(document).on('click', '.resetEditEventBtn', function(e) {
     console.log("resetting");
 });
 
+$(document).on('click', '.joinEventBtn', function(e) {
+    e.preventDefault();
+    joinEvent(e.target.id.substring('4'));
+});
+
 $(document).on('click', '.pagination li a', function(e) {
     e.preventDefault();
 
@@ -158,6 +163,23 @@ function editEvent(id) {
         error:function(err) {
             console.log(err);
             
+        },
+    });
+}
+
+function joinEvent(id) {
+    $.ajaxSetup({
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+    });
+    $.ajax({
+        type: 'POST',
+        url: $("#joinroute" + id).val(),
+        data: {
+            'user_id': $('#user_id'+id).val(),
+            'event_id': $('#event_id'+id).val(),
+        },
+        success:function(msg) {
+            $('#attendeeAmount'+id).html(msg + ' going');
         },
     });
 }

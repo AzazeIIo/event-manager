@@ -33,7 +33,7 @@ class AttendeeController extends Controller
         $fields['user_id'] = strip_tags($fields['user_id']);
         $fields['event_id'] = strip_tags($fields['event_id']);
         $attendee = Attendee::create($fields);
-        return response()->json([$attendee]);
+        return count($event->attendees);
     }
 
     /**
