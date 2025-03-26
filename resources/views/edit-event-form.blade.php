@@ -2,7 +2,7 @@
     @csrf
 
     <div class="row mb-3">
-        <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Event Name *') }}</label>
+        <label for="name{{ $event['id'] }}" class="col-md-4 col-form-label text-md-end">{{ __('Event Name *') }}</label>
 
         <div class="col-md-6">
             <input id="name{{ $event['id'] }}" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $event['name'] }}" required autocomplete="name" autofocus>
@@ -14,7 +14,7 @@
     </div>
 
     <div class="row mb-3">
-        <label for="date_start" class="col-md-4 col-form-label text-md-end">{{ __('Starting Date *') }}</label>
+        <label for="date_start{{ $event['id'] }}" class="col-md-4 col-form-label text-md-end">{{ __('Starting Date *') }}</label>
 
         <div class="col-md-6">
             <input id="date_start{{ $event['id'] }}" type="datetime-local" class="form-control @error('date_start') is-invalid @enderror" name="date_start" value="{{ $event['date_start'] }}" required autocomplete="current-date_start">
@@ -26,7 +26,7 @@
     </div>
 
     <div class="row mb-3">
-        <label for="date_end" class="col-md-4 col-form-label text-md-end">{{ __('Ending Date') }}</label>
+        <label for="date_end{{ $event['id'] }}" class="col-md-4 col-form-label text-md-end">{{ __('Ending Date') }}</label>
 
         <div class="col-md-6">
             <input id="date_end{{ $event['id'] }}" type="datetime-local" class="form-control @error('date_end') is-invalid @enderror" name="date_end" value="{{ $event['date_end'] }}" autocomplete="current-date_end">
@@ -38,7 +38,7 @@
     </div>
 
     <div class="row mb-3">
-        <label for="city" class="col-md-4 col-form-label text-md-end">{{ __('City *') }}</label>
+        <label for="city{{ $event['id'] }}" class="col-md-4 col-form-label text-md-end">{{ __('City *') }}</label>
 
         <div class="col-md-6">
             <input id="city{{ $event['id'] }}" type="text" class="form-control @error('city') is-invalid @enderror" name="city" value="{{ $event['city'] }}" required autocomplete="city" autofocus>
@@ -50,7 +50,7 @@
     </div>
 
     <div class="row mb-3">
-        <label for="location" class="col-md-4 col-form-label text-md-end">{{ __('Location *') }}</label>
+        <label for="location{{ $event['id'] }}" class="col-md-4 col-form-label text-md-end">{{ __('Location *') }}</label>
 
         <div class="col-md-6">
             <input id="location{{ $event['id'] }}" type="text" class="form-control @error('location') is-invalid @enderror" name="location" value="{{ $event['location'] }}" required autocomplete="location" autofocus>
@@ -67,8 +67,8 @@
         <div class="col-md-6">
             @foreach ($types as $type)
                 <div class="form-check">
-                    <input class="form-check-input type-checkbox edit-event-checkbox{{ $event['id'] }}" type="checkbox" name="type[]" value="{{ $type['id'] }}" {{ in_array($type['id'], $event->typeids()) ? "checked" : "" }} id="{{ $type['id'] }}">
-                    <label class="form-check-label" for="{{ $type['id'] }}">
+                    <input class="form-check-input type-checkbox edit-event-checkbox{{ $event['id'] }}" type="checkbox" name="type[]" value="{{ $type['id'] }}" {{ in_array($type['id'], $event->typeids()) ? "checked" : "" }} id="{{ $type['id'] }}-{{ $event['id'] }}">
+                    <label class="form-check-label" for="{{ $type['id'] }}-{{ $event['id'] }}">
                         {{ $type['type_name'] }}
                     </label>
                 </div>
@@ -80,10 +80,10 @@
     </div>
 
     <div class="row mb-3">
-        <label for="description" class="col-md-4 col-form-label text-md-end">{{ __('Description') }}<br><small class="text-muted">Write up to 5000 characters</small></label>
+        <label for="description{{ $event['id'] }}" class="col-md-4 col-form-label text-md-end">{{ __('Description') }}<br><small class="text-muted">Write up to 5000 characters</small></label>
 
         <div class="col-md-6">
-            <textarea rows="5" id="description{{ $event['id'] }}" class="form-control @error('description') is-invalid @enderror" name="description" value="{{ $event['description'] }}" autocomplete="description" autofocus></textarea>
+            <textarea rows="5" id="description{{ $event['id'] }}" class="form-control @error('description') is-invalid @enderror" name="description" value="{{ $event['description'] }}" autocomplete="description" autofocus>{{ $event['description'] }}</textarea>
 
             <span id="invalid-description{{ $event['id'] }}" class="invalid-feedback" role="alert">
                 <strong></strong>
@@ -121,7 +121,7 @@
             <div class="form-check">
                 <input class="form-check-input" type="radio" name="is_public{{ $event['id'] }}" id="public{{ $event['id'] }}" value="1" required {{ $event['is_public'] ? "checked" : "" }}>
 
-                <label class="form-check-label" for="public">
+                <label class="form-check-label" for="public{{ $event['id'] }}">
                     {{ __('Public') }}<br>
                     <small class="text-muted">Everyone can see and join your event.</small>
                 </label>
@@ -134,7 +134,7 @@
             <div class="form-check">
                 <input class="form-check-input" type="radio" name="is_public{{ $event['id'] }}" id="private{{ $event['id'] }}" value="0" required {{ $event['is_public'] ? "" : "checked" }}>
 
-                <label class="form-check-label" for="private">
+                <label class="form-check-label" for="private{{ $event['id'] }}">
                     {{ __('Private') }}<br>
                     <small class="text-muted">You choose who can see your event.</small>
                 </label>

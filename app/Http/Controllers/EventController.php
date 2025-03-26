@@ -7,6 +7,7 @@ use App\Models\Type;
 use App\Models\EventType;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreEventRequest;
+use App\Http\Requests\UpdateEventRequest;
 use App\Http\Requests\DestroyEventRequest;
 use Illuminate\Support\Facades\Storage;
 use View;
@@ -101,16 +102,16 @@ class EventController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Event $event)
+    public function update(UpdateEventRequest $request, Event $event)
     {
-        $fields = $request;
+        $fields = $request->validated();
         $event->name = $fields['name'];
-        $event->date_start = $request->get('date_start');
-        $event->date_end = $request->get('date_end');
-        $event->city = $request->get('city');
-        $event->location = $request->get('location');
-        $event->description = $request->get('description');
-        $event->is_public = $request->get('is_public');
+        $event->date_start = $fields['date_start'];
+        $event->date_end = $fields['date_end'];
+        $event->city = $fields['city'];
+        $event->location = $fields['location'];
+        $event->description = $fields['description'];
+        $event->is_public = $fields['is_public'];
         $event->save();
 
         $previousTypes = EventType::where('event_id', '=', $event['id'])->get();
