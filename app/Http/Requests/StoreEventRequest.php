@@ -23,6 +23,9 @@ class StoreEventRequest extends FormRequest
      */
     public function rules(): array
     {
+        date_default_timezone_set('Europe/Budapest');
+        $date = new \DateTimeImmutable();
+
         return [
             'name' => [
                 'required',
@@ -31,8 +34,8 @@ class StoreEventRequest extends FormRequest
             ],
             'date_start' => [
                 'required',
-                'after:now',
-                Rule::date()->format('Y-m-d\TH:i')
+                Rule::date()->format('Y-m-d\TH:i'),
+                Rule::date()->after($date->format('Y-m-d\TH:i')),
             ],
             'date_end' => [
                 'nullable',

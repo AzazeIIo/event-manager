@@ -23,7 +23,7 @@ class EventController extends Controller
         $types = Type::all();
 
         if($request->ajax()) {
-            return View::make('event_page')->with([
+            return View::make('event-page')->with([
                 'events' => $events,
                 'types' => $types,
                 'includeform' => false
@@ -51,7 +51,6 @@ class EventController extends Controller
     public function store(StoreEventRequest $request)
     {
         $fields = $request->validated();
-        $event_fields = [];
         $event_fields['name'] = strip_tags($fields['name']);
         $event_fields['date_start'] = strip_tags($fields['date_start']);
         $event_fields['date_end'] = strip_tags($fields['date_end']);
@@ -67,18 +66,18 @@ class EventController extends Controller
         $event = Event::create($event_fields);
 
         if(isset($fields['type'])) {
-            $types = [];
             foreach($fields['type'] as $type) {
                 $type_fields['type_id'] = strip_tags($type);
                 $type_fields['event_id'] = $event['id'];
                 $event_type = EventType::create($type_fields);
-                array_push($types, $event_type);
             }
-            return response()->json([$event, $types]);
-            //$types = json_encode($stripped);
         }
 
-        return response()->json([$event]);
+        return View::make('event-card')->with([
+            'event' => $event,
+            'types' => Type::all(),
+            'includeform' => true
+        ]);
     }
 
     /**
@@ -104,7 +103,33 @@ class EventController extends Controller
      */
     public function update(Request $request, Event $event)
     {
-        //
+        $fields = $request;
+        $event->name = $fields['name'];
+        $event->date_start = $request->get('date_start');
+        $event->date_end = $request->get('date_end');
+        $event->city = $request->get('city');
+        $event->location = $request->get('location');
+        $event->description = $request->get('description');
+        $event->is_public = $request->get('is_public');
+        $event->save();
+
+        $previousTypes = EventType::where('event_id', '=', $event['id'])->get();
+        foreach ($previousTypes as $previousType) {
+            $previousType->delete($previousType);
+        }
+        if(isset($fields['type'])) {
+            foreach($fields['type'] as $type) {
+                $type_fields['type_id'] = strip_tags($type);
+                $type_fields['event_id'] = $event['id'];
+                $event_type = EventType::create($type_fields);
+            }
+        }
+
+        return View::make('event-card')->with([
+            'event' => $event,
+            'types' => Type::all(),
+            'includeform' => true
+        ]);
     }
 
     /**

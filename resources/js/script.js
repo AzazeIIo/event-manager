@@ -1,35 +1,41 @@
 let eventToBeDeleted = null;
 
-$('#newEventBtn').on('click', function(e) {
-    e.preventDefault();
-    addEvent();
+$('#newEventBtn').on('click', function() {
+    $('#newEventForm').css('display', 'block');
+    $(this).css('display', 'none');
 });
 
-$(document).on('click', ".deleteEventBtn", function(e) {
+$('#createEventBtn').on('click', function(e) {
+    e.preventDefault();
+    createEvent();
+});
+
+$(document).on('click', '.deleteEventBtn', function(e) {
     e.preventDefault();
     eventToBeDeleted = e.target.id.substring(3);
 });
 
-$("#confirmDeletion").on('click', function(e) {
+$('#confirmDeletion').on('click', function(e) {
     removeEvent(eventToBeDeleted);
 });
 
-$(document).on('click', ".editEventBtn", function(e) {
-    editEvent(e.target.id.substring(4));
+$(document).on('click', '.editEventBtn', function(e) {
+    let eventCard = $('#'+e.target.id.substring(4));
+    eventCard.css('display', 'none');
+    eventCard.siblings().css('display', 'block');
 });
 
-$(document).on('click', ".confirmEditEventBtn", function(e) {
+$(document).on('click', '.confirmEditEventBtn', function(e) {
     e.preventDefault();
-    console.log("editing");
-    
+    editEvent(e.target.id.substring(7));    
 });
 
-$(document).on('click', ".resetEditEventBtn", function(e) {
+$(document).on('click', '.resetEditEventBtn', function(e) {
     e.preventDefault();
     console.log("resetting");
 });
 
-$(document).on('click', ".pagination li a", function(e) {
+$(document).on('click', '.pagination li a', function(e) {
     e.preventDefault();
 
     $('li').removeClass('active');
@@ -46,10 +52,10 @@ $(document).on('click', ".pagination li a", function(e) {
     });
 });
 
-function addEvent() {
+function createEvent() {
     let checkboxValue = [];
-    $('.type-checkbox:checked').each(function(i, e) {
-        checkboxValue.push($(e).val());
+    $('.new-event-checkbox:checked').each(function(i, obj) {
+        checkboxValue.push($(obj).val());
     });
     let imageData = $('#image')[0].files[0];
 
@@ -86,7 +92,22 @@ function addEvent() {
             }
         },
         success:function(result) {
-            console.log(result);
+            $('#results').prepend(result);
+
+            $('#name').val('');
+            $('#date_start').val('');
+            $('#date_end').val('');
+            $('#city').val('');
+            $('#location').val('');
+            $('.new-event-checkbox:checked').each(function(i, obj) {
+                $(obj).prop('checked', false)
+            });
+            $('#description').val('');
+            $('#image').val('');
+            $('#public').prop('checked', true);
+
+            $('#newEventForm').css('display', 'none');
+            $('#newEventBtn').css('display', 'block');
         }  
     });
 }
@@ -101,18 +122,42 @@ function removeEvent(id) {
         data: {
             'event_id': id
         },
-        error:function(err) {
-            console.log(err);
-            
-        },
         success:function(msg) {
-            console.log(msg);
-            
+            $('#'+id).parent().remove();
         }  
     });
 }
 
 function editEvent(id) {
-    $('#'+id).css('display', 'none');
-    $('#'+id).siblings().css('display', 'block');
+    let checkboxValue = [];
+    $('.edit-event-checkbox' + id + ':checked').each(function(i, obj) {
+        checkboxValue.push($(obj).val());
+    });
+
+    $.ajaxSetup({
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+    });
+    $.ajax({
+        type: 'PATCH',
+        url: $("#editroute" + id).val(),
+        data: {
+            'name': $('#name'+id).val(),
+            'date_start': $('#date_start'+id).val(),
+            'date_end': $('#date_end'+id).val(),
+            'city': $('#city'+id).val(),
+            'location': $('#location'+id).val(),
+            'type': checkboxValue,
+            'description': $('#description'+id).val(),
+            'is_public': $("input[name=is_public" + id + "]:checked").val(),
+            'owner_id': $("#owner_id").val(),
+        },
+        success:function(msg) {
+            console.log(msg);
+            
+        },
+        error:function(err) {
+            console.log(err);
+            
+        },
+    });
 }

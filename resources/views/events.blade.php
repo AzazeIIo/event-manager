@@ -14,7 +14,8 @@
                         </div>
                     @endif
                     @if (Auth::check() && $includeform)
-                        @include('neweventform')
+                        <button type="button" class="btn btn-primary mb-3 center" id="newEventBtn">New event</button>
+                        @include('new-event-form')
                         <div class="modal fade" id="removeModal" tabindex="-1" aria-labelledby="removeEventModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
@@ -33,7 +34,7 @@
                             </div>
                         </div>
                     @endif
-                    <div id="results">@include('event_page')</div>
+                    <div id="results">@include('event-page')</div>
                 </div>
             </div>
         </div>

@@ -1,4 +1,4 @@
-<form method="POST" class="mb-3" action="{{ url('events') }}" enctype="multipart/form-data">
+<form class="mb-3" id="newEventForm">
     @csrf
 
     <div class="row mb-3">
@@ -67,7 +67,7 @@
         <div class="col-md-6">
             @foreach ($types as $type)
                 <div class="form-check">
-                    <input class="form-check-input type-checkbox" type="checkbox" name="type[]" value="{{ $type['id'] }}" id="{{ $type['id'] }}">
+                    <input class="form-check-input type-checkbox new-event-checkbox" type="checkbox" name="type[]" value="{{ $type['id'] }}" id="{{ $type['id'] }}">
                     <label class="form-check-label" for="{{ $type['id'] }}">
                         {{ $type['type_name'] }}
                     </label>
@@ -135,7 +135,7 @@
 
     <div class="row mb-0">
         <div class="col-md-8 offset-md-4">
-            <button id="newEventBtn" type="submit" class="btn btn-primary">
+            <button id="createEventBtn" type="submit" class="btn btn-primary">
                 {{ __('Create') }}
             </button>
         </div>
