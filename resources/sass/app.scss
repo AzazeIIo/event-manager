@@ -55,3 +55,10 @@
     height: 5rem;
     width: 5rem;
 }
+
+#sidebar {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 1.3rem;
+    height: fit-content;
+}
