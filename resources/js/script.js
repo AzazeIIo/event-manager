@@ -161,13 +161,17 @@ function editEvent(id) {
             'is_public': $("input[name=is_public" + id + "]:checked").val(),
             'owner_id': $("#owner_id").val(),
         },
-        success:function(msg) {
-            console.log(msg);
-            
+        success:function(card) {
+            $('#'+id).parent().replaceWith(card);
         },
         error:function(err) {
-            console.log(err);
-            
+            $('.invalid-feedback').each(function(i, obj) {
+                $(obj).css('display', 'none');
+            });
+            for (let key in err.responseJSON.errors) {
+                $('#invalid-'+key+id).css('display', 'block');
+                $('#invalid-'+key+id).html(err.responseJSON.errors[key]);
+            }
         },
     });
 }
