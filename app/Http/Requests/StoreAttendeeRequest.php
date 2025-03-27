@@ -4,7 +4,9 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Auth;
+use App\Models\Event;
 
 class StoreAttendeeRequest extends FormRequest
 {
@@ -23,6 +25,10 @@ class StoreAttendeeRequest extends FormRequest
      */
     public function rules(): array
     {
+        if(Event::select('owner_id')->where('id', '=', $this->request->get('event_id'))->get()[0]['owner_id'] == Auth::user()->id) {
+            throw ValidationException::withMessages(['event_id' => "You can't join your own event."]);
+        }
+
         return [
             'user_id' => [
                 'required',
