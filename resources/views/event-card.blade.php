@@ -29,10 +29,12 @@
                 <p class="card-text"><strong>{{ $event['location'] }}, {{ $event['city'] }}</strong></p>
                 <p class="card-text text-muted"><span id="attendeeAmount{{ $event['id'] }}">{{ count($event->allAttendees) }}</span> going</p>
                 <p class="card-text">{{ $event->short_description }} <a href="events/{{ $event['id'] }}"> See more</a></p>
-                @if($event['attendees']->count() == 0)
-                    @include('join-event-form')
-                @else
-                    @include('leave-event-form')
+                @if($event['owner_id'] != Auth::user()->id)
+                    @if($event['attendees']->count() == 0)
+                        @include('join-event-form')
+                    @else
+                        @include('leave-event-form')
+                    @endif
                 @endif
             </div>
         </div>
