@@ -40,6 +40,11 @@ $(document).on('click', '.joinEventBtn', function(e) {
     joinEvent(e.target.id.substring('4'));
 });
 
+$(document).on('click', '.leaveEventBtn', function(e) {
+    e.preventDefault();
+    leaveEvent(e.target.id.substring('5'));
+});
+
 $(document).on('click', '.pagination li a', function(e) {
     e.preventDefault();
 
@@ -178,8 +183,32 @@ function joinEvent(id) {
             'user_id': $('#user_id'+id).val(),
             'event_id': $('#event_id'+id).val(),
         },
-        success:function(msg) {
-            $('#attendeeAmount'+id).html(msg + ' going');
+        success:function(form) {
+            //$('#attendeeAmount'+id).html(msg + ' going');
+            //$('#'+id).parent().replaceWith(msg);
+            //$('#attendeeAmount'+id).html(event['all_attendees'].length + ' going');
+            $('#attendeeAmount'+id).html((Number)($('#attendeeAmount'+id).html())+1);
+            $('#join-form'+id).replaceWith(form);
+        },
+    });
+}
+
+function leaveEvent(id) {
+    $.ajaxSetup({
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+    });
+    $.ajax({
+        type: 'DELETE',
+        url: $("#leaveroute" + id).val(),
+        data: {
+            'user_id': $('#user_id'+id).val(),
+            'event_id': $('#event_id'+id).val(),
+            'attendee_id': $('#attendee_id'+id).val(),
+        },
+        success:function(form) {
+            //$('#'+id).parent().replaceWith(msg);
+            $('#attendeeAmount'+id).html((Number)($('#attendeeAmount'+id).html())-1);
+            $('#leave-form'+id).replaceWith(form);
         },
     });
 }

@@ -71,4 +71,8 @@ class Event extends Model
     public function attendees() {
         return $this->hasMany(Attendee::class);
     }
+
+    public function allAttendees() {
+        return $this->hasMany(Attendee::class);
+    }
 }

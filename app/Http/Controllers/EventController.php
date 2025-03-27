@@ -20,7 +20,9 @@ class EventController extends Controller
      */
     public function index(Request $request)
     {
-        $events = Event::where('is_public', '=', true)->orderBy('date_start', 'asc')->paginate(10);
+        $events = Event::where('is_public', '=', true)->with(['attendees' => function($q){
+            $q->where('attendees.user_id', '=', Auth::user()->id);
+        }])->with('allAttendees')->orderBy('date_start', 'asc')->paginate(10);
         $types = Type::all();
 
         if($request->ajax()) {
@@ -89,7 +91,9 @@ class EventController extends Controller
     public function show(Event $event)
     {
         return View::make('event-details')->with([
-            'event' => $event
+            'event' => Event::where('id', '=', $event['id'])->with(['attendees' => function($q){
+                    $q->where('attendees.user_id', '=', Auth::user()->id);
+                }])->with('allAttendees')->get()[0],
         ]);
     }
 

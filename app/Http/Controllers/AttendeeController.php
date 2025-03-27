@@ -6,6 +6,9 @@ use App\Models\Attendee;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreAttendeeRequest;
+use App\Http\Requests\DestroyAttendeeRequest;
+use Auth;
+use View;
 
 class AttendeeController extends Controller
 {
@@ -34,7 +37,11 @@ class AttendeeController extends Controller
         $fields['user_id'] = strip_tags($fields['user_id']);
         $fields['event_id'] = strip_tags($fields['event_id']);
         $attendee = Attendee::create($fields);
-        return count($event->attendees);
+        return View::make('leave-event-form')->with([
+            'event' => Event::where('id', '=', $event['id'])->with(['attendees' => function($q){
+                    $q->where('attendees.user_id', '=', Auth::user()->id);
+                }])->with('allAttendees')->get()[0],
+        ]);
     }
 
     /**
@@ -64,8 +71,16 @@ class AttendeeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Attendee $attendee)
+    public function destroy(DestroyAttendeeRequest $request, Event $event)
     {
-        //
+        $request->validated();
+        $attendee = Attendee::find($request['attendee_id']);
+        $attendee->delete($attendee);
+        // return count($event->attendees);
+        return View::make('join-event-form')->with([
+            'event' => Event::where('id', '=', $event['id'])->with(['attendees' => function($q){
+                    $q->where('attendees.user_id', '=', Auth::user()->id);
+                }])->with('allAttendees')->get()[0],
+        ]);
     }
 }

@@ -28,17 +28,14 @@
                                 <p class="card-text"><strong>{{ $event['date_start']->format("D, d M Y H:i") }}</strong></p>
                             @endif
                             <p class="card-text"><strong>{{ $event['location'] }}, {{ $event['city'] }}</strong></p>
-                            <p class="card-text text-muted">{{ count($event->attendees) }} going</p>
+                            <p class="card-text text-muted"><span id="attendeeAmount{{ $event['id'] }}">{{ count($event->allAttendees) }}</span> going</p>
                         </div>
                         <div class="col-sm-4 col-12 order-sm-2 order-3 center">
-                            <form method="POST" action="{{ url('events/' . $event['id'] . '/attendees') }}">
-                                @csrf
-                                <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-                                <input type="hidden" name="event_id" value="{{ $event['id'] }}">
-                                <button type="submit" class="btn btn-primary mt-sm-0 mt-3">
-                                    I'll be there
-                                </button>
-                            </form>
+                            @if($event['attendees']->count() == 0)
+                                @include('join-event-form')
+                            @else
+                                @include('leave-event-form')
+                            @endif
                         </div>
                         <p class="card-text order-sm-3 order-2 mt-3">
                             @foreach(explode(PHP_EOL, $event['description']) as $line )
