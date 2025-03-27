@@ -54,7 +54,9 @@ class EventController extends Controller
         $fields = $request->validated();
         $event_fields['name'] = strip_tags($fields['name']);
         $event_fields['date_start'] = strip_tags($fields['date_start']);
-        $event_fields['date_end'] = strip_tags($fields['date_end']);
+        if(isset($event_fields['date_end'])) {
+            $event_fields['date_end'] = strip_tags($fields['date_end']);
+        }
         $event_fields['city'] = strip_tags($fields['city']);
         $event_fields['location'] = strip_tags($fields['location']);
         $event_fields['description'] = strip_tags($fields['description']);
@@ -86,7 +88,7 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
-        return View::make('event_details')->with([
+        return View::make('event-details')->with([
             'event' => $event
         ]);
     }

@@ -19,7 +19,11 @@
                 @foreach ($event->types() as $type)
                     <span class="badge text-bg-primary">{{$type['type_name']}}</span>
                 @endforeach
-                <p class="card-text"><strong>{{ $event['date_start']->format("D, d M Y H:i") }} – {{ $event['date_end']->format("D, d M Y H:i") }}</strong></p>
+                @if($event['date_end'])
+                    <p class="card-text"><strong>{{ $event['date_start']->format("D, d M Y H:i") }} – {{ $event['date_end']->format("D, d M Y H:i") }}</strong></p>
+                @else
+                    <p class="card-text"><strong>{{ $event['date_start']->format("D, d M Y H:i") }}</strong></p>
+                @endif
                 <p class="card-text"><strong>{{ $event['location'] }}, {{ $event['city'] }}</strong></p>
                 <p id="attendeeAmount{{ $event['id'] }}" class="card-text text-muted">{{ count($event->attendees) }} going</p>
                 <p class="card-text">{{ $event->short_description }} <a href="events/{{ $event['id'] }}"> See more</a></p>

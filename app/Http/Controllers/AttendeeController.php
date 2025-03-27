@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendee;
+use App\Models\Event;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreAttendeeRequest;
 
@@ -27,7 +28,7 @@ class AttendeeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreAttendeeRequest $request)
+    public function store(StoreAttendeeRequest $request, Event $event)
     {
         $fields = $request->validated();
         $fields['user_id'] = strip_tags($fields['user_id']);
