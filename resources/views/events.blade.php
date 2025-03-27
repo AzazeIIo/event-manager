@@ -38,7 +38,7 @@
                 </div>
             </div>
         </div>
-        <div id="sidebar" class="col-3 order-lg-2 order-1">
+        <div id="sidebar" class="col-lg-3 order-lg-2 order-1 mb-3">
             <div class="card">
                 <div class="card-header">Search</div>
 
@@ -127,7 +127,7 @@
                         <input type="hidden" name="owner_id" id="owner_id" value="{{ Auth::user()->id }}">
 
                         <div class="row mb-0">
-                            <div class="col-md-8 offset-md-4">
+                            <div class="center">
                                 <button id="searchBtn" type="submit" class="btn btn-primary">
                                     Search
                                 </button>

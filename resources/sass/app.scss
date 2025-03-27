@@ -56,9 +56,13 @@
     width: 5rem;
 }
 
-#sidebar {
-    position: -webkit-sticky;
-    position: sticky;
-    top: 1.3rem;
-    height: fit-content;
+@media(max-width: 600px) {
+    #sidebar {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 1.3rem;
+        height: fit-content;
+        max-height: 100vh;
+        overflow-y: auto;
+    }
 }
