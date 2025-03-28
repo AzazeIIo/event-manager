@@ -7,6 +7,7 @@ use App\Http\Controllers\AttendeeController;
 use App\Models\Event;
 use App\Models\Type;
 use App\Models\Invitation;
+use App\Models\Attendee;
 
 Auth::routes();
 
@@ -14,7 +15,7 @@ Route::resource('events', EventController::class);
 Route::resource('events.attendees', AttendeeController::class);
 
 Route::redirect('/', 'events');
-Route::redirect('/joinedevents', 'myevents')->name('joinedevents');
+
 Route::get('/privateevents', function () {
     if(Auth::check()) {
         return View::make(request()->ajax() ? 'event-page' : 'events')->with([
@@ -26,6 +27,7 @@ Route::get('/privateevents', function () {
         return redirect('/login');
     }
 })->name('privateevents');
+
 Route::get('/myevents', function () {
     if(Auth::check()) {
         return View::make(request()->ajax() ? 'event-page' : 'events')->with([
@@ -37,4 +39,15 @@ Route::get('/myevents', function () {
         return redirect('/login');
     }
 })->name('myevents');
-//Route::get('/home', [EventController::class, 'index'])->name('home');
+
+Route::get('/joinedevents', function () {
+    if(Auth::check()) {
+        return View::make(request()->ajax() ? 'event-page' : 'events')->with([
+            'events' => Event::whereIn('id', (Attendee::where('user_id', '=', Auth::user()->id)->select('event_id')->get()))->paginate(10),
+            'types' => Type::all(),
+            'includeform' => false
+        ]);
+    } else {
+        return redirect('/login');
+    }
+})->name('joinedevents');
