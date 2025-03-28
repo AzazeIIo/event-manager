@@ -7,6 +7,7 @@ use App\Models\Type;
 use App\Models\EventType;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreEventRequest;
+use App\Http\Requests\ShowEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Http\Requests\DestroyEventRequest;
 use Illuminate\Support\Facades\Storage;
@@ -88,7 +89,7 @@ class EventController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Event $event)
+    public function show(ShowEventRequest $request, Event $event)
     {
         return View::make('event-details')->with([
             'event' => Event::where('id', '=', $event['id'])->with(['attendees' => function($q){
