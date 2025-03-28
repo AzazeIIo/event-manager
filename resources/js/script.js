@@ -1,10 +1,5 @@
 let eventToBeDeleted = null;
 
-$('#newEventBtn').on('click', function() {
-    $('#newEventForm').css('display', 'block');
-    $(this).css('display', 'none');
-});
-
 $('#createEventBtn').on('click', function(e) {
     e.preventDefault();
     createEvent();

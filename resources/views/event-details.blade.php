@@ -31,10 +31,12 @@
                             <p class="card-text text-muted"><span id="attendeeAmount{{ $event['id'] }}">{{ count($event->allAttendees) }}</span> going</p>
                         </div>
                         <div class="col-sm-4 col-12 order-sm-2 order-3 center">
-                            @if($event['attendees']->count() == 0)
-                                @include('join-event-form')
-                            @else
-                                @include('leave-event-form')
+                            @if($event['owner_id'] != Auth::user()->id)
+                                @if($event['attendees']->count() == 0)
+                                    @include('join-event-form')
+                                @else
+                                    @include('leave-event-form')
+                                @endif
                             @endif
                         </div>
                         <p class="card-text order-sm-3 order-2 mt-3">

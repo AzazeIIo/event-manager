@@ -7,6 +7,10 @@
 // Bootstrap
 @import 'bootstrap/scss/bootstrap';
 
+html {
+    overflow-y: scroll;
+}
+
 .pagination {
     flex-wrap: wrap;
 }
@@ -43,26 +47,54 @@
     display: none;
 }
 
-#newEventBtn {
-    margin: auto;
-}
-
-#newEventForm {
-    display: none;
-}
-
 .image-small {
     height: 5rem;
     width: 5rem;
 }
 
-@media(max-width: 600px) {
+@include media-breakpoint-up(lg) {
     #sidebar {
         position: -webkit-sticky;
         position: sticky;
-        top: 1.3rem;
+        top: 4.5rem;
         height: fit-content;
-        max-height: 100vh;
+    }
+}
+
+@include media-breakpoint-up(lg) {
+    #sidebar-card {
+        max-height: 80vh;
         overflow-y: auto;
     }
+}
+
+main {
+    margin-top: 3rem;
+}
+
+.card-header {
+    background-color: $secondary;
+    color: white;
+}
+
+.card {
+    background-color: #f2f5f7;
+}
+
+.event-card {
+    background-color: #f8fafc;
+}
+
+#left-navbar {
+    width: 60%;
+    white-space: nowrap;
+}
+
+.modal-open {
+    overflow: visible !important;
+    padding-right: 0 !important;
+}
+
+.navbar {
+    padding-right: 0 !important;
 }

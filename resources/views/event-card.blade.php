@@ -1,4 +1,4 @@
-<div class="card mb-3">
+<div class="card event-card mb-3">
     <div id="{{$event['id']}}" class="row g-0">
         @if($event['image'])
             <div class="col-lg-5 center">

@@ -3,7 +3,107 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-lg-9 order-lg-1 order-2">
+        <div id="sidebar" class="col-lg-3 order-lg-1 order-2">
+            <div class="card">
+                <div class="card-header ">Search</div>
+
+                <div id="sidebar-card" class="card-body pt-1">
+                    <form class="mb-3">
+                        @csrf
+
+                        <div class="row mb-1">
+                            <label for="name-search" class="col-lg-12 col-sm-4 col-12 col-form-label text-lg-start text-sm-end text-start ps-3"><strong>{{ __('Event Name') }}</strong></label>
+
+                            <div class="col-lg-12 col-sm-6 col-12">
+                                <input id="name-search" type="text" class="form-control @error('name-search') is-invalid @enderror" name="name" value="{{ old('name-search') }}" required autocomplete="name-search" autofocus>
+
+                                <span id="invalid-name-search" class="invalid-feedback" role="alert">
+                                    <strong></strong>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-1">
+                            <label for="date_start-search" class="col-lg-12 col-sm-4 col-12 col-form-label text-lg-start text-sm-end text-start ps-3"><strong>{{ __('Starting Date') }}</strong></label>
+
+                            <div class="col-lg-12 col-sm-6 col-12">
+                                <input id="date_start-search" type="datetime-local" class="form-control @error('date_start-search') is-invalid @enderror" name="date_start" required autocomplete="current-date_start-search">
+
+                                <span id="invalid-date_start-search" class="invalid-feedback" role="alert">
+                                    <strong></strong>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-1">
+                            <label for="date_end-search" class="col-lg-12 col-sm-4 col-12 col-form-label text-lg-start text-sm-end text-start ps-3"><strong>{{ __('Ending Date') }}</strong></label>
+
+                            <div class="col-lg-12 col-sm-6 col-12">
+                                <input id="date_end-search" type="datetime-local" class="form-control @error('date_end-search') is-invalid @enderror" name="date_end" autocomplete="current-date_end-search">
+
+                                <span id="invalid-date_end-search" class="invalid-feedback" role="alert">
+                                    <strong></strong>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-1">
+                            <label for="city-search" class="col-lg-12 col-sm-4 col-12 col-form-label text-lg-start text-sm-end text-start ps-3"><strong>{{ __('City-search') }}</strong></label>
+
+                            <div class="col-lg-12 col-sm-6 col-12">
+                                <input id="city-search" type="text" class="form-control @error('city-search') is-invalid @enderror" name="city" value="{{ old('city-search') }}" required autocomplete="city-search" autofocus>
+
+                                <span id="invalid-city-search" class="invalid-feedback" role="alert">
+                                    <strong></strong>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-1">
+                            <p class="col-lg-12 col-sm-4 col-12 col-form-label text-lg-start text-sm-end text-start ps-3"><strong>{{ __('Type') }}</strong></p>
+
+                            <div class="col-lg-12 col-sm-6 col-12">
+                                @foreach ($types as $type)
+                                    <div class="form-check">
+                                        <input class="form-check-input type-checkbox new-event-checkbox" type="checkbox" name="type[]" value="{{ $type['id'] }}" id="{{ $type['id'] }}-search">
+                                        <label class="form-check-label" for="{{ $type['id'] }}-search">
+                                            {{ $type['type_name'] }}
+                                        </label>
+                                    </div>
+                                @endforeach
+                                <span id="invalid-type-search" class="invalid-feedback" role="alert">
+                                    <strong></strong>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-1">
+                            <label for="description-search" class="col-lg-12 col-sm-4 col-12 col-form-label text-lg-start text-sm-end text-start ps-3"><strong>{{ __('Description') }}</strong></label>
+
+                            <div class="col-lg-12 col-sm-6 col-12">
+                                <input id="description-search" type="text" class="form-control @error('description-search') is-invalid @enderror" name="description" value="{{ old('description-search') }}" required autocomplete="description-search" autofocus>
+
+                                <span id="invalid-description-search" class="invalid-feedback" role="alert">
+                                    <strong></strong>
+                                </span>
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="owner_id" id="owner_id" value="{{ Auth::user()->id }}">
+
+                        <div class="row mb-0">
+                            <div class="center">
+                                <button id="searchBtn" type="submit" class="btn btn-primary mt-2">
+                                    Search
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-8 order-lg-2 order-1 mb-3">
             <div class="card">
                 <div class="card-header">{{ __('Events') }}</div>
 
@@ -14,8 +114,20 @@
                         </div>
                     @endif
                     @if (Auth::check() && $includeform)
-                        <button type="button" class="btn btn-primary mb-3 center" id="newEventBtn">New event</button>
-                        @include('new-event-form')
+                        <div class="accordion" id="newEvent">
+                            <div class="accordion-item mb-3">
+                                <div class="accordion-header" id="newEventBtn">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-form" aria-expanded="false" aria-controls="collapse-form">
+                                        <h5 class="mb-0">Create new event</h5>
+                                    </button>
+                                </div>
+                                <div id="collapse-form" class="accordion-collapse collapse" aria-labelledby="newEventBtn" data-bs-parent="#newEvent">
+                                    <div class="accordion-body">
+                                        @include('new-event-form')
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="modal fade" id="removeModal" tabindex="-1" aria-labelledby="removeEventModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
@@ -38,106 +150,7 @@
                 </div>
             </div>
         </div>
-        <div id="sidebar" class="col-lg-3 order-lg-2 order-1 mb-3">
-            <div class="card">
-                <div class="card-header">Search</div>
-
-                <div class="card-body">
-                    <form class="mb-3">
-                        @csrf
-
-                        <div class="row mb-3">
-                            <label for="name" class="text-center">{{ __('Event Name') }}</label>
-
-                            <div>
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
-
-                                <span id="invalid-name" class="invalid-feedback" role="alert">
-                                    <strong></strong>
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <label for="date_start" class="text-center">{{ __('Starting Date') }}</label>
-
-                            <div>
-                                <input id="date_start" type="datetime-local" class="form-control @error('date_start') is-invalid @enderror" name="date_start" required autocomplete="current-date_start">
-
-                                <span id="invalid-date_start" class="invalid-feedback" role="alert">
-                                    <strong></strong>
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <label for="date_end" class="text-center">{{ __('Ending Date') }}</label>
-
-                            <div>
-                                <input id="date_end" type="datetime-local" class="form-control @error('date_end') is-invalid @enderror" name="date_end" autocomplete="current-date_end">
-
-                                <span id="invalid-date_end" class="invalid-feedback" role="alert">
-                                    <strong></strong>
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <label for="city" class="text-center">{{ __('City') }}</label>
-
-                            <div>
-                                <input id="city" type="text" class="form-control @error('city') is-invalid @enderror" name="city" value="{{ old('city') }}" required autocomplete="city" autofocus>
-
-                                <span id="invalid-city" class="invalid-feedback" role="alert">
-                                    <strong></strong>
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <p class="text-center">{{ __('Type') }}</p>
-
-                            <div>
-                                @foreach ($types as $type)
-                                    <div class="form-check">
-                                        <input class="form-check-input type-checkbox new-event-checkbox" type="checkbox" name="type[]" value="{{ $type['id'] }}" id="{{ $type['id'] }}">
-                                        <label class="form-check-label" for="{{ $type['id'] }}">
-                                            {{ $type['type_name'] }}
-                                        </label>
-                                    </div>
-                                @endforeach
-                                <span id="invalid-type" class="invalid-feedback" role="alert">
-                                    <strong></strong>
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <label for="description" class="text-center">{{ __('Description') }}</label>
-
-                            <div>
-                                <input id="description" type="text" class="form-control @error('description') is-invalid @enderror" name="description" value="{{ old('description') }}" required autocomplete="description" autofocus>
-
-                                <span id="invalid-description" class="invalid-feedback" role="alert">
-                                    <strong></strong>
-                                </span>
-                            </div>
-                        </div>
-
-                        <input type="hidden" name="owner_id" id="owner_id" value="{{ Auth::user()->id }}">
-
-                        <div class="row mb-0">
-                            <div class="center">
-                                <button id="searchBtn" type="submit" class="btn btn-primary">
-                                    Search
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-
-                </div>
-            </div>
-        </div>
+        
     </div>
 </div>
 @endsection

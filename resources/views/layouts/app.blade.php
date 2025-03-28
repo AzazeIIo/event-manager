@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>Event Manager</title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
@@ -19,10 +19,10 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    Event Manager
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -30,8 +30,22 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-
+                    <ul id="left-navbar" class="navbar-nav nav-fill">
+                        <li class="nav-item">
+                            <a class="nav-link{{Route::current()->getName() == 'dashboard' ? ' active' : '' }}" href="#">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link{{Route::current()->getName() == 'events.index' ? ' active' : '' }}" href="{{ url('events') }}">Public events</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link{{Route::current()->getName() == 'privateevents' ? ' active' : '' }}" href="{{ route('privateevents') }}">Private events</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link{{Route::current()->getName() == 'myevents' ? ' active' : '' }}" href="{{ route('myevents') }}">My events</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link{{Route::current()->getName() == 'joinedevents' ? ' active' : '' }}" href="{{ route('joinedevents') }}">Joined events</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -56,17 +70,6 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('myevents') }}">
-                                        {{ __('My events') }}
-                                    </a>
-
-                                    <a class="dropdown-item" href="{{ route('joinedevents') }}">
-                                        {{ __('Joined events') }}
-                                    </a>
-
-                                    <a class="dropdown-item" href="{{ route('privateevents') }}">
-                                        {{ __('Private events') }}
-                                    </a>
 
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
