@@ -26,8 +26,9 @@ $(document).on('click', '.confirmEditEventBtn', function(e) {
 });
 
 $(document).on('click', '.resetEditEventBtn', function(e) {
-    e.preventDefault();
-    console.log("resetting");
+    let eventCard = $('#'+e.target.id.substring(5));
+    eventCard.css('display', 'block');
+    eventCard.siblings('.editEventForm').css('display', 'none');
 });
 
 $(document).on('click', '.joinEventBtn', function(e) {

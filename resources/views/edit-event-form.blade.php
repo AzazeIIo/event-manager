@@ -146,7 +146,7 @@
 
     <div class="row mb-0">
         <div class="col-md-8 offset-md-4">
-            <button type="reset" class="btn btn-secondary me-3 resetEditEventBtn">
+            <button id="reset{{ $event['id'] }}" type="reset" class="btn btn-secondary me-3 resetEditEventBtn">
                 {{ __('Reset') }}
             </button>
             <form class="center">
@@ -154,7 +154,7 @@
                 <input type="hidden" name="_route" id="editroute{{ $event['id'] }}" value="{{ route('events.update', [$event['id']]) }}">
                 <button type="submit" id="confirm{{ $event['id'] }}" class="btn btn-primary confirmEditEventBtn">
                 {{ __('Confirm changes') }}
-            </button>
+                </button>
             </form>
         </div>
     </div>
