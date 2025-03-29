@@ -21,7 +21,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand me-4" href="{{ url('/') }}">
                     Event Manager
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -31,16 +31,16 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul id="left-navbar" class="navbar-nav">
-                        <li class="nav-item">
+                        <li class="nav-item me-lg-3">
                             <a class="nav-link{{Route::current()->getName() == 'dashboard' ? ' active' : '' }}" href="#">Dashboard</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item me-lg-3">
                             <a class="nav-link{{Route::current()->getName() == 'events.index' ? ' active' : '' }}" href="{{ url('events') }}">Public events</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item me-lg-3">
                             <a class="nav-link{{Route::current()->getName() == 'privateevents' ? ' active' : '' }}" href="{{ route('privateevents') }}">Private events</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item me-lg-3">
                             <a class="nav-link{{Route::current()->getName() == 'myevents' ? ' active' : '' }}" href="{{ route('myevents') }}">My events</a>
                         </li>
                         <li class="nav-item">
