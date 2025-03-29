@@ -34,14 +34,18 @@ class EventController extends Controller
         
         switch (Route::current()->uri) {
             case 'privateevents':
-                $events = Event::whereIn('id', Invitation::where('user_id', '=', Auth::user()->id)->select('event_id')->get());
+                $events = Event::whereIn('id', Invitation::where('user_id', '=', Auth::user()->id)->select('event_id')->get())->with(['attendees' => function($q){
+                    $q->where('attendees.user_id', '=', Auth::user()->id);
+                }])->with('allAttendees')->orderBy('date_start', 'asc');
                 break;
             case 'myevents':
-                $events = Event::where('owner_id', '=', Auth::user()->id);
+                $events = Event::where('owner_id', '=', Auth::user()->id)->orderBy('date_start', 'asc');
                 $includeform = true;
                 break;
             case 'joinedevents':
-                $events = Event::whereIn('id', (Attendee::where('user_id', '=', Auth::user()->id)->select('event_id')->get()));
+                $events = Event::whereIn('id', (Attendee::where('user_id', '=', Auth::user()->id)->select('event_id')->get()))->with(['attendees' => function($q){
+                    $q->where('attendees.user_id', '=', Auth::user()->id);
+                }])->with('allAttendees')->orderBy('date_start', 'asc');
                 break;
             default:
                 $events = Event::where('is_public', '=', true)->with(['attendees' => function($q){
