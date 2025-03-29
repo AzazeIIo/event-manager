@@ -25,6 +25,11 @@ return new class extends Migration
             $table->timestamps();
             $table->foreign('owner_id')->references('id')->on('users')->onDelete('cascade');
             $table->unique(['name', 'date_start']);
+            $table->fullText('name');
+            $table->fullText('city');
+            $table->fullText('description');
+            $table->index('date_start');
+            $table->index('date_end');
         });
 
         DB::statement('ALTER TABLE events ADD CONSTRAINT chk_date_times CHECK (date_start < date_end);');

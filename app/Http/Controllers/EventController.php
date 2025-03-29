@@ -58,10 +58,10 @@ class EventController extends Controller
                 $events = $events->where('name', 'LIKE', '%' . $request['name'] . '%');
             }
             if($request['date_start']) {
-                $events = $events->where('date_start', '=', $request['date_start']);
+                $events = $events->where('date_start', '>=', $request['date_start']);
             }
             if($request['date_end']) {
-                $events = $events->where('date_end', '=', $request['date_end']);
+                $events = $events->where('date_end', '<=', $request['date_end']);
             }
             if($request['city']) {
                 $events = $events->where('city', 'LIKE', '%' . $request['city'] . '%');

@@ -14,7 +14,7 @@
     </div>
 
     <div class="row mb-1">
-        <label for="date_start-search" class="col-lg-12 col-sm-4 col-12 col-form-label text-lg-start text-sm-end text-start ps-3"><strong>{{ __('Starting Date') }}</strong></label>
+        <label for="date_start-search" class="col-lg-12 col-sm-4 col-12 col-form-label text-lg-start text-sm-end text-start ps-3"><strong>{{ __('Starting After') }}</strong></label>
 
         <div class="col-lg-12 col-sm-6 col-12">
             <input id="date_start-search" type="datetime-local" class="form-control @error('date_start-search') is-invalid @enderror" name="date_start" autocomplete="current-date_start-search">
@@ -26,7 +26,7 @@
     </div>
 
     <div class="row mb-1">
-        <label for="date_end-search" class="col-lg-12 col-sm-4 col-12 col-form-label text-lg-start text-sm-end text-start ps-3"><strong>{{ __('Ending Date') }}</strong></label>
+        <label for="date_end-search" class="col-lg-12 col-sm-4 col-12 col-form-label text-lg-start text-sm-end text-start ps-3"><strong>{{ __('Ending Before') }}</strong></label>
 
         <div class="col-lg-12 col-sm-6 col-12">
             <input id="date_end-search" type="datetime-local" class="form-control @error('date_end-search') is-invalid @enderror" name="date_end" autocomplete="current-date_end-search">
