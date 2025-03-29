@@ -1,4 +1,5 @@
 let eventToBeDeleted = null;
+let imageToBeDeleted = null;
 
 $('#createEventBtn').on('click', function(e) {
     e.preventDefault();
@@ -14,10 +15,19 @@ $('#confirmDeletion').on('click', function(e) {
     removeEvent(eventToBeDeleted);
 });
 
+$('#confirmImgDeletion').on('click', function(e) {
+    removeImage(imageToBeDeleted);
+});
+
 $(document).on('click', '.editEventBtn', function(e) {
     let eventCard = $('#'+e.target.id.substring(4));
     eventCard.css('display', 'none');
     eventCard.siblings().css('display', 'block');
+});
+
+$(document).on('click', '.deleteImgBtn', function(e) {
+    e.preventDefault();
+    imageToBeDeleted = e.target.id.substring(9);
 });
 
 $(document).on('click', '.confirmEditEventBtn', function(e) {
@@ -134,12 +144,7 @@ function removeEvent(id) {
     });
 }
 
-function editEvent(id) {
-    let checkboxValue = [];
-    $('.edit-event-checkbox' + id + ':checked').each(function(i, obj) {
-        checkboxValue.push($(obj).val());
-    });
-
+function removeImage(id) {
     $.ajaxSetup({
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
     });
@@ -147,16 +152,62 @@ function editEvent(id) {
         type: 'PATCH',
         url: $("#editroute" + id).val(),
         data: {
-            'name': $('#name'+id).val(),
-            'date_start': $('#date_start'+id).val(),
-            'date_end': $('#date_end'+id).val(),
-            'city': $('#city'+id).val(),
-            'location': $('#location'+id).val(),
-            'type': checkboxValue,
-            'description': $('#description'+id).val(),
-            'is_public': $("input[name=is_public" + id + "]:checked").val(),
-            'owner_id': $("#owner_id").val(),
+            'owner_id': $('#owner_id').val()
         },
+        success:function() {
+            $('#img'+id).html(`
+                <div id="imgform${id}" class="row mb-3">
+                    <label for="image" class="col-sm-4 col-form-label text-sm-end"><strong>Image</strong></label>
+
+                    <div class="col-sm-6">
+                        <input class="form-control" type="file" id="image${id}" name="image">
+
+                        <span id="invalid-image${id}" class="invalid-feedback" role="alert">
+                            <strong></strong>
+                        </span>
+                    </div>
+                </div>
+            `);
+        }
+    });
+}
+
+function editEvent(id) {
+    let checkboxValue = [];
+    let imageData;
+
+    $('.edit-event-checkbox' + id + ':checked').each(function(i, obj) {
+        checkboxValue.push($(obj).val());
+    });
+    
+    if($('#image'+id)[0]) {
+        imageData = $('#image'+id)[0].files[0];
+    }
+
+    let formData = new FormData();
+    formData.append('_method', "PUT");
+    formData.append('name', $('#name'+id).val());
+    formData.append('date_start', $('#date_start'+id).val());
+    formData.append('date_end', $('#date_end'+id).val());
+    formData.append('city', $('#city'+id).val());
+    formData.append('location', $('#location'+id).val());
+    formData.append('type', JSON.stringify(checkboxValue));
+    formData.append('description', $('#description'+id).val());
+    if(imageData != undefined) {
+        formData.append('image', imageData);
+    }
+    formData.append('is_public', $("input[name=is_public" + id + "]:checked").val());
+    formData.append('owner_id', $('#owner_id').val());
+
+    $.ajaxSetup({
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+    });
+    $.ajax({
+        type: 'POST',
+        url: $("#editroute" + id).val(),
+        data: formData,
+        contentType : false,
+        processData : false,
         success:function(card) {
             $('#'+id).parent().replaceWith(card);
         },

@@ -28,7 +28,8 @@
                 @endif
                 <p class="card-text"><strong>{{ $event['location'] }}, {{ $event['city'] }}</strong></p>
                 <p class="card-text text-muted"><span id="attendeeAmount{{ $event['id'] }}">{{ count($event->allAttendees) }}</span> going</p>
-                <p class="card-text">{{ $event->short_description }} <a href="events/{{ $event['id'] }}"> See more</a></p>
+                <p class="card-text">{{ $event->short_description }}</p>
+                <a href="events/{{ $event['id'] }}"> See more</a>
                 @if($event['owner_id'] != Auth::user()->id)
                     @if($event['attendees']->count() == 0)
                         @include('join-event-form')

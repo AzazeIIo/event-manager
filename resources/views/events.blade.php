@@ -48,7 +48,7 @@
                         </div>
 
                         <div class="row mb-1">
-                            <label for="city-search" class="col-lg-12 col-sm-4 col-12 col-form-label text-lg-start text-sm-end text-start ps-3"><strong>{{ __('City-search') }}</strong></label>
+                            <label for="city-search" class="col-lg-12 col-sm-4 col-12 col-form-label text-lg-start text-sm-end text-start ps-3"><strong>{{ __('City') }}</strong></label>
 
                             <div class="col-lg-12 col-sm-6 col-12">
                                 <input id="city-search" type="text" class="form-control @error('city-search') is-invalid @enderror" name="city" value="{{ old('city-search') }}" required autocomplete="city-search" autofocus>
@@ -141,6 +141,23 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Don't delete</button>
                                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="confirmDeletion">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="removeImgModal" tabindex="-1" aria-labelledby="removeImgModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="removeImgModalLabel">Delete image</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Are you sure you want to delete this image?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Don't delete</button>
+                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="confirmImgDeletion">Delete</button>
                                     </div>
                                 </div>
                             </div>

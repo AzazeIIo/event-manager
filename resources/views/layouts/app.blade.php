@@ -30,7 +30,7 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
-                    <ul id="left-navbar" class="navbar-nav nav-fill">
+                    <ul id="left-navbar" class="navbar-nav">
                         <li class="nav-item">
                             <a class="nav-link{{Route::current()->getName() == 'dashboard' ? ' active' : '' }}" href="#">Dashboard</a>
                         </li>
@@ -70,6 +70,13 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="#">
+                                        Profile
+                                    </a>
+
+                                    <a class="dropdown-item" href="#">
+                                        Friends
+                                    </a>
 
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();

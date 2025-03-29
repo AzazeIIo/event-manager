@@ -23,6 +23,10 @@ class UpdateEventRequest extends FormRequest
      */
     public function rules(): array
     {
+        if ($_SERVER['REQUEST_METHOD'] == 'PATCH') {
+            return [];
+        }
+
         date_default_timezone_set('Europe/Budapest');
         $date = new \DateTimeImmutable();
 
@@ -68,6 +72,13 @@ class UpdateEventRequest extends FormRequest
                 'integer',
             ]
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'type' => json_decode($this->type),
+        ]);
     }
     
     public function messages()

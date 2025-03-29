@@ -112,12 +112,22 @@ class EventController extends Controller
     public function update(UpdateEventRequest $request, Event $event)
     {
         $fields = $request->validated();
+        if(empty($fields)) {
+            Storage::disk('public')->delete($event['image']);
+            $event->image = null;
+            $event->save();
+            return;
+        }
         $event->name = $fields['name'];
         $event->date_start = $fields['date_start'];
         $event->date_end = $fields['date_end'];
         $event->city = $fields['city'];
         $event->location = $fields['location'];
         $event->description = $fields['description'];
+        if($request->hasFile('image')) {
+            $path = $request->file('image')->store('userImages', 'public');
+            $event->image = $path;
+        }
         $event->is_public = $fields['is_public'];
         $event->save();
 
