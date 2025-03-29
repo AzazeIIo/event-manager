@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Route;
 use App\Models\Event;
+use App\Models\Invitation;
+use App\Models\Attendee;
 use App\Models\Type;
 use App\Models\EventType;
 use Illuminate\Http\Request;
@@ -21,24 +24,66 @@ class EventController extends Controller
      */
     public function index(Request $request)
     {
-        $events = Event::where('is_public', '=', true)->with(['attendees' => function($q){
-            $q->where('attendees.user_id', '=', Auth::user()->id);
-        }])->with('allAttendees')->orderBy('date_start', 'asc')->paginate(10);
+        $events;
         $types = Type::all();
+        $includeform = false;
 
-        if($request->ajax()) {
+        if(!Auth::check() && Route::current()->uri != 'events') {
+            return redirect('/login');
+        }
+        
+        switch (Route::current()->uri) {
+            case 'privateevents':
+                $events = Event::whereIn('id', Invitation::where('user_id', '=', Auth::user()->id)->select('event_id')->get());
+                break;
+            case 'myevents':
+                $events = Event::where('owner_id', '=', Auth::user()->id);
+                $includeform = true;
+                break;
+            case 'joinedevents':
+                $events = Event::whereIn('id', (Attendee::where('user_id', '=', Auth::user()->id)->select('event_id')->get()));
+                break;
+            default:
+                $events = Event::where('is_public', '=', true)->with(['attendees' => function($q){
+                    $q->where('attendees.user_id', '=', Auth::user()->id);
+                }])->with('allAttendees')->orderBy('date_start', 'asc');
+        }
+
+        if(count($request->all()) != 0) {
+            if($request['name']) {
+                $events = $events->where('name', 'LIKE', '%' . $request['name'] . '%');
+            }
+            if($request['date_start']) {
+                $events = $events->where('date_start', '=', $request['date_start']);
+            }
+            if($request['date_end']) {
+                $events = $events->where('date_end', '=', $request['date_end']);
+            }
+            if($request['city']) {
+                $events = $events->where('city', 'LIKE', '%' . $request['city'] . '%');
+            }
+            if($request['description']) {
+                $events = $events->where('description', 'LIKE', '%' . $request['description'] . '%');
+            }
+            if($request['type']) {
+                foreach(json_decode($request['type']) as $type) {
+                    $allEventsWithType = EventType::where('type_id', '=', $type)->select('event_id')->get();
+                    $events = $events->whereIn('id', $allEventsWithType);
+                }
+            }
             return View::make('event-page')->with([
-                'events' => $events,
+                'events' => $events->paginate(10),
                 'types' => $types,
-                'includeform' => false
+                'includeform' => $includeform
             ]);
         }
 
         return View::make('events')->with([
-            'events' => $events,
+            'events' => $events->paginate(10),
             'types' => $types,
-            'includeform' => false
+            'includeform' => $includeform
         ]);
+        
     }
 
     /**

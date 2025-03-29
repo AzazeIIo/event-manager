@@ -1,3 +1,5 @@
+import * as bootstrap from 'bootstrap';
+
 let eventToBeDeleted = null;
 let imageToBeDeleted = null;
 
@@ -57,8 +59,15 @@ $(document).on('click', '.pagination li a', function(e) {
     $('li').removeClass('active');
     $(this).parent('li').addClass('active');
 
+    let url;
+    if(window.location.search) {
+        url = window.location.href + '&page=' + $(this).text();
+    } else {
+        url = window.location.href + '?page=' + $(this).text();
+    }
+    
     $.ajax({
-        url : $(this).attr('href'),
+        url : url,
         type: 'GET',
         dataType: 'html',
         success:function(result) {
@@ -66,6 +75,44 @@ $(document).on('click', '.pagination li a', function(e) {
             $(window).scrollTop(0);
         }
     });
+});
+
+$('#searchBtn').on('click', function (e) {
+    e.preventDefault();
+
+    let name = $('#name-search').val();
+    let date_start = $('#date_start-search').val();
+    let date_end = $('#date_end-search').val();
+    let city = $('#city-search').val();
+    let description = $('#description-search').val();
+    let owner_id = $('#owner_id').val();
+    let checkboxValue = [];
+    $('.search-checkbox:checked').each(function(i, obj) {
+        checkboxValue.push($(obj).val());
+    });
+
+    $.ajaxSetup({
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+    });
+    $.ajax({
+        type: 'GET',
+        url: window.location.href,
+        data: {
+            'name': name,
+            'date_start': date_start,
+            'date_end': date_end,
+            'city': city,
+            'type': JSON.stringify(checkboxValue),
+            'description': description,
+            'owner_id': owner_id,
+        },
+        success:function(result) {
+            $('#results').html(result);
+            history.pushState(null, "", window.location.pathname + `?name=${name}&date_start=${date_start}&date_end=${date_end}&city=${city}&description=${description}&owner_id=${owner_id}`);
+            $(window).scrollTop(0);
+        },
+    });
+    
 });
 
 function createEvent() {
@@ -122,8 +169,8 @@ function createEvent() {
             $('#image').val('');
             $('#public').prop('checked', true);
 
-            $('#newEventForm').css('display', 'none');
-            $('#newEventBtn').css('display', 'block');
+            new bootstrap.Collapse($('#collapse-form'));
+            $(window).scrollTop(0);
         }  
     });
 }
