@@ -29,7 +29,7 @@ class StoreEventRequest extends FormRequest
         return [
             'name' => [
                 'required',
-                'max:255',
+                'max:50',
                 Rule::unique('events', 'name')->where('date_start', $this->request->get('date_start'))
             ],
             'date_start' => [
@@ -44,11 +44,11 @@ class StoreEventRequest extends FormRequest
             ],
             'city' => [
                 'required',
-                'max:255',
+                'max:50',
             ],
             'location' => [
                 'required',
-                'max:255',
+                'max:50',
             ],
             'type' => [
                 'nullable',

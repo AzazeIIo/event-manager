@@ -35,7 +35,7 @@ class Event extends Model
 
     public function getShortDescriptionAttribute()
     {
-        return Str::words($this->description, 50, '...');
+        return Str::limit(Str::words($this->description, 50, '...'), 400, '...');
     }
 
     public function users() {
