@@ -60,18 +60,39 @@ $(document).on('click', '.pagination li a', function(e) {
     $(this).parent('li').addClass('active');
 
     let url;
+
+    //let regex = new RegExp(/\?page=(d*)/);
+    // if(window.location.search) {
+    //     let regex = new RegExp(/(.*)\&page=(d*)/);
+    //     if(regex.exec(window.location.search)) {
+    //         url = window.location.href.replace(regex, '&page=' + $(e.target).text());
+    //     } else {
+    //         url = window.location.href + '?page=' + $(e.target).text();
+    //     }
+    // } else {
+    //     url = window.location.pathname + '?page=' + $(e.target).text();
+    // }
+
     if(window.location.search) {
-        url = window.location.href + '&page=' + $(this).text();
+        let searchParams = new URLSearchParams(window.location.search);
+        if(searchParams.has('page')) {
+            searchParams.set('page', $(e.target).text());
+        } else {
+            searchParams.append('page', $(e.target).text());
+        }
+        url = window.location.pathname + "?" + searchParams.toString();
     } else {
-        url = window.location.href + '?page=' + $(this).text();
+        url = window.location.pathname + '?page=' + $(e.target).text();
     }
     
     $.ajax({
         url : url,
         type: 'GET',
         dataType: 'html',
+        cache:false,
         success:function(result) {
             $('#results').html(result);
+            history.pushState(null, "", url);
             $(window).scrollTop(0);
         }
     });
@@ -96,7 +117,7 @@ $('#searchBtn').on('click', function (e) {
     });
     $.ajax({
         type: 'GET',
-        url: window.location.href,
+        url: window.location.pathname,
         data: {
             'name': name,
             'date_start': date_start,
@@ -310,3 +331,7 @@ function leaveEvent(id) {
         },
     });
 }
+
+window.addEventListener("popstate", function(e) {
+    location.reload();
+});

@@ -75,13 +75,15 @@ class EventController extends Controller
                     $events = $events->whereIn('id', $allEventsWithType);
                 }
             }
+        }
+
+        if($request->ajax()) {
             return View::make('event-page')->with([
                 'events' => $events->paginate(10),
                 'types' => $types,
                 'includeform' => $includeform
             ]);
         }
-
         return View::make('events')->with([
             'events' => $events->paginate(10),
             'types' => $types,
