@@ -170,6 +170,9 @@ function createEvent() {
             $('.invalid-feedback').each(function(i, obj) {
                 $(obj).css('display', 'none');
             });
+            
+            $('#invalid-'+Object.keys(err.responseJSON.errors)[0]).prev()[0].focus();
+            
             for (let key in err.responseJSON.errors) {
                 $('#invalid-'+key).css('display', 'block');
                 $('#invalid-'+key).html(err.responseJSON.errors[key]);
@@ -190,8 +193,15 @@ function createEvent() {
             $('#image').val('');
             $('#public').prop('checked', true);
 
+            $('.invalid-feedback').each(function(i, obj) {
+                $(obj).css('display', 'none');
+            });
             new bootstrap.Collapse($('#collapse-form'));
             $(window).scrollTop(0);
+
+            if($('#emptyPage')) {
+                $('#emptyPage').remove();
+            }
         }  
     });
 }

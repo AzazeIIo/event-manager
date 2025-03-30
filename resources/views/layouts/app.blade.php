@@ -31,20 +31,17 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul id="left-navbar" class="navbar-nav">
-                        <li class="nav-item me-lg-3">
-                            <a class="nav-link{{Route::current()->getName() == 'dashboard' ? ' active' : '' }}" href="#">Dashboard</a>
-                        </li>
-                        <li class="nav-item me-lg-3">
+                        <li class="nav-item me-md-3">
                             <a class="nav-link{{Route::current()->getName() == 'events.index' ? ' active' : '' }}" href="{{ url('events') }}">Public events</a>
                         </li>
-                        <li class="nav-item me-lg-3">
+                        <li class="nav-item me-md-3">
                             <a class="nav-link{{Route::current()->getName() == 'privateevents' ? ' active' : '' }}" href="{{ route('privateevents') }}">Private events</a>
                         </li>
-                        <li class="nav-item me-lg-3">
-                            <a class="nav-link{{Route::current()->getName() == 'myevents' ? ' active' : '' }}" href="{{ route('myevents') }}">My events</a>
+                        <li class="nav-item me-md-3">
+                            <a class="nav-link{{Route::current()->getName() == 'joinedevents' ? ' active' : '' }}" href="{{ route('joinedevents') }}">Joined events</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link{{Route::current()->getName() == 'joinedevents' ? ' active' : '' }}" href="{{ route('joinedevents') }}">Joined events</a>
+                            <a class="nav-link{{Route::current()->getName() == 'myevents' ? ' active' : '' }}" href="{{ route('myevents') }}">Your events</a>
                         </li>
                     </ul>
 
@@ -70,12 +67,8 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="#">
-                                        Profile
-                                    </a>
-
-                                    <a class="dropdown-item" href="#">
-                                        Friends
+                                    <a class="dropdown-item" href="/dashboard">
+                                        Dashboard
                                     </a>
 
                                     <a class="dropdown-item" href="{{ route('logout') }}"

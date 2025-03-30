@@ -13,7 +13,7 @@
             </div>
         </div>
         
-        <div class="col-lg-8 order-lg-2 order-1 mb-3">
+        <div class="col-lg-9 order-lg-2 order-1 mb-3">
             <div class="card">
                 <div class="card-header">{{ __('Events') }}</div>
 
