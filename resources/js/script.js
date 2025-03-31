@@ -297,6 +297,8 @@ function editEvent(id) {
                 $('#invalid-'+key+id).css('display', 'block');
                 $('#invalid-'+key+id).html(err.responseJSON.errors[key]);
             }
+            
+            $('#invalid-' + Object.keys(err.responseJSON.errors)[0] + id).prev()[0].focus();
         },
     });
 }
