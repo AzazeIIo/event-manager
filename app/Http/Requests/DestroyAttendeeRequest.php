@@ -14,7 +14,7 @@ class DestroyAttendeeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return (Auth::check() && Auth::user()->id == $this->request->get('user_id'));
+        return (Auth::check() && Auth::user()->id == $this->route('attendee.user_id'));
     }
 
     /**
@@ -24,19 +24,9 @@ class DestroyAttendeeRequest extends FormRequest
      */
     public function rules(): array
     {
-        if(count(Attendee::where('user_id', '=', $this->request->get('user_id'))->where('event_id', '=', $this->request->get('event_id'))->get()) == 0) {
+        if(count(Attendee::where('user_id', '=', Auth::user()->id)->where('event_id', '=', $this->route('event.id'))->get()) == 0) {
             throw ValidationException::withMessages(['event_id' => 'You have already left this event.']);
         }
-
-        return [
-            'user_id' => [
-                'required',
-                'exists:users,id',
-            ],
-            'event_id' => [
-                'required',
-                'exists:events,id',
-            ]
-        ];
+        return [];
     }
 }

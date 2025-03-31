@@ -33,10 +33,10 @@ class AttendeeController extends Controller
      */
     public function store(StoreAttendeeRequest $request, Event $event)
     {
-        $fields = $request->validated();
-        $fields['user_id'] = strip_tags($fields['user_id']);
-        $fields['event_id'] = strip_tags($fields['event_id']);
-        $attendee = Attendee::create($fields);
+        $attendee = Attendee::create([
+            'user_id' => Auth::user()->id,
+            'event_id' => $event['id']
+        ]);
         return View::make('leave-event-form')->with([
             'event' => Event::where('id', '=', $event['id'])->with(['attendees' => function($q){
                     $q->where('attendees.user_id', '=', Auth::user()->id);
@@ -71,12 +71,9 @@ class AttendeeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(DestroyAttendeeRequest $request, Event $event)
+    public function destroy(DestroyAttendeeRequest $request, Event $event, Attendee $attendee)
     {
-        $request->validated();
-        $attendee = Attendee::find($request['attendee_id']);
         $attendee->delete($attendee);
-        // return count($event->attendees);
         return View::make('join-event-form')->with([
             'event' => Event::where('id', '=', $event['id'])->with(['attendees' => function($q){
                     $q->where('attendees.user_id', '=', Auth::user()->id);

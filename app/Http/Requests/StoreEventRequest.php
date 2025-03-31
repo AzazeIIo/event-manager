@@ -13,7 +13,7 @@ class StoreEventRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return (Auth::check() && Auth::user()->id == $this->request->get('owner_id'));
+        return (Auth::check());
     }
 
     /**
@@ -36,11 +36,13 @@ class StoreEventRequest extends FormRequest
                 'required',
                 Rule::date()->format('Y-m-d\TH:i'),
                 Rule::date()->after($date->format('Y-m-d\TH:i')),
+                Rule::date()->before($date->modify('+5 years')->format('Y-m-d\TH:i'))
             ],
             'date_end' => [
                 'nullable',
                 'after:date_start',
-                Rule::date()->format('Y-m-d\TH:i')
+                Rule::date()->format('Y-m-d\TH:i'),
+                Rule::date()->before($date->modify('+5 years')->format('Y-m-d\TH:i'))
             ],
             'city' => [
                 'required',
@@ -67,10 +69,6 @@ class StoreEventRequest extends FormRequest
             'is_public' => [
                 'required',
                 'boolean'
-            ],
-            'owner_id' => [
-                'required',
-                'integer',
             ]
         ];
     }

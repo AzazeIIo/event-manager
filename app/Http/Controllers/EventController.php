@@ -123,7 +123,7 @@ class EventController extends Controller
             $event_fields['image'] = $path;
         }
         $event_fields['is_public'] = strip_tags($fields['is_public']);
-        $event_fields['owner_id'] = strip_tags($fields['owner_id']);
+        $event_fields['owner_id'] = Auth::user()->id;
         $event = Event::create($event_fields);
 
         if(isset($fields['type'])) {
@@ -214,10 +214,8 @@ class EventController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(DestroyEventRequest $request)
+    public function destroy(DestroyEventRequest $request, Event $event)
     {
-        $request->validated();
-        $event = Event::find($request['event_id']);
         if($event['image']) {
             Storage::disk('public')->delete($event['image']);
         }

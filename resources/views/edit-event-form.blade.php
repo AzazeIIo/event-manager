@@ -145,8 +145,6 @@
                     </div>
                 </div>
 
-                <input type="hidden" name="owner_id" id="owner_id" value="{{ Auth::user()->id }}">
-
                 <div class="row mb-0">
                     <div class="col-md-8 offset-sm-4">
                         <button id="reset{{ $event['id'] }}" type="reset" class="btn btn-secondary me-4 resetEditEventBtn">

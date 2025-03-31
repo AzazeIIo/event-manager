@@ -13,21 +13,6 @@ class DestroyEventRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return (Auth::check() && Auth::user()->id == Event::where('id', '=', $this->request->get('event_id'))->select('owner_id')->get()[0]['owner_id']);
-    }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
-    public function rules(): array
-    {
-        return [
-            'event_id' => [
-                'required',
-                'exists:events,id',
-            ]
-        ];
+        return (Auth::check() && Auth::user()->id == Event::where('id', '=', $this->route('event.id'))->pluck('owner_id')[0]);
     }
 }

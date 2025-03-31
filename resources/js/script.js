@@ -106,7 +106,6 @@ $('#searchBtn').on('click', function (e) {
     let date_end = $('#date_end-search').val();
     let city = $('#city-search').val();
     let description = $('#description-search').val();
-    let owner_id = $('#owner_id').val();
     let checkboxValue = [];
     $('.search-checkbox:checked').each(function(i, obj) {
         checkboxValue.push($(obj).val());
@@ -125,11 +124,10 @@ $('#searchBtn').on('click', function (e) {
             'city': city,
             'type': JSON.stringify(checkboxValue),
             'description': description,
-            'owner_id': owner_id,
         },
         success:function(result) {
             $('#results').html(result);
-            history.pushState(null, "", window.location.pathname + `?name=${name}&date_start=${date_start}&date_end=${date_end}&city=${city}&description=${description}&owner_id=${owner_id}`);
+            history.pushState(null, "", window.location.pathname + `?name=${name}&date_start=${date_start}&date_end=${date_end}&city=${city}&description=${description}`);
             $(window).scrollTop(0);
         },
     });
@@ -155,7 +153,6 @@ function createEvent() {
         formData.append('image', imageData);
     }
     formData.append('is_public', $("input[name=is_public]:checked").val());
-    formData.append('owner_id', $('#owner_id').val());
 
     $.ajaxSetup({
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
@@ -213,9 +210,6 @@ function removeEvent(id) {
     $.ajax({
         type: 'DELETE',
         url: $("#delroute" + id).val(),
-        data: {
-            'event_id': id
-        },
         success:function(msg) {
             $('#'+id).parent().remove();
         }  
@@ -229,9 +223,6 @@ function removeImage(id) {
     $.ajax({
         type: 'PATCH',
         url: $("#editroute" + id).val(),
-        data: {
-            'owner_id': $('#owner_id').val()
-        },
         success:function() {
             $('#img'+id).html(`
                 <div id="imgform${id}" class="row mb-3">
@@ -275,7 +266,6 @@ function editEvent(id) {
         formData.append('image', imageData);
     }
     formData.append('is_public', $("input[name=is_public" + id + "]:checked").val());
-    formData.append('owner_id', $('#owner_id').val());
 
     $.ajaxSetup({
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
@@ -312,12 +302,8 @@ function joinEvent(id) {
         url: $("#joinroute" + id).val(),
         data: {
             'user_id': $('#user_id'+id).val(),
-            'event_id': $('#event_id'+id).val(),
         },
         success:function(form) {
-            //$('#attendeeAmount'+id).html(msg + ' going');
-            //$('#'+id).parent().replaceWith(msg);
-            //$('#attendeeAmount'+id).html(event['all_attendees'].length + ' going');
             $('#attendeeAmount'+id).html((Number)($('#attendeeAmount'+id).html())+1);
             $('#join-form'+id).replaceWith(form);
         },
@@ -331,13 +317,7 @@ function leaveEvent(id) {
     $.ajax({
         type: 'DELETE',
         url: $("#leaveroute" + id).val(),
-        data: {
-            'user_id': $('#user_id'+id).val(),
-            'event_id': $('#event_id'+id).val(),
-            'attendee_id': $('#attendee_id'+id).val(),
-        },
         success:function(form) {
-            //$('#'+id).parent().replaceWith(msg);
             $('#attendeeAmount'+id).html((Number)($('#attendeeAmount'+id).html())-1);
             $('#leave-form'+id).replaceWith(form);
         },

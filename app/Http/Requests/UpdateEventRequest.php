@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Auth;
+use App\Models\Event;
 
 class UpdateEventRequest extends FormRequest
 {
@@ -13,7 +14,7 @@ class UpdateEventRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return (Auth::check() && Auth::user()->id == $this->request->get('owner_id'));
+        return (Auth::check() && Auth::user()->id == Event::where('id', '=', $this->route('event.id'))->pluck('owner_id')[0]);
     }
 
     /**
@@ -40,11 +41,13 @@ class UpdateEventRequest extends FormRequest
                 'required',
                 Rule::date()->format('Y-m-d\TH:i'),
                 Rule::date()->after($date->format('Y-m-d\TH:i')),
+                Rule::date()->before($date->modify('+5 years')->format('Y-m-d\TH:i'))
             ],
             'date_end' => [
                 'nullable',
                 'after:date_start',
-                Rule::date()->format('Y-m-d\TH:i')
+                Rule::date()->format('Y-m-d\TH:i'),
+                Rule::date()->before($date->modify('+5 years')->format('Y-m-d\TH:i'))
             ],
             'city' => [
                 'required',
@@ -66,10 +69,6 @@ class UpdateEventRequest extends FormRequest
             'is_public' => [
                 'required',
                 'boolean'
-            ],
-            'owner_id' => [
-                'required',
-                'integer',
             ]
         ];
     }

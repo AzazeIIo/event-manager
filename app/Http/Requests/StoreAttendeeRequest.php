@@ -7,6 +7,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Auth;
 use App\Models\Event;
+use App\Models\Invitation;
 
 class StoreAttendeeRequest extends FormRequest
 {
@@ -15,7 +16,7 @@ class StoreAttendeeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return (Auth::check() && Auth::user()->id == $this->request->get('user_id'));
+        return (Auth::check() && Auth::user()->id == $this->request->get('user_id') && (Event::find($this->route('event.id'))['is_public'] || count(Invitation::where('user_id', '=', Auth::user()->id)->where('event_id', '=', $this->route('event.id'))->get()) != 0));
     }
 
     /**
@@ -25,7 +26,7 @@ class StoreAttendeeRequest extends FormRequest
      */
     public function rules(): array
     {
-        if(Event::select('owner_id')->where('id', '=', $this->request->get('event_id'))->get()[0]['owner_id'] == Auth::user()->id) {
+        if(Event::where('id', '=', $this->route('event.id'))->pluck('owner_id')[0] == Auth::user()->id) {
             throw ValidationException::withMessages(['event_id' => "You can't join your own event."]);
         }
 
@@ -33,11 +34,7 @@ class StoreAttendeeRequest extends FormRequest
             'user_id' => [
                 'required',
                 'exists:users,id',
-                Rule::unique('attendees', 'user_id')->where('event_id', $this->request->get('event_id'))
-            ],
-            'event_id' => [
-                'required',
-                'exists:events,id',
+                Rule::unique('attendees', 'user_id')->where('event_id', $this->route('event.id'))
             ]
         ];
     }
