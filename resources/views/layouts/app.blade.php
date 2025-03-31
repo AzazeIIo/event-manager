@@ -31,6 +31,7 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
+                    @if(!Auth::guest())
                     <ul id="left-navbar" class="navbar-nav">
                         <li class="nav-item me-md-3">
                             <a class="nav-link{{Route::current()->getName() == 'events.index' ? ' active' : '' }}" href="{{ url('events') }}">Public events</a>
@@ -45,7 +46,8 @@
                             <a class="nav-link{{Route::current()->getName() == 'myevents' ? ' active' : '' }}" href="{{ route('myevents') }}">Your events</a>
                         </li>
                     </ul>
-
+                    @endif
+                    
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->

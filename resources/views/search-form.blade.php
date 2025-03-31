@@ -79,7 +79,9 @@
         </div>
     </div>
 
+    @if(!Auth::guest())
     <input type="hidden" name="owner_id" id="owner_id" value="{{ Auth::user()->id }}">
+    @endif
 
     <div class="row mb-0">
         <div class="center">

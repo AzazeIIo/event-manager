@@ -48,9 +48,13 @@ class EventController extends Controller
                 }])->with('allAttendees')->orderBy('date_start', 'asc');
                 break;
             default:
-                $events = Event::where('is_public', '=', true)->with(['attendees' => function($q){
-                    $q->where('attendees.user_id', '=', Auth::user()->id);
-                }])->with('allAttendees')->orderBy('date_start', 'asc');
+                if(Auth::guest()) {
+                    $events = Event::where('is_public', '=', true)->with('allAttendees')->orderBy('date_start', 'asc');
+                } else {
+                    $events = Event::where('is_public', '=', true)->with(['attendees' => function($q){
+                        $q->where('attendees.user_id', '=', Auth::user()->id);
+                    }])->with('allAttendees')->orderBy('date_start', 'asc');
+                }
         }
 
         if(count($request->all()) != 0) {
@@ -108,7 +112,7 @@ class EventController extends Controller
         $fields = $request->validated();
         $event_fields['name'] = strip_tags($fields['name']);
         $event_fields['date_start'] = strip_tags($fields['date_start']);
-        if(isset($event_fields['date_end'])) {
+        if(isset($fields['date_end'])) {
             $event_fields['date_end'] = strip_tags($fields['date_end']);
         }
         $event_fields['city'] = strip_tags($fields['city']);
@@ -142,11 +146,17 @@ class EventController extends Controller
      */
     public function show(ShowEventRequest $request, Event $event)
     {
-        return View::make('event-details')->with([
-            'event' => Event::where('id', '=', $event['id'])->with(['attendees' => function($q){
+        if(Auth::guest()) {
+            return View::make('event-details')->with([
+                'event' => Event::where('id', '=', $event['id'])->with('allAttendees')->get()[0],
+            ]);
+        } else {
+            return View::make('event-details')->with([
+                'event' => Event::where('id', '=', $event['id'])->with(['attendees' => function($q){
                     $q->where('attendees.user_id', '=', Auth::user()->id);
                 }])->with('allAttendees')->get()[0],
-        ]);
+            ]);
+        }
     }
 
     /**
