@@ -4,15 +4,15 @@ if(typeof data !== 'undefined') {
     let xValues = data.yourTypes.map(({name}) => name);
     let yValues = data.yourTypes.map(({count}) => count);
     let barColors = [
-        "#00AB89",
-        "#F0E807",
-        "#D43800",
-        "#5900DE",
-        "#164037",
-        "#B3B17D",
-        "#EDBBA8",
+        "#EDBB71",
+        "#68D7DB",
+        "#DB5FA6",
+        "#65B6FF",
+        "#6EFF99",
+        "#F97EE3",
+        "#5EC78C",
         "#B685FF",
-        "#A6EDDF",
+        "#FAEB62",
     ];
 
     new Chart("canvasYourTags", {
@@ -25,6 +25,8 @@ if(typeof data !== 'undefined') {
             }]
         },
         options: {
+            responsive: true,
+            maintainAspectRatio: false,
             legend: {display: false},
             scales: {
                 yAxes: [{
@@ -44,12 +46,14 @@ if(typeof data !== 'undefined') {
             labels: xValues,
             datasets: [{
                 fill: false,
-                backgroundColor: "rgba(0,0,255)",
-                borderColor: "rgba(0,0,255,0.1)",
+                backgroundColor: "rgb(79, 25, 83)",
+                borderColor: "rgb(143, 81, 148, 0.3)",
                 data: yValues
             }]
         },
         options: {
+            responsive: true,
+            maintainAspectRatio: false,
             title: {
                 display: true,
                 text: "Including your own events and events you joined"
@@ -77,6 +81,8 @@ if(typeof data !== 'undefined') {
             }]
         },
         options: {
+            responsive: true,
+            maintainAspectRatio: false,
             legend: {display: false},
             scales: {
                 yAxes: [{
