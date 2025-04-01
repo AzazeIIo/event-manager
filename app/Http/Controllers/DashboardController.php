@@ -19,13 +19,13 @@ class DashboardController extends Controller
             return redirect('/login');
         }
 
-        $privateEvents = Event::whereIn('id', Invitation::where('user_id', '=', Auth::user()->id)->select('event_id')->get())->with(['attendees' => function($q){
+        $privateEvents = Event::whereIn('id', Invitation::where('user_id', '=', Auth::user()->id)->pluck('event_id'))->with(['attendees' => function($q){
             $q->where('attendees.user_id', '=', Auth::user()->id);
         }])->with('allAttendees')->orderBy('date_start', 'asc')->get();
 
         $yourEvents = Event::where('owner_id', '=', Auth::user()->id)->orderBy('date_start', 'asc')->get();
 
-        $joinedEvents = Event::whereIn('id', (Attendee::where('user_id', '=', Auth::user()->id)->select('event_id')->get()))->with(['attendees' => function($q){
+        $joinedEvents = Event::whereIn('id', (Attendee::where('user_id', '=', Auth::user()->id)->pluck('event_id')))->with(['attendees' => function($q){
             $q->where('attendees.user_id', '=', Auth::user()->id);
         }])->with('allAttendees')->orderBy('date_start', 'asc')->get();
 
@@ -36,7 +36,7 @@ class DashboardController extends Controller
             ->groupBy('type_name')
             ->get();
 
-        $joinedTypes = EventType::whereIn('event_id', Event::whereIn('id', (Attendee::where('user_id', '=', Auth::user()->id)->select('event_id')->get()))->pluck('id'))
+        $joinedTypes = EventType::whereIn('event_id', Event::whereIn('id', (Attendee::where('user_id', '=', Auth::user()->id)->pluck('event_id')))->pluck('id'))
             ->join('types', 'event_types.type_id', '=', 'types.id')
             ->select(DB::raw('count(*) as count, type_name as name'))
             ->groupBy('type_name')
@@ -48,7 +48,7 @@ class DashboardController extends Controller
         // $events = Event::where('owner_id', '=', Auth::user()->id)->whereDate('date_start', '>=', $date->format('Y-m-d'))->whereDate('date_start', '<=', $date->modify('+29 days')->format('Y-m-d'))->select(DB::raw('count(*) as count, CAST(date_start AS DATE) as start'))->groupBy(DB::raw('CAST(date_start AS DATE)'))->get();
         $events = Event::where('owner_id', '=', Auth::user()->id)
             ->orWhere(function ($q) {
-                $q->whereIn('id', (Attendee::where('user_id', '=', Auth::user()->id)->select('event_id')->get()));
+                $q->whereIn('id', (Attendee::where('user_id', '=', Auth::user()->id)->pluck('event_id')));
             })
             ->whereDate('date_start', '>=', $date->format('Y-m-d'))
             ->whereDate('date_start', '<=', $date->modify('+29 days')->format('Y-m-d'))

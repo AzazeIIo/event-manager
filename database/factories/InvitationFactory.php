@@ -19,9 +19,9 @@ class InvitationFactory extends Factory
      */
     public function definition(): array
     {
-        $privateEvents = Event::where('is_public', '=', false)->select('id')->get();
+        $privateEvents = Event::where('is_public', '=', false)->pluck('id');
         $eventId = fake()->randomElement($privateEvents);
-        $invitedUsers = Invitation::where('event_id', '=', $eventId)->select('user_id')->get();
+        $invitedUsers = Invitation::where('event_id', '=', $eventId)->pluck('user_id');
         $uninvitedUsers = User::whereNotIn('user_id', $invitedUsers)->get();
 
         return [

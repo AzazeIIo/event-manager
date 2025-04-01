@@ -36,7 +36,7 @@ class EventController extends Controller
         
         switch (Route::current()->uri) {
             case 'privateevents':
-                $events = Event::whereIn('id', Invitation::where('user_id', '=', Auth::user()->id)->select('event_id')->get())->with(['attendees' => function($q){
+                $events = Event::whereIn('id', Invitation::where('user_id', '=', Auth::user()->id)->pluck('event_id'))->with(['attendees' => function($q){
                     $q->where('attendees.user_id', '=', Auth::user()->id);
                 }])->with('allAttendees')->orderBy('date_start', 'asc');
                 break;
@@ -45,7 +45,7 @@ class EventController extends Controller
                 $includeform = true;
                 break;
             case 'joinedevents':
-                $events = Event::whereIn('id', (Attendee::where('user_id', '=', Auth::user()->id)->select('event_id')->get()))->with(['attendees' => function($q){
+                $events = Event::whereIn('id', (Attendee::where('user_id', '=', Auth::user()->id)->pluck('event_id')))->with(['attendees' => function($q){
                     $q->where('attendees.user_id', '=', Auth::user()->id);
                 }])->with('allAttendees')->orderBy('date_start', 'asc');
                 break;
@@ -77,7 +77,7 @@ class EventController extends Controller
             }
             if($request['type']) {
                 foreach(json_decode($request['type']) as $type) {
-                    $allEventsWithType = EventType::where('type_id', '=', $type)->select('event_id')->get();
+                    $allEventsWithType = EventType::where('type_id', '=', $type)->pluck('event_id');
                     $events = $events->whereIn('id', $allEventsWithType);
                 }
             }
@@ -124,7 +124,9 @@ class EventController extends Controller
         }
         $event_fields['city'] = strip_tags($fields['city']);
         $event_fields['location'] = strip_tags($fields['location']);
-        $event_fields['description'] = strip_tags($fields['description']);
+        if(isset($fields['description'])) {
+            $event_fields['description'] = strip_tags($fields['description']);
+        }
         if($request->hasFile('image')) {
             $path = $request->file('image')->store('userImages', 'public');
             $event_fields['image'] = $path;

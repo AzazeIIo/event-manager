@@ -167,6 +167,7 @@ $('#searchBtn').on('click', function (e) {
             $('#results').html(result);
             history.pushState(null, "", window.location.pathname + `?name=${name}&date_start=${date_start}&date_end=${date_end}&city=${city}&description=${description}`);
             $(window).scrollTop(0);
+            $('#clearFilters').css('display', 'block');
         },
     });
     

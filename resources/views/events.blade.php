@@ -6,7 +6,7 @@
         <div id="sidebar" class="col-lg-3 order-lg-1 order-2">
             <div class="card">
                 <div class="card-header ">Search</div>
-
+                <a id="clearFilters" class="text-center mt-3" href="{{ Request::path() }}">Clear filters</a>
                 <div id="sidebar-card" class="card-body pt-1">
                     @include('search-form')
                 </div>

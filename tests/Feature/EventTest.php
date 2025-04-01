@@ -16,7 +16,6 @@ class EventTest extends TestCase
         "date_start" => '2026-01-01T12:00',
         "city" => "testcity",
         "location" => 'testlocation',
-        'description' => null,
         'is_public' => true,
     ];
 

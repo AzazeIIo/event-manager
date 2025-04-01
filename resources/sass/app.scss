@@ -122,3 +122,15 @@ main {
 .white-field {
     background-color: #f8fafc;
 }
+
+#clearFilters {
+    display: none;
+}
+
+.private {
+    font-size: large;
+    font-variant: small-caps;
+    position: absolute;
+    bottom: 0;
+    right: 1rem;
+}

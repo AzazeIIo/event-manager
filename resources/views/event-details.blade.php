@@ -50,6 +50,9 @@
                         </p>
                     </div>
                 </div>
+                @if(!$event['is_public'])
+                    <p class="private">private</p>
+                @endif
             </div>
         </div>
     </div>
