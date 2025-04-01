@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Invitation;
+use App\Models\Event;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreInvitationRequest;
+use Auth;
 
 class InvitationController extends Controller
 {
@@ -18,18 +22,25 @@ class InvitationController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Event $event)
     {
-        //
+        return View::make('edit-visibility-form')->with([
+            'users' => User::paginate(10),
+            'event' => $event,
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreInvitationRequest $request)
+    public function store(StoreInvitationRequest $request, Event $event)
     {
         $fields = $request->validated();
-        dd($fields);
+        $invitation = Invitation::create([
+            'user_id' => $fields['user_id'],
+            'event_id' => $event['id']
+        ]);
+
     }
 
     /**

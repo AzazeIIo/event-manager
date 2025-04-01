@@ -28,7 +28,13 @@ $('#confirmImgDeletion').on('click', function(e) {
 $(document).on('click', '.editEventBtn', function(e) {
     let eventCard = $('#'+e.target.id.substring(4));
     eventCard.css('display', 'none');
-    eventCard.siblings().css('display', 'block');
+    eventCard.siblings('.editEventForm').css('display', 'block');
+});
+
+$(document).on('click', '.editVisibilityBtn', function(e) {
+    let eventCard = $('#'+e.target.id.substring(6));
+    eventCard.css('display', 'none');
+    eventCard.siblings('.editVisibilityForm').css('display', 'block');
 });
 
 $(document).on('click', '.deleteImgBtn', function(e) {
@@ -57,28 +63,55 @@ $(document).on('click', '.leaveEventBtn', function(e) {
     leaveEvent(e.target.id.substring('5'));
 });
 
-$(document).on('click', '.pagination li a', function(e) {
+$(document).on('click', '.inviteBtn', function(e) {
+    e.preventDefault();
+    let ids = e.target.id.split('-');
+    sendInvitation(ids[0], ids[1]);
+});
+
+$(document).on('click', '.userPagination nav .pagination li a', function(e) {
     e.preventDefault();
 
     $('li').removeClass('active');
     $(this).parent('li').addClass('active');
 
     let url;
-
-    //let regex = new RegExp(/\?page=(d*)/);
-    // if(window.location.search) {
-    //     let regex = new RegExp(/(.*)\&page=(d*)/);
-    //     if(regex.exec(window.location.search)) {
-    //         url = window.location.href.replace(regex, '&page=' + $(e.target).text());
-    //     } else {
-    //         url = window.location.href + '?page=' + $(e.target).text();
-    //     }
-    // } else {
-    //     url = window.location.pathname + '?page=' + $(e.target).text();
-    // }
-
     if(window.location.search) {
         let searchParams = new URLSearchParams(window.location.search);
+        if(searchParams.has('userPage')) {
+            searchParams.set('userPage', $(e.target).text());
+        } else {
+            searchParams.append('userPage', $(e.target).text());
+        }
+        url = window.location.pathname + "?" + searchParams.toString();
+    } else {
+        url = window.location.pathname + '?userPage=' + $(e.target).text();
+    }
+    
+    $.ajax({
+        url : url,
+        type: 'GET',
+        dataType: 'html',
+        cache:false,
+        success:function(result) {
+            $('.userResult').html(result);
+            history.pushState(null, "", url);
+        }
+    });
+});
+
+$(document).on('click', '#eventPagination nav .pagination li a', function(e) {
+    e.preventDefault();
+
+    $('li').removeClass('active');
+    $(this).parent('li').addClass('active');
+
+    let url;
+    if(window.location.search) {
+        let searchParams = new URLSearchParams(window.location.search);
+        if(searchParams.has('userPage')) {
+            searchParams.delete('userPage');
+        }
         if(searchParams.has('page')) {
             searchParams.set('page', $(e.target).text());
         } else {
@@ -137,6 +170,25 @@ $('#searchBtn').on('click', function (e) {
     });
     
 });
+
+function sendInvitation(userId, eventId) {
+    console.log($("#inviteRoute" + userId + '-' + eventId).val());
+    
+    $.ajaxSetup({
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+    });
+    $.ajax({
+        type: 'POST',
+        url: $("#inviteRoute" + userId + '-' + eventId).val(),
+        data: {
+            'user_id': userId,
+        },
+        success:function(form) {
+            console.log(form);
+            
+        },
+    });
+}
 
 function createEvent() {
     let checkboxValue = [];

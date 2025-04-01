@@ -4,7 +4,9 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Auth;
+use App\Models\Event;
 
 class StoreInvitationRequest extends FormRequest
 {
@@ -13,7 +15,7 @@ class StoreInvitationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return (Auth::check() && Auth::user()->id == $this->request->get('user_id'));
+        return (Auth::check() && Auth::user()->id == Event::where('id', '=', $this->route('event.id'))->pluck('owner_id')[0]);
     }
 
     /**
@@ -23,15 +25,15 @@ class StoreInvitationRequest extends FormRequest
      */
     public function rules(): array
     {
+        if(Event::find($this->route('event.id'))['is_public']) {
+            throw ValidationException::withMessages(['event_id' => 'Public events are visible to everyone.']);
+        }
+
         return [
             'user_id' => [
                 'required',
                 'exists:users,id',
-                Rule::unique('attendees', 'user_id')->where('event_id', $this->request->get('event_id'))
-            ],
-            'event_id' => [
-                'required',
-                'exists:events,id',
+                Rule::unique('invitations', 'user_id')->where('event_id', $this->route('event.id'))
             ]
         ];
     }

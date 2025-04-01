@@ -5,4 +5,4 @@
         @include('event-card')
     @endforeach
 @endif
-<div class="center">{{ $events->links() }}</div>
+<div id="eventPagination" class="center">{{ $events->links() }}</div>
