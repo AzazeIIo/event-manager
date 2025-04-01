@@ -75,18 +75,7 @@ $(document).on('click', '.userPagination nav .pagination li a', function(e) {
     $('li').removeClass('active');
     $(this).parent('li').addClass('active');
 
-    let url;
-    if(window.location.search) {
-        let searchParams = new URLSearchParams(window.location.search);
-        if(searchParams.has('userPage')) {
-            searchParams.set('userPage', $(e.target).text());
-        } else {
-            searchParams.append('userPage', $(e.target).text());
-        }
-        url = window.location.pathname + "?" + searchParams.toString();
-    } else {
-        url = window.location.pathname + '?userPage=' + $(e.target).text();
-    }
+    let url = '/events/'+ $(e.target).parents('.userPagination')[0].id.substring('10') + '/invitations?userPage=' + $(e.target).text();
     
     $.ajax({
         url : url,
@@ -94,7 +83,19 @@ $(document).on('click', '.userPagination nav .pagination li a', function(e) {
         dataType: 'html',
         cache:false,
         success:function(result) {
-            $('.userResult').html(result);
+            $('#' + $(e.target).parents('.userPagination')[0].id.substring('10')).siblings('.editVisibilityForm').replaceWith(result);
+            $('#' + $(e.target).parents('.userPagination')[0].id.substring('10')).siblings('.editVisibilityForm').css('display', 'block');
+            if(window.location.search) {
+                let searchParams = new URLSearchParams(window.location.search);
+                if(searchParams.has('userPage')) {
+                    searchParams.set('userPage', $(e.target).text());
+                } else {
+                    searchParams.append('userPage', $(e.target).text());
+                }
+                url = window.location.pathname + "?" + searchParams.toString();
+            } else {
+                url = window.location.pathname + '?userPage=' + $(e.target).text();
+            }
             history.pushState(null, "", url);
         }
     });
@@ -112,14 +113,14 @@ $(document).on('click', '#eventPagination nav .pagination li a', function(e) {
         if(searchParams.has('userPage')) {
             searchParams.delete('userPage');
         }
-        if(searchParams.has('page')) {
-            searchParams.set('page', $(e.target).text());
+        if(searchParams.has('eventPage')) {
+            searchParams.set('eventPage', $(e.target).text());
         } else {
-            searchParams.append('page', $(e.target).text());
+            searchParams.append('eventPage', $(e.target).text());
         }
         url = window.location.pathname + "?" + searchParams.toString();
     } else {
-        url = window.location.pathname + '?page=' + $(e.target).text();
+        url = window.location.pathname + '?eventPage=' + $(e.target).text();
     }
     
     $.ajax({

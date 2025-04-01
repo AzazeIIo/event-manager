@@ -8,26 +8,27 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreInvitationRequest;
 use Auth;
+use View;
 
 class InvitationController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Event $event)
     {
-        //
+        return View::make('edit-visibility-form')->with([
+            'users' => User::paginate(10, ['*'], 'userPage'),
+            'event' => $event,
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Event $event)
+    public function create()
     {
-        return View::make('edit-visibility-form')->with([
-            'users' => User::paginate(10),
-            'event' => $event,
-        ]);
+        
     }
 
     /**

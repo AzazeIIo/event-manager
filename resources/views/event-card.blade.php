@@ -41,30 +41,7 @@
         </div>
     </div>
     @if (Auth::check() && $includeform)
-        <div class="row g-0 editVisibilityForm">
-            <div class="col-lg-11">
-                <div class="card-body">
-                
-                    <ul class="nav nav-tabs">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Send invitations</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Pending invitations</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Attendees</a>
-                        </li>
-                    </ul>
-                
-                    <div class="text-center" id="errorMsgContainer"></div>
-                    @include('edit-visibility-form')
-                    <div class="userPagination center">
-                        {{$users->links()}}
-                    </div>
-                </div>
-            </div>
-        </div>
+        @include('edit-visibility-form')
         @include('edit-event-form')
         <div class="dropdown-center center options">
             <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">

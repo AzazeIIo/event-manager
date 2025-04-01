@@ -88,14 +88,14 @@ class EventController extends Controller
                 return $users;
             }
             return View::make('event-page')->with([
-                'events' => $events->paginate(10),
+                'events' => $events->paginate(10, ['*'], 'eventPage'),
                 'types' => $types,
                 'includeform' => $includeform,
                 'users' => $users
             ]);
         }
         return View::make('events')->with([
-            'events' => $events->paginate(10),
+            'events' => $events->paginate(10, ['*'], 'eventPage'),
             'types' => $types,
             'includeform' => $includeform,
             'users' => $users
