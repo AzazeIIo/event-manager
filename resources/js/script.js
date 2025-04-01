@@ -2,6 +2,10 @@ import * as bootstrap from 'bootstrap';
 
 let eventToBeDeleted = null;
 let imageToBeDeleted = null;
+const newEventToast = document.getElementById('newEventToast');
+const editEventToast = document.getElementById('editEventToast');
+const deleteEventToast = document.getElementById('deleteEventToast');
+const deleteImageToast = document.getElementById('deleteImageToast');
 
 $('#createEventBtn').on('click', function(e) {
     e.preventDefault();
@@ -199,7 +203,10 @@ function createEvent() {
             if($('#emptyPage')) {
                 $('#emptyPage').remove();
             }
-        }  
+
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(newEventToast);
+            toastBootstrap.show();
+        }
     });
 }
 
@@ -212,6 +219,9 @@ function removeEvent(id) {
         url: $("#delroute" + id).val(),
         success:function(msg) {
             $('#'+id).parent().remove();
+
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(deleteEventToast);
+            toastBootstrap.show();
         }  
     });
 }
@@ -237,6 +247,9 @@ function removeImage(id) {
                     </div>
                 </div>
             `);
+
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(deleteImageToast);
+            toastBootstrap.show();
         }
     });
 }
@@ -278,6 +291,9 @@ function editEvent(id) {
         processData : false,
         success:function(card) {
             $('#'+id).parent().replaceWith(card);
+
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(editEventToast);
+            toastBootstrap.show();
         },
         error:function(err) {
             $('.invalid-feedback').each(function(i, obj) {

@@ -80,4 +80,43 @@
         
     </div>
 </div>
+
+<div class="toast-container" style="position: fixed; bottom: 1rem; right: 1rem;">
+    <div id="newEventToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto">New event</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Event was successfully created.
+        </div>
+    </div>
+    <div id="editEventToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto">Edit event</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Event was successfully edited.
+        </div>
+    </div>
+    <div id="deleteEventToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto">Delete event</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Event was successfully deleted.
+        </div>
+    </div>
+    <div id="deleteImageToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto">Delete image</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Image was successfully deleted.
+        </div>
+    </div>
+</div>
 @endsection
