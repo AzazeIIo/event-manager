@@ -34,8 +34,8 @@
                             @else
                             <form method="POST" class="deleteInvitationForm">
                                 @csrf
-                                <input type="hidden" name="_route" id="inviteRoute{{ $user['id'] }}-{{ $event['id'] }}" value="{{ url('events/' . $event['id'] . '/invitations') }}">
-                                <button type="submit" id="{{ $user['id'] }}-{{ $event['id'] }}" class="btn btn-primary inviteBtn">
+                                <input type="hidden" name="_route" id="uninviteRoute{{ $user['id'] }}-{{ $event['id'] }}" value="{{ route('events.invitations.destroy', [$event['id'], $user['invitations'][0]['id']]) }}">
+                                <button type="submit" id="uninvite-{{ $user['id'] }}-{{ $event['id'] }}" class="btn btn-primary {{$page == 'pending' ? 'uninviteBtn' : 'uninviteAttendeeBtn'}}">
                                     Uninvite
                                 </button>
                             </form>

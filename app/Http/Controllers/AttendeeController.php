@@ -18,14 +18,7 @@ class AttendeeController extends Controller
      */
     public function index(Event $event)
     {
-        $attendees = Attendee::where('event_id', '=', $event['id'])->pluck('user_id');
-        $users = User::whereIn('id', $attendees);
         
-        return View::make('edit-visibility-form')->with([
-            'users' => $users->paginate(10, ['*'], 'userPage'),
-            'event' => $event,
-            'page' => 'attendees'
-        ]);
     }
 
     /**

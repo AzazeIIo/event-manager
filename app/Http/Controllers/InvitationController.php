@@ -8,6 +8,8 @@ use App\Models\User;
 use App\Models\Attendee;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreInvitationRequest;
+use App\Http\Requests\DestroyInvitationRequest;
+use App\Http\Controllers\AttendeeController;
 use Auth;
 use View;
 
@@ -16,16 +18,29 @@ class InvitationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Event $event)
+    public function index(Request $request, Event $event)
     {
         $invitedUsers = Invitation::where('event_id', '=', $event['id'])->pluck('user_id');
         $attendees = Attendee::where('event_id', '=', $event['id'])->pluck('user_id');
-        $pendingUsers = User::whereIn('id', $invitedUsers)->whereNotIn('id', $attendees);
+        $users;
+        $page;
+
+        if($request->attendees) {
+            $users = User::whereIn('id', $attendees)->with(['invitations' => function($q) use ($event) {
+                $q->where('invitations.event_id', '=', $event['id']);
+            }]);
+            $page = 'attendees';
+        } else {
+            $users = User::whereIn('id', $invitedUsers)->whereNotIn('id', $attendees)->with(['invitations' => function($q) use ($event) {
+                $q->where('invitations.event_id', '=', $event['id']);
+            }]);
+            $page = 'pending';
+        }
         
         return View::make('edit-visibility-form')->with([
-            'users' => $pendingUsers->paginate(10, ['*'], 'userPage'),
+            'users' => $users->paginate(10, ['*'], 'userPage'),
             'event' => $event,
-            'page' => 'pending'
+            'page' => $page
         ]);
     }
 
@@ -84,8 +99,24 @@ class InvitationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Invitation $invitation)
+    public function destroy(DestroyInvitationRequest $request, Event $event, Invitation $invitation)
     {
-        //
+        $fields = $request->validated();
+        $invitation->delete($invitation);
+
+        $userPage = $fields['userPage'];
+        $showResult;
+        if ($fields['is_attendee']) {
+            $showResult = new Request([
+                'attendees' => 1,
+                'userPage' => $userPage
+            ]);
+        } else {
+            $showResult = new Request([
+                'attendees' => 0,
+                'userPage' => $userPage
+            ]);
+        }
+        return $this->index($showResult, $event);
     }
 }

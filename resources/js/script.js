@@ -80,6 +80,18 @@ $(document).on('click', '.inviteBtn', function(e) {
     sendInvitation(ids[0], ids[1], e.target);
 });
 
+$(document).on('click', '.uninviteBtn', function(e) {
+    e.preventDefault();
+    let ids = e.target.id.split('-');
+    uninvite(ids[1], ids[2], e.target, 0);
+});
+
+$(document).on('click', '.uninviteAttendeeBtn', function(e) {
+    e.preventDefault();
+    let ids = e.target.id.split('-');
+    uninvite(ids[1], ids[2], e.target, 1);
+});
+
 $(document).on('click', '.userPagination nav .pagination li a', function(e) {
     e.preventDefault();
 
@@ -91,9 +103,9 @@ $(document).on('click', '.userPagination nav .pagination li a', function(e) {
     if($($(e.target).parents('.userPagination')).hasClass('sendingPagination')) {
         url = '/events/'+ $(e.target).parents('.sendingPagination')[0].id.substring('10') + '/invitations/create?userPage=' + $(e.target).text();
     } else if($($(e.target).parents('.userPagination')).hasClass('pendingPagination')) {
-        url = '/events/'+ $(e.target).parents('.pendingPagination')[0].id.substring('10') + '/invitations?userPage=' + $(e.target).text();
+        url = '/events/'+ $(e.target).parents('.pendingPagination')[0].id.substring('10') + '/invitations?attendees=0&userPage=' + $(e.target).text();
     } else {
-        url = '/events/'+ $(e.target).parents('.attendeesPagination')[0].id.substring('10') + '/attendees?userPage=' + $(e.target).text();
+        url = '/events/'+ $(e.target).parents('.attendeesPagination')[0].id.substring('10') + '/invitations?attendees=1&userPage=' + $(e.target).text();
     }
     
     $.ajax({
@@ -102,6 +114,20 @@ $(document).on('click', '.userPagination nav .pagination li a', function(e) {
         dataType: 'html',
         cache:false,
         success:function(result) {
+            $('#' + $(e.target).parents('.userPagination')[0].id.substring('10')).siblings('.editVisibilityForm').replaceWith(result);
+            $('#' + $(e.target).parents('.userPagination')[0].id.substring('10')).siblings('.editVisibilityForm').css('display', 'block');
+            if(window.location.search) {
+                let searchParams = new URLSearchParams(window.location.search);
+                if(searchParams.has('userPage')) {
+                    searchParams.set('userPage', $(e.target).text());
+                } else {
+                    searchParams.append('userPage', $(e.target).text());
+                }
+                url = window.location.pathname + "?" + searchParams.toString();
+            } else {
+                url = window.location.pathname + '?userPage=' + $(e.target).text();
+            }
+            history.pushState(null, "", url);
             $($(e.target).parents('.editVisibilityForm')).replaceWith(result);
         }
     });
@@ -190,9 +216,9 @@ $(document).on('click', '.invitations-nav', function(e) {
     if($(e.target).hasClass('nav-send')) {
         url = '/events/'+ eventId + '/invitations/create';
     } else if ($(e.target).hasClass('nav-pending')) {
-        url = '/events/'+ eventId + '/invitations';
+        url = '/events/'+ eventId + '/invitations?attendees=0';
     } else {
-        url = '/events/'+ eventId + '/attendees';
+        url = '/events/'+ eventId + '/invitations?attendees=1';
     }
 
     $.ajax({
@@ -206,6 +232,32 @@ $(document).on('click', '.invitations-nav', function(e) {
     });
 });
 
+function uninvite(userId, eventId, target, isAttendee) {
+    let userPage = 1;
+
+    if(window.location.search) {
+        let searchParams = new URLSearchParams(window.location.search);
+        if(searchParams.has('userPage')) {
+            userPage = searchParams.get('userPage');
+        }
+    }
+
+    $.ajaxSetup({
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+    });
+    $.ajax({
+        type: 'DELETE',
+        url: $("#uninviteRoute" + userId + '-' + eventId).val(),
+        data: {
+            'is_attendee': isAttendee,
+            'userPage': userPage
+        },
+        success:function(result) {
+            $($(target).parents('.editVisibilityForm')).replaceWith(result);
+        },
+    });
+}
+
 function sendInvitation(userId, eventId, target) {
     $.ajaxSetup({
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
@@ -216,8 +268,7 @@ function sendInvitation(userId, eventId, target) {
         data: {
             'user_id': userId,
         },
-        success:function(form) {
-            console.log(form);
+        success:function() {
             $(target).replaceWith('<p class="fst-italic">Invitation sent</p>');
         },
     });
