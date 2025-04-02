@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Attendee;
 use App\Models\Event;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreAttendeeRequest;
 use App\Http\Requests\DestroyAttendeeRequest;
@@ -15,9 +16,16 @@ class AttendeeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Event $event)
     {
-        //
+        $attendees = Attendee::where('event_id', '=', $event['id'])->pluck('user_id');
+        $users = User::whereIn('id', $attendees);
+        
+        return View::make('edit-visibility-form')->with([
+            'users' => $users->paginate(10, ['*'], 'userPage'),
+            'event' => $event,
+            'page' => 'attendees'
+        ]);
     }
 
     /**

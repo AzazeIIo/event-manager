@@ -41,7 +41,6 @@
         </div>
     </div>
     @if (Auth::check() && $includeform)
-        @include('edit-visibility-form')
         @include('edit-event-form')
         <div class="dropdown-center center options">
             <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">

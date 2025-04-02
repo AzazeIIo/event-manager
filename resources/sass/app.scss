@@ -47,11 +47,6 @@ html {
     display: none;
 }
 
-.editVisibilityForm {
-    margin-top: 1rem;
-    display: none;
-}
-
 .image-small {
     height: 5rem;
     width: 5rem;
@@ -133,4 +128,17 @@ main {
     position: absolute;
     bottom: 0;
     right: 1rem;
+}
+
+p .fst-italic {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.userRow {
+    align-items: center;
+}
+
+.userRow:nth-child(odd) {
+    background-color: #dcd1dd;
 }

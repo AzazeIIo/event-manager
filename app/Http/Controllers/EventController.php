@@ -25,7 +25,6 @@ class EventController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::paginate(10, ['*'], 'userPage');
         $events;
         $types = Type::all();
         $includeform = false;
@@ -84,21 +83,16 @@ class EventController extends Controller
         }
 
         if($request->ajax()) {
-            if($request['userPage']) {
-                return $users;
-            }
             return View::make('event-page')->with([
                 'events' => $events->paginate(10, ['*'], 'eventPage'),
                 'types' => $types,
                 'includeform' => $includeform,
-                'users' => $users
             ]);
         }
         return View::make('events')->with([
             'events' => $events->paginate(10, ['*'], 'eventPage'),
             'types' => $types,
             'includeform' => $includeform,
-            'users' => $users
         ]);
         
     }
@@ -147,7 +141,6 @@ class EventController extends Controller
             'event' => $event,
             'types' => Type::all(),
             'includeform' => true,
-            'users' => User::paginate(10, ['*'], 'userPage')
         ]);
     }
 
@@ -218,7 +211,6 @@ class EventController extends Controller
             'event' => $event,
             'types' => Type::all(),
             'includeform' => true,
-            'users' => User::paginate(10, ['*'], 'userPage')
         ]);
     }
 

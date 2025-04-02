@@ -32,9 +32,20 @@ $(document).on('click', '.editEventBtn', function(e) {
 });
 
 $(document).on('click', '.editVisibilityBtn', function(e) {
-    let eventCard = $('#'+e.target.id.substring(6));
-    eventCard.css('display', 'none');
-    eventCard.siblings('.editVisibilityForm').css('display', 'block');
+    let eventId = e.target.id.substring(6);
+    let eventCard = $('#'+eventId);
+    
+    let url = '/events/'+ eventId + '/invitations/create';
+
+    $.ajax({
+        url : url,
+        type: 'GET',
+        dataType: 'html',
+        cache: false,
+        success:function(result) {
+            $(eventCard).replaceWith(result);
+        }
+    });
 });
 
 $(document).on('click', '.deleteImgBtn', function(e) {
@@ -75,7 +86,15 @@ $(document).on('click', '.userPagination nav .pagination li a', function(e) {
     $('li').removeClass('active');
     $(this).parent('li').addClass('active');
 
-    let url = '/events/'+ $(e.target).parents('.userPagination')[0].id.substring('10') + '/invitations?userPage=' + $(e.target).text();
+    let url;
+
+    if($($(e.target).parents('.userPagination')).hasClass('sendingPagination')) {
+        url = '/events/'+ $(e.target).parents('.sendingPagination')[0].id.substring('10') + '/invitations/create?userPage=' + $(e.target).text();
+    } else if($($(e.target).parents('.userPagination')).hasClass('pendingPagination')) {
+        url = '/events/'+ $(e.target).parents('.pendingPagination')[0].id.substring('10') + '/invitations?userPage=' + $(e.target).text();
+    } else {
+        url = '/events/'+ $(e.target).parents('.attendeesPagination')[0].id.substring('10') + '/attendees?userPage=' + $(e.target).text();
+    }
     
     $.ajax({
         url : url,
@@ -83,20 +102,7 @@ $(document).on('click', '.userPagination nav .pagination li a', function(e) {
         dataType: 'html',
         cache:false,
         success:function(result) {
-            $('#' + $(e.target).parents('.userPagination')[0].id.substring('10')).siblings('.editVisibilityForm').replaceWith(result);
-            $('#' + $(e.target).parents('.userPagination')[0].id.substring('10')).siblings('.editVisibilityForm').css('display', 'block');
-            if(window.location.search) {
-                let searchParams = new URLSearchParams(window.location.search);
-                if(searchParams.has('userPage')) {
-                    searchParams.set('userPage', $(e.target).text());
-                } else {
-                    searchParams.append('userPage', $(e.target).text());
-                }
-                url = window.location.pathname + "?" + searchParams.toString();
-            } else {
-                url = window.location.pathname + '?userPage=' + $(e.target).text();
-            }
-            history.pushState(null, "", url);
+            $($(e.target).parents('.editVisibilityForm')).replaceWith(result);
         }
     });
 });
@@ -173,9 +179,34 @@ $('#searchBtn').on('click', function (e) {
     
 });
 
+$(document).on('click', '.invitations-nav', function(e) {
+    let eventId = e.target.id.split('-')[1];
+    $('.nav-'+eventId).removeAttr('aria-current');
+    $('.nav-'+eventId).removeClass('active');
+    $('#'+e.target.id).attr('aria-current', 'page');
+    $('#'+e.target.id).addClass('active');
+
+    let url;
+    if($(e.target).hasClass('nav-send')) {
+        url = '/events/'+ eventId + '/invitations/create';
+    } else if ($(e.target).hasClass('nav-pending')) {
+        url = '/events/'+ eventId + '/invitations';
+    } else {
+        url = '/events/'+ eventId + '/attendees';
+    }
+
+    $.ajax({
+        url : url,
+        type: 'GET',
+        dataType: 'html',
+        cache: false,
+        success:function(result) {
+            $($(e.target).parents('.editVisibilityForm')).replaceWith(result);
+        }
+    });
+});
+
 function sendInvitation(userId, eventId, target) {
-    console.log($("#inviteRoute" + userId + '-' + eventId).val());
-    
     $.ajaxSetup({
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
     });

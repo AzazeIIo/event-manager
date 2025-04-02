@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Invitation;
 use App\Models\Event;
 use App\Models\User;
+use App\Models\Attendee;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreInvitationRequest;
 use Auth;
@@ -17,18 +18,30 @@ class InvitationController extends Controller
      */
     public function index(Event $event)
     {
+        $invitedUsers = Invitation::where('event_id', '=', $event['id'])->pluck('user_id');
+        $attendees = Attendee::where('event_id', '=', $event['id'])->pluck('user_id');
+        $pendingUsers = User::whereIn('id', $invitedUsers)->whereNotIn('id', $attendees);
+        
         return View::make('edit-visibility-form')->with([
-            'users' => User::paginate(10, ['*'], 'userPage'),
+            'users' => $pendingUsers->paginate(10, ['*'], 'userPage'),
             'event' => $event,
+            'page' => 'pending'
         ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Event $event)
     {
+        $invitedUsers = Invitation::where('event_id', '=', $event['id'])->pluck('user_id');
+        $uninvitedUsers = User::whereNotIn('id', $invitedUsers);
         
+        return View::make('edit-visibility-form')->with([
+            'users' => $uninvitedUsers->paginate(10, ['*'], 'userPage'),
+            'event' => $event,
+            'page' => 'sending'
+        ]);
     }
 
     /**
