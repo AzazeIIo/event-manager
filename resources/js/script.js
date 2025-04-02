@@ -66,7 +66,7 @@ $(document).on('click', '.leaveEventBtn', function(e) {
 $(document).on('click', '.inviteBtn', function(e) {
     e.preventDefault();
     let ids = e.target.id.split('-');
-    sendInvitation(ids[0], ids[1]);
+    sendInvitation(ids[0], ids[1], e.target);
 });
 
 $(document).on('click', '.userPagination nav .pagination li a', function(e) {
@@ -173,7 +173,7 @@ $('#searchBtn').on('click', function (e) {
     
 });
 
-function sendInvitation(userId, eventId) {
+function sendInvitation(userId, eventId, target) {
     console.log($("#inviteRoute" + userId + '-' + eventId).val());
     
     $.ajaxSetup({
@@ -187,7 +187,7 @@ function sendInvitation(userId, eventId) {
         },
         success:function(form) {
             console.log(form);
-            
+            $(target).replaceWith('<p class="fst-italic">Invitation sent</p>');
         },
     });
 }

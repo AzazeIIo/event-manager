@@ -22,7 +22,7 @@ class InvitationFactory extends Factory
         $privateEvents = Event::where('is_public', '=', false)->pluck('id');
         $eventId = fake()->randomElement($privateEvents);
         $invitedUsers = Invitation::where('event_id', '=', $eventId)->pluck('user_id');
-        $uninvitedUsers = User::whereNotIn('user_id', $invitedUsers)->get();
+        $uninvitedUsers = User::whereNotIn('id', $invitedUsers)->get();
 
         return [
             'event_id' => $eventId,

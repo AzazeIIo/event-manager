@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\User;
 use App\Models\Event;
 use App\Models\Invitation;
+use App\Models\Attendee;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Attendees>
@@ -19,12 +20,17 @@ class AttendeeFactory extends Factory
      */
     public function definition(): array
     {
-        $publicEvents = Event::where('is_public', '=', true)->pluck('id');
         $users = User::pluck('id');
+        $randomUser = fake()->randomElement($users);
+
+        $attending = Attendee::where('user_id', '=', $randomUser)->pluck('event_id');
+        $invitedTo = Invitation::where('user_id', '=', $randomUser)->whereNotIn('event_id', $attending)->pluck('event_id');
+        $publicEvents = Event::where('is_public', '=', true)->whereNotIn('id', $attending)->pluck('id');
+        $availableEvents = $invitedTo->merge($publicEvents);
 
         return [
-            'event_id' => fake()->randomElement($publicEvents),
-            'user_id' => fake()->randomElement($users),
+            'event_id' => fake()->randomElement($availableEvents),
+            'user_id' => $randomUser,
         ];
     }
 }

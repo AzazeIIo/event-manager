@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Event;
 use App\Models\Invitation;
 use App\Models\Attendee;
+use App\Models\EventType;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -22,8 +23,16 @@ class DatabaseSeeder extends Seeder
 
         Event::factory(100)->create();
 
-        Invitation::factory(100)->create();
+        for($i = 0; $i != 200; $i++) {
+            EventType::factory()->create();
+        }
 
-        Attendee::factory(100)->create();
+        for($i = 0; $i != 200; $i++) {
+            Invitation::factory()->create();
+        }
+
+        for($i = 0; $i != 200; $i++) {
+            Attendee::factory()->create();
+        }
     }
 }
