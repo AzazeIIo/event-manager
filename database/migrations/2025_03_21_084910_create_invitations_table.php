@@ -32,6 +32,14 @@ return new class extends Migration
                         SET MESSAGE_TEXT = 'Public events are visible to everyone.';
                 END IF;
             END;");
+
+        DB::unprepared("CREATE TRIGGER kick_uninvited_attendees
+            AFTER DELETE
+            ON invitations
+            FOR EACH ROW
+            BEGIN
+                DELETE FROM attendees WHERE user_id = old.user_id;
+            END;");
     }
 
     /**
