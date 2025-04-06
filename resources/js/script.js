@@ -379,7 +379,7 @@ function createEvent() {
             }
         },
         success:function(result) {
-            $('#results').replaceWith(result);
+            $('#results').html(result);
 
             $('#name').val('');
             $('#date_start').val('');
