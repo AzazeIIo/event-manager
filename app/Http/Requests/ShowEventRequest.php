@@ -16,7 +16,14 @@ class ShowEventRequest extends FormRequest
     public function authorize(): bool
     {
         $event = Route::current()->parameters['event'];
-        if($event['is_public'] || $event['owner_id'] == Auth::user()->id) {
+        
+        if($event['is_public']) {
+            return true;
+        }
+        if (!Auth::check()) {
+            return false;
+        }
+        if($event['owner_id'] == Auth::user()->id) {
             return true;
         }
         $invitedTo = Event::whereIn('id', Invitation::where('user_id', '=', Auth::user()->id)->select('event_id'))->pluck('id')->toArray();

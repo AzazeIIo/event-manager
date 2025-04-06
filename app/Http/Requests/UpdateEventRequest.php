@@ -24,7 +24,7 @@ class UpdateEventRequest extends FormRequest
      */
     public function rules(): array
     {
-        if ($_SERVER['REQUEST_METHOD'] == 'PATCH') {
+        if (request()->method() == 'PATCH') {
             return [];
         }
 

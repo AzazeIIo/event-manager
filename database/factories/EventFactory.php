@@ -36,4 +36,11 @@ class EventFactory extends Factory
             'is_public' => fake()->boolean()
         ];
     }
+
+    public function noImage(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'image' => null,
+        ]);
+    }
 }
