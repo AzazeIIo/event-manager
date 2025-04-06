@@ -50,7 +50,7 @@ class InvitationController extends Controller
     public function create(Event $event)
     {
         $invitedUsers = Invitation::where('event_id', '=', $event['id'])->pluck('user_id');
-        $uninvitedUsers = User::whereNotIn('id', $invitedUsers);
+        $uninvitedUsers = User::whereNotIn('id', $invitedUsers)->whereNot('id', '=', Auth::user()->id);
         
         return View::make('edit-visibility-form')->with([
             'users' => $uninvitedUsers->paginate(10, ['*'], 'userPage'),

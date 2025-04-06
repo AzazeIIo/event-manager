@@ -119,7 +119,7 @@
     </div>
 
     <div class="row mb-3">
-        <div class="col-sm-6 offset-md-4">
+        <div class="col-sm-6 offset-sm-4">
             <div class="form-check">
                 <input class="form-check-input" type="radio" name="is_public" id="private" value="0" required>
 
@@ -132,7 +132,7 @@
     </div>
 
     <div class="row mb-0">
-        <div class="col-md-8 offset-md-4">
+        <div class="col-md-8 offset-sm-4">
             <button id="createEventBtn" type="submit" class="btn btn-primary">
                 {{ __('Create') }}
             </button>

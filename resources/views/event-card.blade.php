@@ -48,7 +48,7 @@
             </button>
             <ul class="dropdown-menu">
                 <li>
-                    <button class="btn btn-primary dropdown-item editVisibilityBtn" id="invite{{ $event['id'] }}">Invitations</button>
+                    <button class="btn btn-primary dropdown-item editVisibilityBtn" id="invite{{ $event['id'] }}">{{$event['is_public'] ? 'Attendees' : 'Invitations'}}</button>
                 </li>
                 <li>
                     <button class="btn btn-primary dropdown-item editEventBtn" id="edit{{ $event['id'] }}">Edit</button>

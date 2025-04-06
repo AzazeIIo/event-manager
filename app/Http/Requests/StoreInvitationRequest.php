@@ -32,7 +32,9 @@ class StoreInvitationRequest extends FormRequest
         return [
             'user_id' => [
                 'required',
-                'exists:users,id',
+                Rule::exists('users', 'id')->where(function ($q) {
+                    $q->whereNot('id', '=', Auth::user()->id);
+                }),
                 Rule::unique('invitations', 'user_id')->where('event_id', $this->route('event.id'))
             ]
         ];

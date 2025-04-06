@@ -45,16 +45,20 @@ class DashboardController extends Controller
         date_default_timezone_set('Europe/Budapest');
         $date = new \DateTimeImmutable();
 
-        // $events = Event::where('owner_id', '=', Auth::user()->id)->whereDate('date_start', '>=', $date->format('Y-m-d'))->whereDate('date_start', '<=', $date->modify('+29 days')->format('Y-m-d'))->select(DB::raw('count(*) as count, CAST(date_start AS DATE) as start'))->groupBy(DB::raw('CAST(date_start AS DATE)'))->get();
-        $events = Event::where('owner_id', '=', Auth::user()->id)
+        $allYourEvents = Event::where('owner_id', '=', Auth::user()->id)
             ->orWhere(function ($q) {
                 $q->whereIn('id', (Attendee::where('user_id', '=', Auth::user()->id)->pluck('event_id')));
-            })
-            ->whereDate('date_start', '>=', $date->format('Y-m-d'))
-            ->whereDate('date_start', '<=', $date->modify('+29 days')->format('Y-m-d'))
+            })->pluck('id');
+        $currentEvents = Event::whereIn('id', $allYourEvents)
+            ->where('date_start', '<', $date->format('Y-m-d'))
+            ->where('date_end', '>=', $date->format('Y-m-d'))
             ->select(DB::raw('CAST(date_start AS DATE) as start_day, CAST(date_end AS DATE) as end_day'))
-            ->orderBy('date_start', 'asc')
             ->get();
+        $futureEvents = Event::whereIn('id', $allYourEvents)
+            ->where('date_start', '>=', $date->format('Y-m-d'))
+            ->where('date_start', '<=', $date->modify('+29 days')->format('Y-m-d'))
+            ->select(DB::raw('CAST(date_start AS DATE) as start_day, CAST(date_end AS DATE) as end_day'))
+            ->get();        
 
         $days = [];
         $current = new \DateTime();
@@ -64,7 +68,7 @@ class DashboardController extends Controller
 
         $count = array_fill(0, 30, 0);
 
-        foreach ($events as $event) {
+        foreach ($futureEvents as $event) {
             $indexStart = array_search($event['start_day'], $days);
             if($event['end_day'] == null) {
                 $count[$indexStart]++;
@@ -76,6 +80,13 @@ class DashboardController extends Controller
                 for ($j = $indexStart; $j <= $indexEnd; $j++) { 
                     $count[$j]++;
                 }
+            }
+        }
+
+        foreach ($currentEvents as $event) {
+            $indexStart = array_search($event['end_day'], $days);
+            for ($j = $indexStart; $j >= 0; $j--) { 
+                $count[$j]++;
             }
         }
 
