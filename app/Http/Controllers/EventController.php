@@ -137,8 +137,10 @@ class EventController extends Controller
             }
         }
 
-        return View::make('event-card')->with([
-            'event' => $event,
+        $events = Event::where('owner_id', '=', Auth::user()->id)->orderBy('date_start', 'asc');
+
+        return View::make('event-page')->with([
+            'events' => $events->paginate(10, ['*'], 'eventPage'),
             'types' => Type::all(),
             'includeform' => true,
         ]);
@@ -149,6 +151,14 @@ class EventController extends Controller
      */
     public function show(ShowEventRequest $request, Event $event)
     {
+        $fields = $request->validated();
+        if(isset($fields['card'])) {
+            return View::make('event-card')->with([
+                'event' => $event,
+                'types' => Type::all(),
+                'includeform' => true,
+            ]);
+        }
         if(Auth::guest()) {
             return View::make('event-details')->with([
                 'event' => Event::where('id', '=', $event['id'])->with('allAttendees')->get()[0],
@@ -167,7 +177,11 @@ class EventController extends Controller
      */
     public function edit(Event $event)
     {
-        //
+        return View::make('edit-event-form')->with([
+            'event' => $event,
+            'types' => Type::all(),
+            'includeform' => true,
+        ]);
     }
 
     /**

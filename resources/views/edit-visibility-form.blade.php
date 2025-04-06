@@ -1,3 +1,4 @@
+<div id="{{ $event['id'] }}">
 <div class="row g-0 editVisibilityForm">
     <div class="col-lg-11">
         <div class="card-body">
@@ -13,6 +14,9 @@
                 <li class="nav-item">
                     <button id="attendees-{{ $event['id'] }}" class="nav-link invitations-nav nav-attendees nav-{{ $event['id'] }} {{ $page == 'attendees' ? 'active' : ''}}" {{ $page == 'attendees' ? 'aria-current="page"' : ''}}>Attendees</button>
                 </li>
+                <button class="btn btn-secondary closeInvitationsBtn ms-auto">
+                    Close
+                </button>
             </ul>
         
             <div class="text-center" id="errorMsgContainer"></div>
@@ -35,7 +39,7 @@
                                     Invite
                                 </button>
                             </form>
-                            @else
+                            @elseif(!$event['is_public'])
                             <form method="POST" class="deleteInvitationForm">
                                 @csrf
                                 <input type="hidden" name="_route" id="uninviteRoute{{ $user['id'] }}-{{ $event['id'] }}" value="{{ route('events.invitations.destroy', [$event['id'], $user['invitations'][0]['id']]) }}">
@@ -54,4 +58,5 @@
             </div>
         </div>
     </div>
+</div>
 </div>

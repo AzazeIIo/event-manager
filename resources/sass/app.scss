@@ -44,7 +44,6 @@ html {
 
 .editEventForm {
     margin-top: 1rem;
-    display: none;
 }
 
 .image-small {
@@ -137,8 +136,24 @@ p.fst-italic {
 
 .userRow {
     align-items: center;
+    height: 3rem;
 }
 
 .userRow:nth-child(odd) {
     background-color: #dcd1dd;
+}
+
+.newInvitationForm {
+    display: flex;
+    justify-content: end;
+    margin-right: 1.3rem;
+}
+
+.deleteInvitationForm {
+    display: flex;
+    justify-content: end;
+}
+
+.closeInvitationsBtn {
+    margin-right: 3rem;
 }

@@ -21,17 +21,17 @@ class InvitationController extends Controller
     public function index(Request $request, Event $event)
     {
         $invitedUsers = Invitation::where('event_id', '=', $event['id'])->pluck('user_id');
-        $attendees = Attendee::where('event_id', '=', $event['id'])->pluck('user_id');
+        $eventAttendees = Attendee::where('event_id', '=', $event['id'])->pluck('user_id');
         $users;
         $page;
 
         if($request->attendees) {
-            $users = User::whereIn('id', $attendees)->with(['invitations' => function($q) use ($event) {
+            $users = User::whereIn('id', $eventAttendees)->with(['invitations' => function($q) use ($event) {
                 $q->where('invitations.event_id', '=', $event['id']);
             }]);
             $page = 'attendees';
         } else {
-            $users = User::whereIn('id', $invitedUsers)->whereNotIn('id', $attendees)->with(['invitations' => function($q) use ($event) {
+            $users = User::whereIn('id', $invitedUsers)->whereNotIn('id', $eventAttendees)->with(['invitations' => function($q) use ($event) {
                 $q->where('invitations.event_id', '=', $event['id']);
             }]);
             $page = 'pending';

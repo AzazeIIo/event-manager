@@ -41,14 +41,17 @@
         </div>
     </div>
     @if (Auth::check() && $includeform)
-        @include('edit-event-form')
         <div class="dropdown-center center options">
             <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <img src="options.png" alt="Options">
             </button>
             <ul class="dropdown-menu">
                 <li>
-                    <button class="btn btn-primary dropdown-item editVisibilityBtn" id="invite{{ $event['id'] }}">{{$event['is_public'] ? 'Attendees' : 'Invitations'}}</button>
+                    @if($event['is_public'])
+                    <button class="btn btn-primary dropdown-item showAttendeesBtn" id="invite{{ $event['id'] }}">Attendees</button>
+                    @else
+                    <button class="btn btn-primary dropdown-item editVisibilityBtn" id="invite{{ $event['id'] }}">Invitations</button>
+                    @endif
                 </li>
                 <li>
                     <button class="btn btn-primary dropdown-item editEventBtn" id="edit{{ $event['id'] }}">Edit</button>

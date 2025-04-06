@@ -22,4 +22,14 @@ class ShowEventRequest extends FormRequest
         $invitedTo = Event::whereIn('id', Invitation::where('user_id', '=', Auth::user()->id)->select('event_id'))->pluck('id')->toArray();
         return in_array($event['id'], $invitedTo);
     }
+
+    public function rules(): array
+    {
+        return [
+            'card' => [
+                'sometimes',
+                'boolean',
+            ]
+        ];
+    }
 }

@@ -27,8 +27,17 @@ $('#confirmImgDeletion').on('click', function(e) {
 
 $(document).on('click', '.editEventBtn', function(e) {
     let eventCard = $('#'+e.target.id.substring(4));
-    eventCard.css('display', 'none');
-    eventCard.siblings('.editEventForm').css('display', 'block');
+    let url = '/events/'+ e.target.id.substring(4) + '/edit';
+
+    $.ajax({
+        url : url,
+        type: 'GET',
+        dataType: 'html',
+        cache: false,
+        success:function(result) {
+            $(eventCard).replaceWith(result);
+        }
+    });
 });
 
 $(document).on('click', '.editVisibilityBtn', function(e) {
@@ -44,6 +53,28 @@ $(document).on('click', '.editVisibilityBtn', function(e) {
         cache: false,
         success:function(result) {
             $(eventCard).replaceWith(result);
+            history.pushState(null, '', window.location.pathname + '?userPage=1');
+        }
+    });
+});
+
+$(document).on('click', '.showAttendeesBtn', function(e) {
+    let eventId = e.target.id.substring(6);
+    let eventCard = $('#'+eventId);
+    
+    let url = '/events/'+ eventId + '/invitations/';
+
+    $.ajax({
+        url : url,
+        type: 'GET',
+        dataType: 'html',
+        data: {
+            'attendees': 1
+        },
+        cache: false,
+        success:function(result) {
+            $(eventCard).replaceWith(result);
+            history.pushState(null, '', window.location.pathname + '?userPage=1');
         }
     });
 });
@@ -59,9 +90,21 @@ $(document).on('click', '.confirmEditEventBtn', function(e) {
 });
 
 $(document).on('click', '.resetEditEventBtn', function(e) {
-    let eventCard = $('#'+e.target.id.substring(5));
-    eventCard.css('display', 'block');
-    eventCard.siblings('.editEventForm').css('display', 'none');
+    let eventCard = $('#'+e.target.id.substring(5)).parent();
+    let url = '/events/'+ e.target.id.substring(5);
+
+    $.ajax({
+        url : url,
+        type: 'GET',
+        dataType: 'html',
+        data: {
+            'card': 1
+        },
+        cache: false,
+        success:function(result) {
+            $(eventCard).replaceWith(result);
+        }
+    });
 });
 
 $(document).on('click', '.joinEventBtn', function(e) {
@@ -95,17 +138,26 @@ $(document).on('click', '.uninviteAttendeeBtn', function(e) {
 $(document).on('click', '.userPagination nav .pagination li a', function(e) {
     e.preventDefault();
 
-    $('li').removeClass('active');
+    $('.userPagination nav .pagination li').removeClass('active');
     $(this).parent('li').addClass('active');
 
     let url;
 
+    let searchParams = new URL(e.target.href).searchParams;
+    let page = searchParams.get('userPage');
+    console.log(page);
+    console.log(searchParams);
+    console.log(e.target.href.search);
+    
+    
+    
+
     if($($(e.target).parents('.userPagination')).hasClass('sendingPagination')) {
-        url = '/events/'+ $(e.target).parents('.sendingPagination')[0].id.substring('10') + '/invitations/create?userPage=' + $(e.target).text();
+        url = '/events/'+ $(e.target).parents('.sendingPagination')[0].id.substring('10') + '/invitations/create?userPage=' + page;
     } else if($($(e.target).parents('.userPagination')).hasClass('pendingPagination')) {
-        url = '/events/'+ $(e.target).parents('.pendingPagination')[0].id.substring('10') + '/invitations?attendees=0&userPage=' + $(e.target).text();
+        url = '/events/'+ $(e.target).parents('.pendingPagination')[0].id.substring('10') + '/invitations?attendees=0&userPage=' + page;
     } else {
-        url = '/events/'+ $(e.target).parents('.attendeesPagination')[0].id.substring('10') + '/invitations?attendees=1&userPage=' + $(e.target).text();
+        url = '/events/'+ $(e.target).parents('.attendeesPagination')[0].id.substring('10') + '/invitations?attendees=1&userPage=' + page;
     }
     
     $.ajax({
@@ -119,13 +171,13 @@ $(document).on('click', '.userPagination nav .pagination li a', function(e) {
             if(window.location.search) {
                 let searchParams = new URLSearchParams(window.location.search);
                 if(searchParams.has('userPage')) {
-                    searchParams.set('userPage', $(e.target).text());
+                    searchParams.set('userPage', page);
                 } else {
-                    searchParams.append('userPage', $(e.target).text());
+                    searchParams.append('userPage', page);
                 }
                 url = window.location.pathname + "?" + searchParams.toString();
             } else {
-                url = window.location.pathname + '?userPage=' + $(e.target).text();
+                url = window.location.pathname + '?userPage=' + page;
             }
             history.pushState(null, "", url);
             $($(e.target).parents('.editVisibilityForm')).replaceWith(result);
@@ -214,11 +266,11 @@ $(document).on('click', '.invitations-nav', function(e) {
 
     let url;
     if($(e.target).hasClass('nav-send')) {
-        url = '/events/'+ eventId + '/invitations/create';
+        url = '/events/'+ eventId + '/invitations/create?userPage=1';
     } else if ($(e.target).hasClass('nav-pending')) {
-        url = '/events/'+ eventId + '/invitations?attendees=0';
+        url = '/events/'+ eventId + '/invitations?attendees=0&userPage=1';
     } else {
-        url = '/events/'+ eventId + '/invitations?attendees=1';
+        url = '/events/'+ eventId + '/invitations?attendees=1&userPage=1';
     }
 
     $.ajax({
@@ -228,6 +280,7 @@ $(document).on('click', '.invitations-nav', function(e) {
         cache: false,
         success:function(result) {
             $($(e.target).parents('.editVisibilityForm')).replaceWith(result);
+            history.pushState(null, '', '/myevents?userPage=1');
         }
     });
 });
@@ -316,7 +369,7 @@ function createEvent() {
             }
         },
         success:function(result) {
-            $('#results').prepend(result);
+            $('#results').replaceWith(result);
 
             $('#name').val('');
             $('#date_start').val('');
