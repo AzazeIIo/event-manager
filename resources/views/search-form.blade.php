@@ -5,7 +5,7 @@
         <label for="name-search" class="col-lg-12 col-sm-4 col-12 col-form-label text-lg-start text-sm-end text-start ps-3"><strong>{{ __('Event Name') }}</strong></label>
 
         <div class="col-lg-12 col-sm-6 col-12">
-            <input id="name-search" type="text" class="form-control white-field @error('name-search') is-invalid @enderror" name="name" value="{{ old('name-search') }}" autocomplete="name-search">
+            <input id="name-search" maxlength="50" type="text" class="form-control white-field @error('name-search') is-invalid @enderror" name="name" value="{{ old('name-search') }}" autocomplete="name-search">
 
             <span id="invalid-name-search" class="invalid-feedback" role="alert">
                 <strong></strong>
@@ -41,7 +41,7 @@
         <label for="city-search" class="col-lg-12 col-sm-4 col-12 col-form-label text-lg-start text-sm-end text-start ps-3"><strong>{{ __('City') }}</strong></label>
 
         <div class="col-lg-12 col-sm-6 col-12">
-            <input id="city-search" type="text" class="form-control white-field @error('city-search') is-invalid @enderror" name="city" value="{{ old('city-search') }}" autocomplete="city-search">
+            <input id="city-search" maxlength="50" type="text" class="form-control white-field @error('city-search') is-invalid @enderror" name="city" value="{{ old('city-search') }}" autocomplete="city-search">
 
             <span id="invalid-city-search" class="invalid-feedback" role="alert">
                 <strong></strong>
@@ -71,7 +71,7 @@
         <label for="description-search" class="col-lg-12 col-sm-4 col-12 col-form-label text-lg-start text-sm-end text-start ps-3"><strong>{{ __('Description') }}</strong></label>
 
         <div class="col-lg-12 col-sm-6 col-12">
-            <input id="description-search" type="text" class="form-control white-field @error('description-search') is-invalid @enderror" name="description" value="{{ old('description-search') }}" autocomplete="description-search">
+            <input id="description-search" maxlength="5000" type="text" class="form-control white-field @error('description-search') is-invalid @enderror" name="description" value="{{ old('description-search') }}" autocomplete="description-search">
 
             <span id="invalid-description-search" class="invalid-feedback" role="alert">
                 <strong></strong>

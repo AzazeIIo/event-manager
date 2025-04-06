@@ -9,7 +9,7 @@
                     <label for="name{{ $event['id'] }}" class="col-sm-4 col-form-label text-sm-end"><strong>{{ __('Event Name *') }}</strong></label>
 
                     <div class="col-sm-6">
-                        <input id="name{{ $event['id'] }}" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $event['name'] }}" required autocomplete="name" autofocus>
+                        <input id="name{{ $event['id'] }}" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $event['name'] }}" required autocomplete="name" maxlength="50" autofocus>
 
                         <span id="invalid-name{{ $event['id'] }}" class="invalid-feedback" role="alert">
                             <strong></strong>
@@ -45,7 +45,7 @@
                     <label for="city{{ $event['id'] }}" class="col-sm-4 col-form-label text-sm-end"><strong>{{ __('City *') }}</strong></label>
 
                     <div class="col-sm-6">
-                        <input id="city{{ $event['id'] }}" type="text" class="form-control @error('city') is-invalid @enderror" name="city" value="{{ $event['city'] }}" required autocomplete="city" autofocus>
+                        <input id="city{{ $event['id'] }}" type="text" class="form-control @error('city') is-invalid @enderror" name="city" value="{{ $event['city'] }}" required autocomplete="city" maxlength="50" autofocus>
 
                         <span id="invalid-city{{ $event['id'] }}" class="invalid-feedback" role="alert">
                             <strong></strong>
@@ -57,7 +57,7 @@
                     <label for="location{{ $event['id'] }}" class="col-sm-4 col-form-label text-sm-end"><strong>{{ __('Location *') }}</strong></label>
 
                     <div class="col-sm-6">
-                        <input id="location{{ $event['id'] }}" type="text" class="form-control @error('location') is-invalid @enderror" name="location" value="{{ $event['location'] }}" required autocomplete="location" autofocus>
+                        <input id="location{{ $event['id'] }}" type="text" class="form-control @error('location') is-invalid @enderror" name="location" value="{{ $event['location'] }}" maxlength="50" required autocomplete="location" autofocus>
 
                         <span id="invalid-location{{ $event['id'] }}" class="invalid-feedback" role="alert">
                             <strong></strong>
@@ -87,7 +87,7 @@
                     <label for="description{{ $event['id'] }}" class="col-sm-4 col-form-label text-sm-end"><strong>{{ __('Description') }}</strong><br><small class="text-muted">Write up to 5000 characters</small></label>
 
                     <div class="col-sm-6">
-                        <textarea rows="5" id="description{{ $event['id'] }}" class="form-control @error('description') is-invalid @enderror" name="description" value="{{ $event['description'] }}" autocomplete="description" autofocus>{{ $event['description'] }}</textarea>
+                        <textarea rows="5" maxlength="5000" id="description{{ $event['id'] }}" class="form-control @error('description') is-invalid @enderror" name="description" value="{{ $event['description'] }}" autocomplete="description" autofocus>{{ $event['description'] }}</textarea>
 
                         <span id="invalid-description{{ $event['id'] }}" class="invalid-feedback" role="alert">
                             <strong></strong>
@@ -97,7 +97,7 @@
 
                 @if ($event['image'])
                 <div id="img{{ $event['id'] }}" class="row mb-3">
-                    <label for="image" class="col-sm-4 col-form-label text-sm-end"><strong>{{ __('Image') }}</strong></label>
+                    <label for="image" class="col-sm-4 col-form-label text-sm-end"><strong>{{ __('Image') }}</strong><br><small class="text-muted">Max size: 1MB</small></label>
 
                     <div class="col-sm-6">
                         <img src="/storage/{{ $event['image'] }}" alt="..." class="image-small">

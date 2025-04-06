@@ -5,7 +5,7 @@
         <label for="name" class="col-sm-4 col-form-label text-sm-end"><strong>{{ __('Event Name *') }}</strong></label>
 
         <div class="col-sm-6">
-            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" maxlength="50" required autocomplete="name" autofocus>
 
             <span id="invalid-name" class="invalid-feedback" role="alert">
                 <strong></strong>
@@ -41,7 +41,7 @@
         <label for="city" class="col-sm-4 col-form-label text-sm-end"><strong>{{ __('City *') }}</strong></label>
 
         <div class="col-sm-6">
-            <input id="city" type="text" class="form-control @error('city') is-invalid @enderror" name="city" value="{{ old('city') }}" required autocomplete="city" autofocus>
+            <input id="city" type="text" class="form-control @error('city') is-invalid @enderror" name="city" value="{{ old('city') }}" required maxlength="50" autocomplete="city" autofocus>
 
             <span id="invalid-city" class="invalid-feedback" role="alert">
                 <strong></strong>
@@ -53,7 +53,7 @@
         <label for="location" class="col-sm-4 col-form-label text-sm-end"><strong>{{ __('Location *') }}</strong></label>
 
         <div class="col-sm-6">
-            <input id="location" type="text" class="form-control @error('location') is-invalid @enderror" name="location" value="{{ old('location') }}" required autocomplete="location" autofocus>
+            <input id="location" type="text" class="form-control @error('location') is-invalid @enderror" name="location" value="{{ old('location') }}" maxlength="50" required autocomplete="location" autofocus>
 
             <span id="invalid-location" class="invalid-feedback" role="alert">
                 <strong></strong>
@@ -83,7 +83,7 @@
         <label for="description" class="col-sm-4 col-form-label text-sm-end"><strong>{{ __('Description') }}</strong><br><small class="text-muted">Write up to 5000 characters</small></label>
 
         <div class="col-sm-6">
-            <textarea rows="5" id="description" class="form-control @error('description') is-invalid @enderror" name="description" value="{{ old('description') }}" autocomplete="description" autofocus></textarea>
+            <textarea rows="5" id="description" class="form-control @error('description') is-invalid @enderror" name="description" maxlength="5000" value="{{ old('description') }}" autocomplete="description" autofocus></textarea>
 
             <span id="invalid-description" class="invalid-feedback" role="alert">
                 <strong></strong>
@@ -92,7 +92,7 @@
     </div>
 
     <div class="row mb-3">
-        <label for="image" class="col-sm-4 col-form-label text-sm-end"><strong>{{ __('Image') }}</strong></label>
+        <label for="image" class="col-sm-4 col-form-label text-sm-end"><strong>{{ __('Image') }}</strong><br><small class="text-muted">Max size: 1MB</small></label>
 
         <div class="col-sm-6">
             <input class="form-control" type="file" id="image" name="image">

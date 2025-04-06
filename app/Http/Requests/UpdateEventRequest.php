@@ -66,6 +66,11 @@ class UpdateEventRequest extends FormRequest
                 'nullable',
                 'max:5000',
             ],
+            'image' => [
+                'nullable',
+                'image',
+                'max:1024',
+            ],
             'is_public' => [
                 'required',
                 'boolean'
