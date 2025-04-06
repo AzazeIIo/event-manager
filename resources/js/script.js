@@ -90,21 +90,8 @@ $(document).on('click', '.confirmEditEventBtn', function(e) {
 });
 
 $(document).on('click', '.resetEditEventBtn', function(e) {
-    let eventCard = $('#'+e.target.id.substring(5)).parent();
-    let url = '/events/'+ e.target.id.substring(5);
-
-    $.ajax({
-        url : url,
-        type: 'GET',
-        dataType: 'html',
-        data: {
-            'card': 1
-        },
-        cache: false,
-        success:function(result) {
-            $(eventCard).replaceWith(result);
-        }
-    });
+    let eventId = e.target.id.substring(5);
+    reset(eventId);
 });
 
 $(document).on('click', '.joinEventBtn', function(e) {
@@ -284,6 +271,29 @@ $(document).on('click', '.invitations-nav', function(e) {
         }
     });
 });
+
+$(document).on('click', '.closeInvitationsBtn ', function(e) {
+    let eventId = e.target.id.split('-')[1];
+    reset(eventId);
+});
+
+function reset(eventId) {
+    let eventCard = $('#' + eventId).parent();
+    let url = '/events/'+ eventId;
+
+    $.ajax({
+        url : url,
+        type: 'GET',
+        dataType: 'html',
+        data: {
+            'card': 1
+        },
+        cache: false,
+        success:function(result) {
+            $(eventCard).replaceWith(result);
+        }
+    });
+}
 
 function uninvite(userId, eventId, target, isAttendee) {
     let userPage = 1;

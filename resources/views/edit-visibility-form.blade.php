@@ -14,7 +14,7 @@
                 <li class="nav-item">
                     <button id="attendees-{{ $event['id'] }}" class="nav-link invitations-nav nav-attendees nav-{{ $event['id'] }} {{ $page == 'attendees' ? 'active' : ''}}" {{ $page == 'attendees' ? 'aria-current="page"' : ''}}>Attendees</button>
                 </li>
-                <button class="btn btn-secondary closeInvitationsBtn ms-auto">
+                <button id="closeInvitations-{{ $event['id'] }}" class="btn btn-secondary closeInvitationsBtn ms-auto">
                     Close
                 </button>
             </ul>
