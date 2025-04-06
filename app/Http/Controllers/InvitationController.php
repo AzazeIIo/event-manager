@@ -69,31 +69,6 @@ class InvitationController extends Controller
             'user_id' => $fields['user_id'],
             'event_id' => $event['id']
         ]);
-
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Invitation $invitation)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Invitation $invitation)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Invitation $invitation)
-    {
-        //
     }
 
     /**

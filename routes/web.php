@@ -13,9 +13,15 @@ use App\Models\Attendee;
 
 Auth::routes();
 
-Route::resource('events', EventController::class);
-Route::resource('events.attendees', AttendeeController::class);
-Route::resource('events.invitations', InvitationController::class);
+Route::resource('events', EventController::class)->except([
+    'create'
+]);
+Route::resource('events.attendees', AttendeeController::class)->only([
+    'store', 'destroy'
+]);
+Route::resource('events.invitations', InvitationController::class)->except([
+    'show', 'edit', 'update'
+]);
 
 Route::redirect('/', 'events');
 

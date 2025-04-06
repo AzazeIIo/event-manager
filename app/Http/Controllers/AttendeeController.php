@@ -14,22 +14,6 @@ use View;
 class AttendeeController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index(Event $event)
-    {
-        
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(StoreAttendeeRequest $request, Event $event)
@@ -43,30 +27,6 @@ class AttendeeController extends Controller
                     $q->where('attendees.user_id', '=', Auth::user()->id);
                 }])->with('allAttendees')->get()[0],
         ]);
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Attendee $attendee)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Attendee $attendee)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Attendee $attendee)
-    {
-        //
     }
 
     /**
