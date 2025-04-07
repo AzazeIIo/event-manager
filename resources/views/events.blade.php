@@ -81,6 +81,18 @@
     </div>
 </div>
 
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="imageModalLabel">Image</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <img id="clickedImage" src="" alt="...">
+        </div>
+    </div>
+</div>
+
 <div class="toast-container" style="position: fixed; bottom: 1rem; right: 1rem;">
     <div id="newEventToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header">

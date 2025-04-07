@@ -84,6 +84,10 @@ window.addEventListener("popstate", function(e) {
     location.reload();
 });
 
+$(document).on('click', '.userimage', function(e) {
+    $('#clickedImage').prop('src', e.target.src);
+});
+
 function joinEvent(id) {
     $.ajaxSetup({
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},

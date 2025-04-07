@@ -7,7 +7,7 @@
             <div class="card">
                 @if ($event['image'])
                 <div class="card-header p-0">
-                    <img src="{{ '/storage/' . $event['image'] }}" class="userimage img-fluid rounded-top" alt="...">
+                    <img src="{{ '/storage/' . $event['image'] }}" data-bs-toggle="modal" data-bs-target="#imageModal" class="userimage img-fluid rounded-top" alt="...">
                 </div>
                 @endif
                 <div class="card-body">
@@ -54,6 +54,17 @@
                     <p class="private">private</p>
                 @endif
             </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="imageModalLabel">Image</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <img id="clickedImage" src="" alt="...">
         </div>
     </div>
 </div>
