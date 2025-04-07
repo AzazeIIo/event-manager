@@ -9,63 +9,6 @@
                 <div class="card-header">{{ __('Dashboard') }}</div>
                 <div class="card-body pt-0">
                     <div class="row">
-                        <!-- <div class="col-md-4">
-                            <h5>Events you have recently been invited to</h5>
-                            @if(count($privateEvents) == 0)
-                                <p>Nothing to show yet.</p>
-                            @else
-                            <div id="carouselPrivateEvents" class="carousel slide">
-                                <div class="carousel-indicators">
-                                    <button type="button" data-bs-target="#carouselPrivateEvents" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                                    @for($i = 1; $i < min(count($privateEvents), 5); $i++)
-                                    <button type="button" data-bs-target="#carouselPrivateEvents" data-bs-slide-to="{{$i}}" aria-label="Slide {{$i}}"></button>
-                                    @endfor
-                                </div>
-                                <div class="carousel-inner">
-                                    <div class="carousel-item active">
-                                        <a href="/events/{{$privateEvents[0]['id']}}">
-                                        @if($privateEvents[0]['image'])
-                                        <img src="/storage/{{ $privateEvents[0]['image'] }}" class="d-block w-100" alt="...">
-                                        @else
-                                        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-                                            <rect width="100%" height="100%" fill="#777" />
-                                        </svg>
-                                        @endif
-                                        <div class="carousel-caption d-none d-md-block">
-                                            <h5>{{ $privateEvents[0]['name'] }}</h5>
-                                            <p>{{ $privateEvents[0]['date_start'] }}</p>
-                                        </div>
-                                        </a>
-                                    </div>
-                                    @for($i = 1; $i < min(count($privateEvents), 5); $i++)
-                                    <div class="carousel-item">
-                                        <a href="/events/{{$privateEvents[$i]['id']}}">
-                                        @if($privateEvents[$i]['image'])
-                                        <img src="/storage/{{ $privateEvents[$i]['image'] }}" class="d-block w-100" alt="...">
-                                        @else
-                                        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-                                            <rect width="100%" height="100%" fill="#777" />
-                                        </svg>
-                                        @endif
-                                        <div class="carousel-caption d-none d-md-block">
-                                            <h5>{{ $privateEvents[$i]['name'] }}</h5>
-                                            <p>{{ $privateEvents[$i]['date_start'] }}</p>
-                                        </div>
-                                        </a>
-                                    </div>
-                                    @endfor
-                                </div>
-                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselPrivateEvents" data-bs-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Previous</span>
-                                </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#carouselPrivateEvents" data-bs-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Next</span>
-                                </button>
-                            </div>
-                            @endif
-                        </div> -->
                         <div class="col-lg-6">
                             <h5 class="text-center mt-3 mb-3"><strong>Upcoming events you have joined</strong></h5>
                             @if(count($joinedEvents) == 0)

@@ -132,12 +132,6 @@ $(document).on('click', '.userPagination nav .pagination li a', function(e) {
 
     let searchParams = new URL(e.target.href).searchParams;
     let page = searchParams.get('userPage');
-    console.log(page);
-    console.log(searchParams);
-    console.log(e.target.href.search);
-    
-    
-    
 
     if($($(e.target).parents('.userPagination')).hasClass('sendingPagination')) {
         url = '/events/'+ $(e.target).parents('.sendingPagination')[0].id.substring('10') + '/invitations/create?userPage=' + page;

@@ -57,6 +57,10 @@ class StoreEventRequest extends FormRequest
                 'array',
                 'max:3',
             ],
+            'type.*' => [
+                'numeric',
+                'distinct'
+            ],
             'description' => [
                 'nullable',
                 'max:5000',

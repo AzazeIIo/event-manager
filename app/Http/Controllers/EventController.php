@@ -32,27 +32,34 @@ class EventController extends Controller
         if(!Auth::check() && Route::current()->uri != 'events') {
             return redirect('/login');
         }
+
+        date_default_timezone_set('Europe/Budapest');
+        $date = new \DateTimeImmutable();
+
+        $activeEvents = Event::where('date_start', '>=', $date->format('Y-m-d'))->orWhere('date_end', '>=', $date->format('Y-m-d'))->pluck('id');
         
         switch (Route::current()->uri) {
             case 'privateevents':
-                $events = Event::whereIn('id', Invitation::where('user_id', '=', Auth::user()->id)->pluck('event_id'))->with(['attendees' => function($q){
-                    $q->where('attendees.user_id', '=', Auth::user()->id);
-                }])->with('allAttendees')->orderBy('date_start', 'asc');
+                $events = Event::whereIn('id', Invitation::where('user_id', '=', Auth::user()->id)->pluck('event_id'))
+                    ->whereIn('id', $activeEvents)
+                    ->with(['attendees' => function($q){
+                        $q->where('attendees.user_id', '=', Auth::user()->id);
+                    }])->with('allAttendees')->orderBy('date_start', 'asc');
                 break;
             case 'myevents':
-                $events = Event::where('owner_id', '=', Auth::user()->id)->orderBy('date_start', 'asc');
+                $events = Event::where('owner_id', '=', Auth::user()->id)->whereIn('id', $activeEvents)->orderBy('date_start', 'asc');
                 $includeform = true;
                 break;
             case 'joinedevents':
-                $events = Event::whereIn('id', (Attendee::where('user_id', '=', Auth::user()->id)->pluck('event_id')))->with(['attendees' => function($q){
+                $events = Event::whereIn('id', (Attendee::where('user_id', '=', Auth::user()->id)->pluck('event_id')))->whereIn('id', $activeEvents)->with(['attendees' => function($q){
                     $q->where('attendees.user_id', '=', Auth::user()->id);
                 }])->with('allAttendees')->orderBy('date_start', 'asc');
                 break;
             default:
                 if(Auth::guest()) {
-                    $events = Event::where('is_public', '=', true)->with('allAttendees')->orderBy('date_start', 'asc');
+                    $events = Event::where('is_public', '=', true)->whereIn('id', $activeEvents)->with('allAttendees')->orderBy('date_start', 'asc');
                 } else {
-                    $events = Event::where('is_public', '=', true)->with(['attendees' => function($q){
+                    $events = Event::where('is_public', '=', true)->whereIn('id', $activeEvents)->with(['attendees' => function($q){
                         $q->where('attendees.user_id', '=', Auth::user()->id);
                     }])->with('allAttendees')->orderBy('date_start', 'asc');
                 }
@@ -104,9 +111,9 @@ class EventController extends Controller
     {
         $fields = $request->validated();
         $event_fields['name'] = strip_tags($fields['name']);
-        $event_fields['date_start'] = strip_tags($fields['date_start']);
+        $event_fields['date_start'] = $fields['date_start'];
         if(isset($fields['date_end'])) {
-            $event_fields['date_end'] = strip_tags($fields['date_end']);
+            $event_fields['date_end'] = $fields['date_end'];
         }
         $event_fields['city'] = strip_tags($fields['city']);
         $event_fields['location'] = strip_tags($fields['location']);
@@ -117,13 +124,13 @@ class EventController extends Controller
             $path = $request->file('image')->store('userImages', 'public');
             $event_fields['image'] = $path;
         }
-        $event_fields['is_public'] = strip_tags($fields['is_public']);
+        $event_fields['is_public'] = $fields['is_public'];
         $event_fields['owner_id'] = Auth::user()->id;
         $event = Event::create($event_fields);
 
         if(isset($fields['type'])) {
             foreach($fields['type'] as $type) {
-                $type_fields['type_id'] = strip_tags($type);
+                $type_fields['type_id'] = $type;
                 $type_fields['event_id'] = $event['id'];
                 $event_type = EventType::create($type_fields);
             }
@@ -188,12 +195,12 @@ class EventController extends Controller
             $event->save();
             return;
         }
-        $event->name = $fields['name'];
+        $event->name = strip_tags($fields['name']);
         $event->date_start = $fields['date_start'];
         $event->date_end = $fields['date_end'];
-        $event->city = $fields['city'];
-        $event->location = $fields['location'];
-        $event->description = $fields['description'];
+        $event->city = strip_tags($fields['city']);
+        $event->location = strip_tags($fields['location']);
+        $event->description = strip_tags($fields['description']);
         if($request->hasFile('image')) {
             $path = $request->file('image')->store('userImages', 'public');
             $event->image = $path;
@@ -207,7 +214,7 @@ class EventController extends Controller
         }
         if(isset($fields['type'])) {
             foreach($fields['type'] as $type) {
-                $type_fields['type_id'] = strip_tags($type);
+                $type_fields['type_id'] = $type;
                 $type_fields['event_id'] = $event['id'];
                 $event_type = EventType::create($type_fields);
             }

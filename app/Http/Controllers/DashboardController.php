@@ -19,31 +19,32 @@ class DashboardController extends Controller
             return redirect('/login');
         }
 
-        $privateEvents = Event::whereIn('id', Invitation::where('user_id', '=', Auth::user()->id)->pluck('event_id'))->with(['attendees' => function($q){
-            $q->where('attendees.user_id', '=', Auth::user()->id);
-        }])->with('allAttendees')->orderBy('date_start', 'asc')->get();
-
-        $yourEvents = Event::where('owner_id', '=', Auth::user()->id)->orderBy('date_start', 'asc')->get();
-
-        $joinedEvents = Event::whereIn('id', (Attendee::where('user_id', '=', Auth::user()->id)->pluck('event_id')))->with(['attendees' => function($q){
-            $q->where('attendees.user_id', '=', Auth::user()->id);
-        }])->with('allAttendees')->orderBy('date_start', 'asc')->get();
-
-
-        $yourTypes = EventType::whereIn('event_id', Event::where('owner_id', '=', Auth::user()->id)->pluck('id'))
-            ->join('types', 'event_types.type_id', '=', 'types.id')
-            ->select(DB::raw('count(*) as count, type_name as name'))
-            ->groupBy('type_name')
-            ->get();
-
-        $joinedTypes = EventType::whereIn('event_id', Event::whereIn('id', (Attendee::where('user_id', '=', Auth::user()->id)->pluck('event_id')))->pluck('id'))
-            ->join('types', 'event_types.type_id', '=', 'types.id')
-            ->select(DB::raw('count(*) as count, type_name as name'))
-            ->groupBy('type_name')
-            ->get();
-
         date_default_timezone_set('Europe/Budapest');
         $date = new \DateTimeImmutable();
+
+        $activeEvents = Event::where('date_start', '>=', $date->format('Y-m-d'))->orWhere('date_end', '>=', $date->format('Y-m-d'))->pluck('id');
+
+        $yourEvents = Event::where('owner_id', '=', Auth::user()->id)->whereIn('id', $activeEvents)->orderBy('date_start', 'asc')->get();
+
+        $joinedEvents = Event::whereIn('id', (Attendee::where('user_id', '=', Auth::user()->id)->pluck('event_id')))
+            ->whereIn('id', $activeEvents)
+            ->with(['attendees' => function($q){
+                $q->where('attendees.user_id', '=', Auth::user()->id);
+            }])->with('allAttendees')->orderBy('date_start', 'asc')->get();
+
+
+        $yourTypes = EventType::whereIn('event_id', Event::where('owner_id', '=', Auth::user()->id)->whereIn('id', $activeEvents)->pluck('id'))
+            ->join('types', 'event_types.type_id', '=', 'types.id')
+            ->select(DB::raw('count(*) as count, type_name as name'))
+            ->groupBy('type_name')
+            ->get();
+
+        $joinedTypes = EventType::whereIn('event_id', Event::whereIn('id', (Attendee::where('user_id', '=', Auth::user()->id)->pluck('event_id')))->whereIn('id', $activeEvents)->pluck('id'))
+            ->join('types', 'event_types.type_id', '=', 'types.id')
+            ->select(DB::raw('count(*) as count, type_name as name'))
+            ->groupBy('type_name')
+            ->get();
+
 
         $allYourEvents = Event::where('owner_id', '=', Auth::user()->id)
             ->orWhere(function ($q) {
@@ -56,7 +57,7 @@ class DashboardController extends Controller
             ->get();
         $futureEvents = Event::whereIn('id', $allYourEvents)
             ->where('date_start', '>=', $date->format('Y-m-d'))
-            ->where('date_start', '<=', $date->modify('+29 days')->format('Y-m-d'))
+            ->where('date_start', '<=', $date->modify('+30 days')->format('Y-m-d'))
             ->select(DB::raw('CAST(date_start AS DATE) as start_day, CAST(date_end AS DATE) as end_day'))
             ->get();        
 
@@ -91,7 +92,6 @@ class DashboardController extends Controller
         }
 
         return View::make('dashboard')->with([
-            'privateEvents' => $privateEvents,
             'yourEvents' => $yourEvents,
             'joinedEvents' => $joinedEvents,
             'yourTypes' => $yourTypes,
