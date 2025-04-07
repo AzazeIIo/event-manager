@@ -26,8 +26,8 @@ class EventFactory extends Factory
 
         return [
             'name' => $name,
-            'date_start' => $dateStart,
-            'date_end' => $dateEnd,
+            'date_start' => $dateStart->format('Y-m-d\TH:i'),
+            'date_end' => $dateEnd->format('Y-m-d\TH:i'),
             'description' => implode(fake()->paragraphs()),
             'city' => fake()->city(),
             'location' => fake()->streetAddress(),

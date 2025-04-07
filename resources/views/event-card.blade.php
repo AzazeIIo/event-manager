@@ -1,5 +1,5 @@
 <div class="card event-card mb-3">
-    <div id="{{$event['id']}}" class="row g-0">
+    <div id="event-{{$event['id']}}" class="row g-0">
         @if($event['image'])
             <div class="col-lg-5 center">
                 <img src="{{ '/storage/' . $event['image'] }}" data-bs-toggle="modal" data-bs-target="#imageModal" class="userimage img-fluid rounded" alt="...">

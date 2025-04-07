@@ -12,7 +12,7 @@ $('#createEventBtn').on('click', function(e) {
 });
 
 $(document).on('click', '.editEventBtn', function(e) {
-    let eventCard = $('#'+e.target.id.substring(4));
+    let eventCard = $('#event-'+e.target.id.substring(4));
     let url = '/events/'+ e.target.id.substring(4) + '/edit';
 
     $.ajax({
@@ -57,7 +57,7 @@ $('#confirmDeletion').on('click', function(e) {
 
 $(document).on('click', '.editVisibilityBtn', function(e) {
     let eventId = e.target.id.substring(6);
-    let eventCard = $('#'+eventId);
+    let eventCard = $('#event-'+eventId);
     
     let url = '/events/'+ eventId + '/invitations/create';
 
@@ -75,7 +75,7 @@ $(document).on('click', '.editVisibilityBtn', function(e) {
 
 $(document).on('click', '.showAttendeesBtn', function(e) {
     let eventId = e.target.id.substring(6);
-    let eventCard = $('#'+eventId);
+    let eventCard = $('#event-'+eventId);
     
     let url = '/events/'+ eventId + '/invitations/';
 
@@ -298,7 +298,7 @@ function editEvent(id) {
         contentType : false,
         processData : false,
         success:function(card) {
-            $('#'+id).parent().replaceWith(card);
+            $('#event-'+id).parent().replaceWith(card);
 
             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(editEventToast);
             toastBootstrap.show();
@@ -318,7 +318,7 @@ function editEvent(id) {
 }
 
 function reset(eventId) {
-    let eventCard = $('#' + eventId).parent();
+    let eventCard = $('#event-' + eventId).parent();
     let url = '/events/'+ eventId;
 
     $.ajax({
@@ -371,7 +371,7 @@ function removeEvent(id) {
         type: 'DELETE',
         url: $("#delroute" + id).val(),
         success:function(msg) {
-            $('#'+id).parent().remove();
+            $('#event-'+id).parent().remove();
 
             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(deleteEventToast);
             toastBootstrap.show();

@@ -1,4 +1,4 @@
-<div id="{{ $event['id'] }}">
+<div id="event-{{ $event['id'] }}">
 <div class="row g-0 editEventForm">
     <div class="col-lg-11">
         <div class="card-body">
