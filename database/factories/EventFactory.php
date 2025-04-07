@@ -43,4 +43,18 @@ class EventFactory extends Factory
             'image' => null,
         ]);
     }
+    
+    public function public(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'is_public' => true,
+        ]);
+    }
+    
+    public function private(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'is_public' => false,
+        ]);
+    }
 }

@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
@@ -11,6 +11,8 @@ use App\Models\Invitation;
 
 class InvitationTest extends TestCase
 {
+    use DatabaseTransactions;
+
     public function test_only_owner_is_authorized_to_invite_once(): void
     {
         $user = User::factory()->create();

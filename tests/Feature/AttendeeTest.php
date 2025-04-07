@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
@@ -12,6 +12,8 @@ use App\Models\Attendee;
 
 class AttendeeTest extends TestCase
 {
+    use DatabaseTransactions;
+
     public function test_only_other_users_are_authorized_to_join_public_events_once(): void
     {
         $user = User::factory()->create();
