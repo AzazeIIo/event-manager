@@ -120,3 +120,6 @@
     </div>
 </div>
 @endsection
+@pushIf(Route::current()->getName() == 'myevents', 'scripts')
+    <script type="module" src="/js/myevents.js"></script>
+@endPushIf

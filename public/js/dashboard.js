@@ -1,6 +1,4 @@
-if(typeof data !== 'undefined') {
-    // xValues = data.yourTypes.map(({type_name}) => type_name);
-    // yValues = data.yourTypes.map(({eventtypes}) => eventtypes.length);
+$(function() {
     let xValues = data.yourTypes.map(({name}) => name);
     let yValues = data.yourTypes.map(({count}) => count);
     let barColors = [
@@ -91,4 +89,4 @@ if(typeof data !== 'undefined') {
             }
         }
     });
-}
+});
