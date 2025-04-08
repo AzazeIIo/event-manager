@@ -190,7 +190,7 @@ class EventController extends Controller
     {
         $fields = $request->validated();
         if(empty($fields)) {
-            Storage::disk('public')->delete($event['image']);
+            //Storage::disk('public')->delete($event['image']);
             $event->image = null;
             $event->save();
             return;
@@ -233,7 +233,7 @@ class EventController extends Controller
     public function destroy(DestroyEventRequest $request, Event $event)
     {
         if($event['image']) {
-            Storage::disk('public')->delete($event['image']);
+            //Storage::disk('public')->delete($event['image']);
         }
         $event->delete($event);
     }
